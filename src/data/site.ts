@@ -100,7 +100,7 @@ export const content: Record<Locale, Content> = {
     tagline: 'Säker. Snabb. Pålitlig.',
     hero: {
       title: 'Taxi i Jönköpings län',
-      subtitle: 'Säker. Snabb. Pålitlig. Ring eller skriv när du behöver åka.',
+      subtitle: 'Säker. Snabb. Pålitlig. En bil och en förare, Rashid.',
     },
     actions: {
       call: 'Ring nu',
@@ -129,7 +129,7 @@ export const content: Record<Locale, Content> = {
     },
     contact: {
       heading: 'Boka en resa',
-      intro: 'Ring, skicka SMS eller skriv på WhatsApp.',
+      intro: 'Ring eller skriv till Rashid direkt, på svenska, engelska eller arabiska.',
       phoneLabel: 'Telefon',
       emailLabel: 'E-post',
       areaLabel: 'Område',
@@ -138,7 +138,7 @@ export const content: Record<Locale, Content> = {
     },
     quickContactLabel: 'Snabbkontakt',
     serviceArea: 'Jönköpings län',
-    availability: 'Tillgänglig vid beställning',
+    availability: 'Kör på beställning',
     footer: { rights: 'Alla rättigheter förbehållna.' },
   },
   en: {
@@ -152,7 +152,7 @@ export const content: Record<Locale, Content> = {
     tagline: 'Safe. Fast. Reliable.',
     hero: {
       title: 'Taxi in Jönköping County',
-      subtitle: 'Safe. Fast. Reliable. Call or message whenever you need a ride.',
+      subtitle: 'Safe. Fast. Reliable. One car and one driver, Rashid.',
     },
     actions: {
       call: 'Call now',
@@ -181,7 +181,7 @@ export const content: Record<Locale, Content> = {
     },
     contact: {
       heading: 'Book a ride',
-      intro: 'Call, send an SMS or message on WhatsApp.',
+      intro: 'Call or message Rashid directly, in Swedish, English or Arabic.',
       phoneLabel: 'Phone',
       emailLabel: 'Email',
       areaLabel: 'Area',
@@ -204,14 +204,14 @@ export const content: Record<Locale, Content> = {
     tagline: 'آمن. سريع. موثوق.',
     hero: {
       title: 'تاكسي في مقاطعة يونشوبينغ',
-      subtitle: 'آمن. سريع. موثوق. اتصل أو أرسل رسالة متى احتجت إلى رحلة.',
+      subtitle: 'آمن. سريع. موثوق. سيارة واحدة وسائق واحد، رشيد.',
     },
     actions: {
       call: 'اتصل الآن',
       callShort: 'اتصل',
       whatsapp: 'واتساب',
-      sms: 'أرسل رسالة نصية',
-      email: 'أرسل بريدًا إلكترونيًا',
+      sms: 'رسالة نصية',
+      email: 'بريد إلكتروني',
     },
     car: {
       heading: 'السيارة',
@@ -233,7 +233,7 @@ export const content: Record<Locale, Content> = {
     },
     contact: {
       heading: 'احجز رحلة',
-      intro: 'اتصل أو أرسل رسالة نصية أو راسلنا على واتساب.',
+      intro: 'اتصل برشيد أو راسله مباشرة، بالسويدية أو الإنجليزية أو العربية.',
       phoneLabel: 'الهاتف',
       emailLabel: 'البريد الإلكتروني',
       areaLabel: 'المنطقة',
