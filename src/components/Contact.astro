@@ -1,7 +1,8 @@
 ---
 import Icon, { type IconName } from './Icon.astro';
 import QrCode from './QrCode.astro';
-import { business, content, type Locale } from '../data/site';
+import { business, carFrames, content, type Locale } from '../data/site';
+import { withBase } from '../utils/withBase';
 
 interface Props {
   locale: Locale;
@@ -28,6 +29,11 @@ const actions: {
   { icon: 'email', label: t.actions.email, href: `mailto:${business.email}` },
 ];
 
+// The last frame of the rotation: the car waits for you at the end of the page.
+const lastFrame = withBase(
+  `${carFrames.basePath}${String(carFrames.count).padStart(3, '0')}${carFrames.extension}`,
+);
+
 const details: { label: string; value: string; ltr?: boolean }[] = [
   { label: t.contact.emailLabel, value: business.email, ltr: true },
   { label: t.contact.areaLabel, value: t.serviceArea },
@@ -36,15 +42,26 @@ const details: { label: string; value: string; ltr?: boolean }[] = [
 ---
 
 <section id="contact" class="section" aria-labelledby="contact-title">
-  <div class="section-grid">
-    <div>
-      <h2 id="contact-title" class="section-heading">
+  <div class="wrap">
+    <div class="finale" data-reveal>
+      <img
+        src={lastFrame}
+        alt=""
+        width={carFrames.width}
+        height={carFrames.height}
+        loading="lazy"
+        decoding="async"
+        class="finale-car"
+      />
+      <h2 id="contact-title" class="statement mx-auto text-center">
         {t.contact.heading}
       </h2>
-      <p class="mt-3 text-muted">{t.contact.intro}</p>
-    </div>
-    <div>
-      <p class="font-display" style="font-size: var(--fs-number); line-height: 1.1">
+      <p class="mx-auto mt-4 max-w-[40ch] text-center text-muted">{t.contact.intro}</p>
+
+      <p
+        class="mt-8 text-center font-display"
+        style="font-size: var(--fs-number); line-height: 1.1"
+      >
         <span class="sr-only">{t.contact.phoneLabel}: </span>
         <a
           href={`tel:${business.phone.e164}`}
@@ -55,11 +72,14 @@ const details: { label: string; value: string; ltr?: boolean }[] = [
         </a>
       </p>
 
-      <div class="mt-6 grid grid-cols-1 gap-3 min-[360px]:grid-cols-2 sm:flex sm:flex-wrap">
+      <div class="mx-auto mt-6 grid max-w-3xl grid-cols-1 gap-3 min-[380px]:grid-cols-2 sm:flex sm:flex-wrap sm:justify-center">
         {actions.map((a) => (
           <a
             href={a.href}
-            class:list={['btn px-4 text-center text-lg', a.primary ? 'btn-call' : 'btn-ghost']}
+            class:list={[
+              'btn px-3 text-center sm:px-4 sm:text-lg',
+              a.primary ? 'btn-call' : 'btn-ghost',
+            ]}
             {...(a.external ? { target: '_blank', rel: 'noopener' } : {})}
           >
             <Icon name={a.icon} />
@@ -68,12 +88,14 @@ const details: { label: string; value: string; ltr?: boolean }[] = [
         ))}
       </div>
 
-      <div class="mt-10 flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
-        <dl class="rows flex-1">
+      <div class="mt-12 flex flex-col gap-10 border-t border-line pt-8 sm:flex-row sm:items-start sm:justify-between">
+        <dl class="details flex-1">
           {details.map((d) => (
-            <div class="flex flex-wrap justify-between gap-x-6 gap-y-1">
-              <dt class="text-muted">{d.label}</dt>
-              <dd class="break-all" dir={d.ltr ? 'ltr' : undefined}>
+            <div>
+              <dt class="text-muted" style="font-size: var(--fs-small)">
+                {d.label}
+              </dt>
+              <dd class="mt-1 break-all" dir={d.ltr ? 'ltr' : undefined}>
                 {d.value}
               </dd>
             </div>
@@ -87,3 +109,49 @@ const details: { label: string; value: string; ltr?: boolean }[] = [
     </div>
   </div>
 </section>
+
+<style>
+  /* The closing scene: the same soft overhead light as the opening, on a raised panel. */
+  .finale {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(2rem, 6vw, 4.5rem) clamp(1rem, 5vw, 4.5rem);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-box);
+    background:
+      radial-gradient(60% 55% at 50% 0%, var(--light-glow), transparent 70%), var(--asphalt);
+  }
+
+  /* Phones: edge to edge, so the buttons get the full width. */
+  @media (max-width: 639px) {
+    .finale {
+      margin-inline: -1rem;
+      padding-inline: 1rem;
+      border-inline: 0;
+      border-radius: 0;
+    }
+  }
+
+  .finale-car {
+    display: block;
+    width: min(100%, 26rem);
+    height: auto;
+    margin: 0 auto 1.5rem;
+  }
+
+  /* The email is always left-to-right, but sits on the right like the rest in Arabic. */
+  :global(:lang(ar)) .details dd[dir='ltr'] {
+    text-align: right;
+  }
+
+  .details {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .details {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

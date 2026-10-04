@@ -1,4 +1,5 @@
 ---
+// The car, told as "room for everyone": each confirmed fact set large, one beside the other.
 import { car, content, type Locale } from '../data/site';
 
 interface Props {
@@ -10,15 +11,35 @@ const t = content[locale];
 ---
 
 <section class="section" aria-labelledby="car-title">
-  <div class="section-grid">
-    <h2 id="car-title" class="section-heading">
+  <div class="wrap">
+    <p class="text-muted" data-reveal>
+      {car.model}
+    </p>
+    <h2 id="car-title" class="statement mt-3" data-reveal>
       {t.car.heading}
     </h2>
-    <ul class="rows">
-      <li class="rows-lead">{car.model}</li>
-      {t.carFeatures.map((f) => (
-        <li>{f.text}</li>
+    <ul class="figures mt-12 grid grid-cols-2 gap-x-6 lg:grid-cols-4">
+      {t.carFeatures.map((f, i) => (
+        <li class="border-t border-line pt-5 pb-8" data-reveal style={`--i: ${i}`}>
+          <span class="figure block font-display">{f.figure}</span>{' '}
+          <span class="mt-2 block text-muted">{f.label}</span>
+        </li>
       ))}
     </ul>
   </div>
 </section>
+
+<style>
+  .figure {
+    font-size: var(--fs-figure);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    overflow-wrap: anywhere;
+  }
+
+  :global(:lang(ar)) .figure {
+    letter-spacing: 0;
+    line-height: 1.3;
+  }
+</style>

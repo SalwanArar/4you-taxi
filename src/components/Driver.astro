@@ -1,4 +1,5 @@
 ---
+// The driver: the story's person. One large line in his voice, then his name and languages.
 import { business, content, type Locale } from '../data/site';
 
 interface Props {
@@ -10,16 +11,37 @@ const t = content[locale];
 ---
 
 <section class="section" aria-labelledby="driver-title">
-  <div class="section-grid">
-    <h2 id="driver-title" class="section-heading">
+  <div class="wrap">
+    <h2 id="driver-title" class="statement" data-reveal>
       {t.driver.heading}
     </h2>
-    <ul class="rows">
-      <li class="rows-lead">{business.driverName}</li>
-      <li>
+    {t.driver.bio && (
+      <p class="bio mt-10 font-display" data-reveal style="--i: 1">
+        {t.driver.bio}
+      </p>
+    )}
+    <div class="mt-10 border-t border-line pt-5" data-reveal style="--i: 2">
+      <p class="font-display text-text" style="font-size: var(--fs-lead)">
+        {business.driverName}
+      </p>
+      <p class="mt-1 text-muted">
         {t.driver.languagesLabel}: {t.driver.languagesSpoken}
-      </li>
-      {t.driver.bio && <li>{t.driver.bio}</li>}
-    </ul>
+      </p>
+    </div>
   </div>
 </section>
+
+<style>
+  .bio {
+    max-width: 30ch;
+    margin-inline-start: auto;
+    font-size: var(--fs-heading);
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+  }
+
+  :global(:lang(ar)) .bio {
+    line-height: 1.6;
+    letter-spacing: 0;
+  }
+</style>

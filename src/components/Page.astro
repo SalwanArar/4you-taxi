@@ -50,3 +50,21 @@ const t = content[locale];
   <Footer locale={locale} />
   <StickyCallBar locale={locale} />
 </Base>
+
+<script>
+  // Let each [data-reveal] element rise into view the first time it is reached (see global.css).
+  if ('IntersectionObserver' in window) {
+    document.documentElement.toggleAttribute('data-reveal-on', true);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.toggleAttribute('data-shown', true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { rootMargin: '0px 0px -8% 0px' },
+    );
+    document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
+  }
+</script>

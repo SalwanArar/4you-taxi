@@ -73,9 +73,18 @@ interface Content {
     /** Small hint shown until the visitor starts scrolling through the car. */
     scrollHint: string;
   };
-  /** Car details section: 4 to 6 short, confirmed facts. */
-  carFeatures: { icon: FeatureIcon; text: string }[];
-  driver: { heading: string; languagesLabel: string; languagesSpoken: string; bio: string };
+  /**
+   * Car details section: 4 to 6 short, confirmed facts. `text` is the full fact (also used for the
+   * captions while the car turns); `figure` is shown large and `label` small under it.
+   */
+  carFeatures: { icon: FeatureIcon; text: string; figure: string; label: string }[];
+  driver: {
+    heading: string;
+    languagesLabel: string;
+    languagesSpoken: string;
+    /** Shown large. Placeholder lines until Rashid writes his own; '' hides it. */
+    bio: string;
+  };
   contact: {
     heading: string;
     intro: string;
@@ -116,25 +125,35 @@ export const content: Record<Locale, Content> = {
       email: 'Skicka e-post',
     },
     car: {
-      heading: 'Bilen',
+      heading: 'Plats för alla',
       alt: 'Vit Škoda Octavia-taxi',
       rotatingLabel: 'Vit Škoda Octavia-taxi som snurrar när du skrollar',
       scrollHint: 'Skrolla för att snurra bilen',
     },
     carFeatures: [
-      { icon: 'seats', text: '4 platser' },
-      { icon: 'child-seat', text: 'Barnstol kan monteras' },
-      { icon: 'luggage', text: 'Stort bagageutrymme' },
-      { icon: 'four-wheel-drive', text: 'Fyrhjulsdrift (4x4)' },
+      { icon: 'seats', text: '4 platser', figure: '4', label: 'platser' },
+      {
+        icon: 'child-seat',
+        text: 'Barnstol kan monteras',
+        figure: 'Barnstol',
+        label: 'kan monteras',
+      },
+      { icon: 'luggage', text: 'Stort bagageutrymme', figure: 'Stort', label: 'bagageutrymme' },
+      {
+        icon: 'four-wheel-drive',
+        text: 'Fyrhjulsdrift (4x4)',
+        figure: '4x4',
+        label: 'fyrhjulsdrift',
+      },
     ],
     driver: {
-      heading: 'Din förare',
+      heading: 'Mannen bakom ratten',
       languagesLabel: 'Talar',
       languagesSpoken: 'Svenska, engelska och arabiska',
-      bio: '',
+      bio: 'Du ringer, Rashid svarar. Ingen växel och ingen kö, bara föraren själv.',
     },
     contact: {
-      heading: 'Boka en resa',
+      heading: 'Din resa är ett samtal bort.',
       intro: 'Ring eller skriv till Rashid direkt, på svenska, engelska eller arabiska.',
       phoneLabel: 'Telefon',
       emailLabel: 'E-post',
@@ -168,25 +187,35 @@ export const content: Record<Locale, Content> = {
       email: 'Send email',
     },
     car: {
-      heading: 'The car',
+      heading: 'Room for everyone',
       alt: 'White Škoda Octavia taxi',
       rotatingLabel: 'White Škoda Octavia taxi, rotating as you scroll',
       scrollHint: 'Scroll to rotate the car',
     },
     carFeatures: [
-      { icon: 'seats', text: '4 seats' },
-      { icon: 'child-seat', text: 'Child seat can be fitted' },
-      { icon: 'luggage', text: 'Large luggage space' },
-      { icon: 'four-wheel-drive', text: 'Four-wheel drive (4x4)' },
+      { icon: 'seats', text: '4 seats', figure: '4', label: 'seats' },
+      {
+        icon: 'child-seat',
+        text: 'Child seat can be fitted',
+        figure: 'Child seat',
+        label: 'can be fitted',
+      },
+      { icon: 'luggage', text: 'Large luggage space', figure: 'Large', label: 'luggage space' },
+      {
+        icon: 'four-wheel-drive',
+        text: 'Four-wheel drive (4x4)',
+        figure: '4x4',
+        label: 'four-wheel drive',
+      },
     ],
     driver: {
-      heading: 'Your driver',
+      heading: 'The man behind the wheel',
       languagesLabel: 'Speaks',
       languagesSpoken: 'Swedish, English and Arabic',
-      bio: '',
+      bio: 'You call, Rashid answers. No call centre and no queue, just the driver himself.',
     },
     contact: {
-      heading: 'Book a ride',
+      heading: 'Your ride is one call away.',
       intro: 'Call or message Rashid directly, in Swedish, English or Arabic.',
       phoneLabel: 'Phone',
       emailLabel: 'Email',
@@ -220,25 +249,30 @@ export const content: Record<Locale, Content> = {
       email: 'بريد إلكتروني',
     },
     car: {
-      heading: 'السيارة',
+      heading: 'مكان للجميع',
       alt: 'سيارة تاكسي سكودا أوكتافيا بيضاء',
       rotatingLabel: 'سيارة تاكسي سكودا أوكتافيا بيضاء تدور أثناء التمرير',
       scrollHint: 'مرّر لتدوير السيارة',
     },
     carFeatures: [
-      { icon: 'seats', text: '4 مقاعد' },
-      { icon: 'child-seat', text: 'يمكن تركيب مقعد للأطفال' },
-      { icon: 'luggage', text: 'مساحة كبيرة للأمتعة' },
-      { icon: 'four-wheel-drive', text: 'دفع رباعي (4x4)' },
+      { icon: 'seats', text: '4 مقاعد', figure: '4', label: 'مقاعد' },
+      {
+        icon: 'child-seat',
+        text: 'يمكن تركيب مقعد للأطفال',
+        figure: 'مقعد أطفال',
+        label: 'يمكن تركيبه',
+      },
+      { icon: 'luggage', text: 'مساحة كبيرة للأمتعة', figure: 'مساحة كبيرة', label: 'للأمتعة' },
+      { icon: 'four-wheel-drive', text: 'دفع رباعي (4x4)', figure: '4x4', label: 'دفع رباعي' },
     ],
     driver: {
-      heading: 'سائقك',
+      heading: 'الرجل خلف المقود',
       languagesLabel: 'يتحدث',
       languagesSpoken: 'السويدية والإنجليزية والعربية',
-      bio: '',
+      bio: 'تتصل، فيجيب رشيد. لا مركز اتصال ولا انتظار، فقط السائق نفسه.',
     },
     contact: {
-      heading: 'احجز رحلة',
+      heading: 'رحلتك على بُعد مكالمة واحدة.',
       intro: 'اتصل برشيد أو راسله مباشرة، بالسويدية أو الإنجليزية أو العربية.',
       phoneLabel: 'الهاتف',
       emailLabel: 'البريد الإلكتروني',
