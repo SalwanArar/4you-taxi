@@ -1,5 +1,5 @@
 ---
-import { business, content, type Locale } from '../data/site';
+import { business, content, designer, type Locale } from '../data/site';
 import { withBase } from '../utils/withBase';
 
 interface Props {
@@ -17,8 +17,21 @@ const year = new Date().getFullYear();
     style="font-size: var(--fs-small)"
   >
     <img src={withBase('/logo.webp')} alt={business.name} width="68" height="40" loading="lazy" />
-    <p>
-      © {year} {business.name}. {t.footer.rights}
-    </p>
+    <div class="flex flex-wrap items-center gap-x-6">
+      <p>
+        © {year} {business.name}. {t.footer.rights}
+      </p>
+      <p>
+        {t.footer.designedBy}{' '}
+        <a
+          href={designer.url}
+          class="inline-flex min-h-tap items-center text-text underline decoration-line underline-offset-4 hover:decoration-taxi"
+          rel="author noopener"
+          target="_blank"
+        >
+          {designer.name}
+        </a>
+      </p>
+    </div>
   </div>
 </footer>

@@ -35,6 +35,12 @@ export const business = {
   country: 'SE',
 } as const;
 
+/** Who designed and built the site, credited in the footer. */
+export const designer = {
+  name: 'Salwan Arar',
+  url: 'https://salwanarar.github.io/Portfolio/',
+} as const;
+
 /** The car. Only confirmed facts (see CLAUDE.md §1). */
 export const car = {
   model: 'Škoda Octavia',
@@ -84,7 +90,7 @@ interface Content {
   quickContactLabel: string;
   serviceArea: string;
   availability: string;
-  footer: { rights: string };
+  footer: { rights: string; designedBy: string };
 }
 
 /** Text per language. Swedish and Arabic are drafts and should be checked by a native speaker. */
@@ -139,7 +145,7 @@ export const content: Record<Locale, Content> = {
     quickContactLabel: 'Snabbkontakt',
     serviceArea: 'Jönköpings län',
     availability: 'Kör på beställning',
-    footer: { rights: 'Alla rättigheter förbehållna.' },
+    footer: { rights: 'Alla rättigheter förbehållna.', designedBy: 'Webbplats av' },
   },
   en: {
     meta: {
@@ -191,7 +197,7 @@ export const content: Record<Locale, Content> = {
     quickContactLabel: 'Quick contact',
     serviceArea: 'Jönköping County',
     availability: 'Available on call',
-    footer: { rights: 'All rights reserved.' },
+    footer: { rights: 'All rights reserved.', designedBy: 'Website by' },
   },
   ar: {
     meta: {
@@ -243,6 +249,6 @@ export const content: Record<Locale, Content> = {
     quickContactLabel: 'اتصال سريع',
     serviceArea: 'مقاطعة يونشوبينغ',
     availability: 'متاح عند الطلب',
-    footer: { rights: 'جميع الحقوق محفوظة.' },
+    footer: { rights: 'جميع الحقوق محفوظة.', designedBy: 'تصميم الموقع:' },
   },
 };
