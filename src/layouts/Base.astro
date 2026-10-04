@@ -4,6 +4,7 @@ import '../styles/global.css';
 import { getAbsoluteLocaleUrl } from 'astro:i18n';
 import StructuredData from '../components/StructuredData.astro';
 import { business, content, defaultLocale, localeInfo, locales, type Locale } from '../data/site';
+import { withBase } from '../utils/withBase';
 
 interface Props {
   locale: Locale;
@@ -14,6 +15,7 @@ const { meta } = content[locale];
 const { dir } = localeInfo[locale];
 // Canonical and hreflang need absolute URLs, so they wait until `site` is set in astro.config.mjs.
 const hasSite = Astro.site !== undefined;
+const ogImage = hasSite ? new URL(withBase('/og-image.jpg'), Astro.site).href : undefined;
 const ogLocale: Record<Locale, string> = { sv: 'sv_SE', en: 'en_GB', ar: 'ar_AR' };
 ---
 
@@ -26,6 +28,8 @@ const ogLocale: Record<Locale, string> = { sv: 'sv_SE', en: 'en_GB', ar: 'ar_AR'
     <meta name="description" content={meta.description} />
     <meta name="theme-color" content="#0b0b0c" />
     <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/png" sizes="32x32" href={withBase('/favicon-32.png')} />
+    <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={business.name} />
     <meta property="og:title" content={meta.title} />
@@ -35,6 +39,12 @@ const ogLocale: Record<Locale, string> = { sv: 'sv_SE', en: 'en_GB', ar: 'ar_AR'
     {hasSite && (
       <>
         <link rel="canonical" href={getAbsoluteLocaleUrl(locale)} />
+        <meta property="og:url" content={getAbsoluteLocaleUrl(locale)} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={content[locale].car.alt} />
+        <meta name="twitter:card" content="summary_large_image" />
         {locales.map((l) => (
           <link rel="alternate" hreflang={l} href={getAbsoluteLocaleUrl(l)} />
         ))}

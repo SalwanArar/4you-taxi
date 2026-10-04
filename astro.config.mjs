@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
@@ -9,6 +10,8 @@ export default defineConfig({
   // e.g. site: 'https://4youtaxi.se'. Canonical and hreflang links are only output when `site` is set.
   site: process.env.SITE_URL || undefined,
   base: process.env.BASE_PATH || undefined,
+  // The sitemap needs `site`, so it is only generated for published builds.
+  integrations: process.env.SITE_URL ? [sitemap()] : [],
   i18n: {
     locales: ['sv', 'en', 'ar'],
     defaultLocale: 'sv',
