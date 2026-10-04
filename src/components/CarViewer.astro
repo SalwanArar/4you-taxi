@@ -143,14 +143,15 @@ const poster = `${frames}001${extension}`;
     }
   }
 
-  /* Story mode: a longer section, so each of the five scenes gets about one screen of scroll. */
+  /* Story mode: a long section, so each of the five scenes gets close to two screens of scroll
+     and there is time to read every line. */
   .car-viewer[data-scrub][data-story] {
-    height: 520vh;
+    height: 850vh;
   }
 
   @media (min-width: 640px) {
     .car-viewer[data-scrub][data-story] {
-      height: 600vh;
+      height: 950vh;
     }
   }
 
