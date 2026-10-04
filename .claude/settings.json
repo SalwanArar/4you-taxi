@@ -1,5 +1,6 @@
 {
   "enabledPlugins": {
-    "designs-drift@anthropic-plugin-directory": true
+    "designs-drift@anthropic-plugin-directory": true,
+    "brand-voice@anthropic-plugin-directory": true
   }
 }
