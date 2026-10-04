@@ -46,9 +46,9 @@ export const car = {
 export const carFrames = {
   basePath: '/car360/frame_',
   extension: '.webp',
-  count: 145,
-  width: 1280,
-  height: 720,
+  count: 73,
+  width: 884,
+  height: 436,
 } as const;
 
 /** Icons available for the car features list (Lucide icon names). */
@@ -61,7 +61,14 @@ interface Content {
   tagline: string;
   hero: { title: string; subtitle: string };
   actions: { call: string; callShort: string; whatsapp: string; sms: string; email: string };
-  car: { heading: string; alt: string };
+  car: {
+    heading: string;
+    alt: string;
+    /** Accessible name of the rotating car. */
+    rotatingLabel: string;
+    /** Small hint shown until the visitor starts scrolling through the car. */
+    scrollHint: string;
+  };
   /** Car details section: 4 to 6 short, confirmed facts. */
   carFeatures: { icon: FeatureIcon; text: string }[];
   driver: { heading: string; languagesLabel: string; languagesSpoken: string; bio: string };
@@ -107,6 +114,8 @@ export const content: Record<Locale, Content> = {
     car: {
       heading: 'Bilen',
       alt: 'Vit Škoda Octavia-taxi',
+      rotatingLabel: 'Vit Škoda Octavia-taxi som snurrar när du skrollar',
+      scrollHint: 'Skrolla för att snurra bilen',
     },
     carFeatures: [
       { icon: 'seats', text: '4 platser' },
@@ -157,6 +166,8 @@ export const content: Record<Locale, Content> = {
     car: {
       heading: 'The car',
       alt: 'White Škoda Octavia taxi',
+      rotatingLabel: 'White Škoda Octavia taxi, rotating as you scroll',
+      scrollHint: 'Scroll to rotate the car',
     },
     carFeatures: [
       { icon: 'seats', text: '4 seats' },
@@ -207,6 +218,8 @@ export const content: Record<Locale, Content> = {
     car: {
       heading: 'السيارة',
       alt: 'سيارة تاكسي سكودا أوكتافيا بيضاء',
+      rotatingLabel: 'سيارة تاكسي سكودا أوكتافيا بيضاء تدور أثناء التمرير',
+      scrollHint: 'مرّر لتدوير السيارة',
     },
     carFeatures: [
       { icon: 'seats', text: '4 مقاعد' },

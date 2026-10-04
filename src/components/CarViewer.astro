@@ -1,6 +1,6 @@
 ---
-// Phase 3: shows frame 1 only. Phase 5 adds the scroll-driven rotation (CLAUDE.md §6)
-// behind this same API, so the page does not change.
+// Scroll-driven car rotation (CLAUDE.md §6). Frame 1 is a normal <img>: it is the poster,
+// the no-JS fallback and the reduced-motion view. The script swaps in a canvas once it runs.
 interface Props {
   /** Path prefix of the frames, e.g. '/car360/frame_'. */
   frames: string;
@@ -10,25 +10,34 @@ interface Props {
   width: number;
   height: number;
   alt: string;
+  /** Accessible name of the rotating canvas. */
+  label: string;
   heading: string;
+  hint: string;
 }
 
-const { frames, extension, width, height, alt, heading } = Astro.props;
+const { frames, count, extension, width, height, alt, label, heading, hint } = Astro.props;
 const poster = `${frames}001${extension}`;
 ---
 
-<section id="car" class="car-viewer" aria-label={heading}>
-  <div class="relative mx-auto max-w-content px-4 py-12 sm:py-20">
-    <div class="car-shadow" aria-hidden="true"></div>
-    <img
-      src={poster}
-      {width}
-      {height}
-      {alt}
-      loading="eager"
-      decoding="async"
-      class="relative mx-auto h-auto w-full max-w-4xl"
-    />
+<section
+  id="car"
+  class="car-viewer"
+  aria-label={heading}
+  data-car-viewer
+  data-frames={frames}
+  data-extension={extension}
+  data-count={count}
+>
+  <div class="car-sticky">
+    <div class="car-stage" style={`--car-ratio: ${width} / ${height}`}>
+      <div class="car-shadow" aria-hidden="true"></div>
+      <img src={poster} {width} {height} {alt} loading="eager" decoding="async" class="car-frame" />
+      <canvas class="car-frame car-canvas" role="img" aria-label={label}></canvas>
+    </div>
+    <p class="car-hint" data-hint aria-hidden="true">
+      {hint}
+    </p>
   </div>
 </section>
 
@@ -37,14 +46,98 @@ const poster = `${frames}001${extension}`;
     background: radial-gradient(ellipse at center, var(--viewer-to) 0%, var(--viewer-from) 100%);
   }
 
+  /* Without JS, or with reduced motion: a normal-height section with the static poster. */
+  .car-sticky {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+  }
+
+  /* Scrubbing mode, switched on by the script. */
+  .car-viewer[data-scrub] {
+    height: 250vh;
+  }
+
+  .car-viewer[data-scrub] .car-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    padding-block: 0;
+    overflow: hidden;
+  }
+
+  @media (min-width: 640px) {
+    .car-viewer[data-scrub] {
+      height: 300vh;
+    }
+  }
+
+  .car-stage {
+    position: relative;
+    aspect-ratio: var(--car-ratio);
+    /* As wide as possible, but never taller than the screen minus room for the header and hint. */
+    width: min(100%, 1000px, calc((100svh - 10rem) * var(--car-ratio)));
+  }
+
+  .car-frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .car-canvas {
+    visibility: hidden;
+  }
+
+  .car-viewer[data-ready] .car-canvas {
+    visibility: visible;
+  }
+
+  .car-viewer[data-ready] img.car-frame {
+    visibility: hidden;
+  }
+
   /* Soft ground shadow under the car. */
   .car-shadow {
     position: absolute;
-    inset-inline: 25%;
-    bottom: 22%;
-    height: 8%;
+    inset-inline: 12%;
+    bottom: 2%;
+    height: 10%;
     border-radius: 50%;
     background: var(--viewer-shadow);
     filter: blur(18px);
   }
+
+  .car-hint {
+    display: none;
+    margin-top: 1.5rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    transition: opacity 400ms ease;
+  }
+
+  .car-viewer[data-scrub] .car-hint {
+    display: block;
+  }
+
+  .car-hint[data-hidden] {
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .car-hint {
+      transition: none;
+    }
+  }
 </style>
+
+<script>
+  import { initCarViewer } from '../scripts/carViewer';
+
+  document.querySelectorAll<HTMLElement>('[data-car-viewer]').forEach(initCarViewer);
+</script>
