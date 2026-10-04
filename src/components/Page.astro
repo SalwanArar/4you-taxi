@@ -16,6 +16,9 @@ interface Props {
 
 const { locale } = Astro.props;
 const t = content[locale];
+
+// Prefix public/ paths with the base path (e.g. /4you-taxi on GitHub Pages).
+const withBase = (path: string) => `${import.meta.env.BASE_URL.replace(/\/$/, '')}${path}`;
 ---
 
 <Base locale={locale}>
@@ -29,7 +32,7 @@ const t = content[locale];
   <main id="main">
     <CarViewer
       id="top"
-      frames={carFrames.basePath}
+      frames={withBase(carFrames.basePath)}
       count={carFrames.count}
       extension={carFrames.extension}
       width={carFrames.width}

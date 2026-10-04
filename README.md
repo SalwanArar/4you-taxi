@@ -35,3 +35,10 @@ commit them first:
 git rm --cached -r .
 git reset --hard
 ```
+
+## Publishing (GitHub Pages)
+
+`.github/workflows/deploy.yml` builds the site and publishes it to
+<https://salwanarar.github.io/4you-taxi/> on every push to `main` (and to the current work branch).
+It sets `SITE_URL` and `BASE_PATH` so links and car frames work under `/4you-taxi/`.
+Local `npm run dev` is unaffected and still serves from the root.
