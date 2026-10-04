@@ -6,6 +6,7 @@
 
 const PRIORITY_STEP = 4; // load every 4th frame first, then fill the gaps
 const CONCURRENCY = 4;
+const REFLECTION_FADE = 0.38; // the reflection fades out over this share of the car's height
 
 export function initCarViewer(root: HTMLElement): void {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -19,12 +20,17 @@ export function initCarViewer(root: HTMLElement): void {
   const poster = root.querySelector<HTMLImageElement>('img');
   const hint = root.querySelector<HTMLElement>('[data-hint]');
   const captions = Array.from(root.querySelectorAll<HTMLElement>('[data-caption]'));
+  const reflection = root.querySelector<HTMLCanvasElement>('[data-reflection]');
+  const reflectionCtx = reflection?.getContext('2d');
   const ctx = canvas?.getContext('2d');
   if (!canvas || !poster || !ctx || !(count > 1) || !(frameWidth > 0) || !(frameHeight > 0)) return;
 
   // Frames are kept as decoded bitmaps: drawing a plain <img> can make the browser decode the
   // WebP again on every draw, which stutters on slower phones.
   const frames: (ImageBitmap | HTMLImageElement | undefined)[] = new Array(count);
+  // Where the wheels touch the ground in each frame, as a share of the frame height. The car sits
+  // at a different height in each frame, so the reflection is mirrored around this line.
+  const ground: number[] = new Array(count).fill(1);
   const requested = new Set<number>();
   let wanted = 0;
   let drawn = -1;
@@ -50,11 +56,60 @@ export function initCarViewer(root: HTMLElement): void {
     const scale = Math.min(w / img.width, h / img.height);
     const dw = img.width * scale;
     const dh = img.height * scale;
+    const x = (w - dw) / 2;
+    const y = (h - dh) / 2;
     ctx.clearRect(0, 0, w, h);
-    ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
+    ctx.drawImage(img, x, y, dw, dh);
+    if (reflectionCtx) drawReflection(img, x, y, dw, dh, ground[i]);
     drawn = i;
     // Swap the poster <img> for the canvas once there is something on it.
     root.dataset.ready = 'true';
+  };
+
+  // The reflection canvas sits half a stage lower than the main one (see CarViewer.astro).
+  const drawReflection = (
+    img: CanvasImageSource,
+    x: number,
+    y: number,
+    dw: number,
+    dh: number,
+    groundShare: number,
+  ) => {
+    const r = reflectionCtx!;
+    const { width: w, height: h } = canvas;
+    const top = y - h / 2; // where the car's top edge is in this canvas
+    const line = top + groundShare * dh;
+    r.setTransform(1, 0, 0, 1, 0, 0);
+    r.clearRect(0, 0, w, h);
+    r.setTransform(1, 0, 0, -1, 0, 2 * line); // mirror around the ground line
+    r.drawImage(img, x, top, dw, dh);
+    r.setTransform(1, 0, 0, 1, 0, 0);
+    const fade = r.createLinearGradient(0, line, 0, line + dh * REFLECTION_FADE);
+    fade.addColorStop(0, '#000');
+    fade.addColorStop(1, 'transparent');
+    r.globalCompositeOperation = 'destination-in';
+    r.fillStyle = fade;
+    r.fillRect(0, 0, w, h);
+    r.globalCompositeOperation = 'source-over';
+  };
+
+  // Lowest non-transparent row of a frame, read once from a narrow copy of it.
+  const probe = document.createElement('canvas');
+  const probeCtx = probe.getContext('2d', { willReadFrequently: true });
+  const findGround = (img: ImageBitmap | HTMLImageElement): number => {
+    if (!probeCtx) return 1;
+    const pw = 32;
+    const ph = img.height;
+    probe.width = pw;
+    probe.height = ph;
+    probeCtx.drawImage(img, 0, 0, pw, ph);
+    const { data } = probeCtx.getImageData(0, 0, pw, ph);
+    for (let row = ph - 1; row >= 0; row--) {
+      for (let col = 0; col < pw; col++) {
+        if (data[(row * pw + col) * 4 + 3] > 8) return (row + 1) / ph;
+      }
+    }
+    return 1;
   };
 
   const schedule = () => {
@@ -92,6 +147,10 @@ export function initCarViewer(root: HTMLElement): void {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = Math.round(rect.width * dpr);
     canvas.height = Math.round(rect.height * dpr);
+    if (reflection) {
+      reflection.width = canvas.width;
+      reflection.height = canvas.height;
+    }
     drawn = -1; // canvas was cleared by resizing: force a redraw
     schedule();
   };
@@ -125,7 +184,9 @@ export function initCarViewer(root: HTMLElement): void {
     if (requested.has(i)) return;
     requested.add(i);
     try {
-      frames[i] = await decodeFrame(src(i));
+      const img = await decodeFrame(src(i));
+      if (reflectionCtx) ground[i] = findGround(img);
+      frames[i] = img;
       schedule();
     } catch {
       requested.delete(i);

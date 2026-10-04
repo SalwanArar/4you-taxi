@@ -63,6 +63,7 @@ const poster = `${frames}001${extension}`;
         class="car-frame"
       />
       <canvas class="car-frame car-canvas" role="img" aria-label={label}></canvas>
+      <canvas class="car-reflection" data-reflection aria-hidden="true"></canvas>
       {captions.length > 0 && (
         <ul class="car-captions" aria-hidden="true">
           {captions.map((c) => (
@@ -147,6 +148,23 @@ const poster = `${frames}001${extension}`;
     visibility: hidden;
   }
 
+  /* A faint mirror image of the car on the glossy ground, drawn and faded by the script.
+     It sits half a stage lower so it has room below the wheels. */
+  .car-reflection {
+    position: absolute;
+    inset-inline: 0;
+    top: 50%;
+    width: 100%;
+    height: 100%;
+    opacity: 0.13;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  .car-viewer[data-ready] .car-reflection {
+    visibility: visible;
+  }
+
   /* The pool of light on the ground, with a soft shadow right under the car. */
   .car-floor {
     position: absolute;
@@ -202,7 +220,7 @@ const poster = `${frames}001${extension}`;
     position: absolute;
     inset-inline: 0;
     top: 100%;
-    margin-top: 0.75rem;
+    margin-top: 1.25rem;
     text-align: center;
     font-size: var(--fs-small);
     color: var(--text-muted);

@@ -66,7 +66,7 @@
 @layer components {
   /* Buttons: pills at least 52px tall. Yellow is reserved for the call action. */
   .btn {
-    @apply inline-flex min-h-tap items-center justify-center gap-2 rounded-brand px-6 font-semibold transition-colors duration-200;
+    @apply inline-flex min-h-tap items-center justify-center gap-2 rounded-brand px-6 font-semibold transition-[color,background-color,border-color,transform] duration-200 motion-safe:active:scale-[0.97];
   }
 
   .btn:focus-visible {
