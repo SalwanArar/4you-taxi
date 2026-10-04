@@ -1,4 +1,5 @@
 ---
+// Hero text, shown on top of the rotating car (slotted into CarViewer).
 import Icon from './Icon.astro';
 import { business, content, type Locale } from '../data/site';
 
@@ -10,30 +11,35 @@ const { locale } = Astro.props;
 const t = content[locale];
 ---
 
-<section id="top" class="bg-brand-black text-white" aria-labelledby="hero-title">
-  <div class="mx-auto max-w-content px-4 py-20 sm:py-28">
-    <p class="font-semibold text-brand-yellow">{business.name}</p>
-    <h1 id="hero-title" class="mt-3 max-w-2xl text-4xl sm:text-6xl">
-      {t.hero.title}
-    </h1>
-    <p class="mt-5 max-w-xl text-lg text-white/80">{t.hero.subtitle}</p>
-    <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-      <a href={`tel:${business.phone.e164}`} class="btn btn-primary text-lg">
-        <Icon name="phone" />
-        {t.actions.call}
-      </a>
-      <a
-        href={`https://wa.me/${business.whatsapp}`}
-        class="btn btn-on-dark text-lg"
-        rel="noopener"
-        target="_blank"
-      >
-        <Icon name="whatsapp" />
-        {t.actions.whatsapp}
-      </a>
-    </div>
-    <p class="mt-5 text-white/80">
-      <span dir="ltr">{business.phone.display}</span>
-    </p>
+<div class="hero-copy">
+  <p class="font-semibold text-brand-yellow">{business.name}</p>
+  <h1 id="hero-title" class="mt-2 max-w-2xl text-4xl sm:text-6xl">
+    {t.hero.title}
+  </h1>
+  <p class="mt-4 max-w-xl text-lg text-white/85">{t.hero.subtitle}</p>
+  <div class="mt-6 grid max-w-md grid-cols-2 gap-3 sm:flex sm:max-w-none">
+    <a href={`tel:${business.phone.e164}`} class="btn btn-primary text-lg">
+      <Icon name="phone" />
+      {t.actions.call}
+    </a>
+    <a
+      href={`https://wa.me/${business.whatsapp}`}
+      class="btn btn-on-dark bg-black/30 text-lg"
+      rel="noopener"
+      target="_blank"
+    >
+      <Icon name="whatsapp" />
+      {t.actions.whatsapp}
+    </a>
   </div>
-</section>
+  <p class="mt-4 text-white/85">
+    <span dir="ltr">{business.phone.display}</span>
+  </p>
+</div>
+
+<style>
+  /* Extra insurance for legibility where the text crosses the white car. */
+  .hero-copy :is(h1, p) {
+    text-shadow: 0 1px 12px rgb(0 0 0 / 0.6);
+  }
+</style>

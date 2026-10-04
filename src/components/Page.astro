@@ -27,8 +27,8 @@ const t = content[locale];
   </a>
   <Header locale={locale} />
   <main id="main">
-    <Hero locale={locale} />
     <CarViewer
+      id="top"
       frames={carFrames.basePath}
       count={carFrames.count}
       extension={carFrames.extension}
@@ -36,9 +36,11 @@ const t = content[locale];
       height={carFrames.height}
       alt={t.car.alt}
       label={t.car.rotatingLabel}
-      heading={t.car.heading}
+      labelledBy="hero-title"
       hint={t.car.scrollHint}
-    />
+    >
+      <Hero locale={locale} />
+    </CarViewer>
     <CarDetails locale={locale} />
     <Driver locale={locale} />
     <Contact locale={locale} />
