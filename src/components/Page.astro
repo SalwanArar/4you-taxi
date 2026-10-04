@@ -6,6 +6,7 @@ import Contact from './Contact.astro';
 import Driver from './Driver.astro';
 import Footer from './Footer.astro';
 import Header from './Header.astro';
+import SceneArt from './SceneArt.astro';
 import Hero from './Hero.astro';
 import StickyCallBar from './StickyCallBar.astro';
 import { carFrames, content, type Locale } from '../data/site';
@@ -39,9 +40,10 @@ const t = content[locale];
       label={t.car.rotatingLabel}
       labelledBy="hero-title"
       hint={t.car.scrollHint}
-      story={{ edges: [0, 0.12, 0.26, 0.44, 0.74], turnStart: 0, turnEnd: 0.74 }}
+      story={{ edges: [0, 0.12, 0.26, 0.44, 0.74], turnStart: 0.26, turnEnd: 0.74 }}
     >
       <Hero locale={locale} />
+      <SceneArt />
     </CarViewer>
     <CarDetails locale={locale} />
     <Driver locale={locale} />
