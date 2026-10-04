@@ -1,0 +1,34 @@
+---
+// Phase 2 placeholder: the real sections are added in Phase 3.
+import Base from '../layouts/Base.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { business, content, type Locale } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = content[locale];
+---
+
+<Base locale={locale}>
+  <header class="mx-auto flex max-w-content items-center justify-between gap-4 px-4 py-3">
+    <span class="font-bold">{business.name}</span>
+    <LanguageSwitcher locale={locale} />
+  </header>
+  <main class="mx-auto max-w-content px-4 py-16">
+    <h1 class="text-4xl sm:text-5xl">{business.name}</h1>
+    <p class="mt-3 text-xl text-muted">{t.tagline}</p>
+    <p class="mt-6">{t.availability}</p>
+    <p class="mt-2">
+      <a
+        href={`tel:${business.phone.e164}`}
+        dir="ltr"
+        class="inline-flex min-h-tap items-center rounded-brand bg-brand-yellow px-6 font-semibold text-on-yellow hover:bg-brand-yellow-hover"
+      >
+        {business.phone.display}
+      </a>
+    </p>
+  </main>
+</Base>

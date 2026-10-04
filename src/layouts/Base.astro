@@ -1,0 +1,40 @@
+---
+import '@fontsource-variable/inter';
+import '../styles/global.css';
+import { getAbsoluteLocaleUrl } from 'astro:i18n';
+import { content, defaultLocale, localeInfo, locales, type Locale } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { meta } = content[locale];
+const { dir } = localeInfo[locale];
+// Canonical and hreflang need absolute URLs, so they wait until `site` is set in astro.config.mjs.
+const hasSite = Astro.site !== undefined;
+---
+
+<!doctype html>
+<html lang={locale} dir={dir}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{meta.title}</title>
+    <meta name="description" content={meta.description} />
+    <meta name="theme-color" content="#0b0b0c" />
+    <meta name="generator" content={Astro.generator} />
+    {hasSite && (
+      <>
+        <link rel="canonical" href={getAbsoluteLocaleUrl(locale)} />
+        {locales.map((l) => (
+          <link rel="alternate" hreflang={l} href={getAbsoluteLocaleUrl(l)} />
+        ))}
+        <link rel="alternate" hreflang="x-default" href={getAbsoluteLocaleUrl(defaultLocale)} />
+      </>
+    )}
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

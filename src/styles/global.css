@@ -1,0 +1,52 @@
+@import 'tailwindcss';
+@import './tokens.css';
+
+/* Expose the tokens to Tailwind as utilities (bg-surface, text-muted, rounded-brand, …). */
+@theme inline {
+  --color-brand-black: var(--brand-black);
+  --color-brand-yellow: var(--brand-yellow);
+  --color-brand-yellow-hover: var(--brand-yellow-hover);
+  --color-on-yellow: var(--on-yellow);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-border: var(--border);
+  --color-text: var(--text);
+  --color-muted: var(--text-muted);
+  --radius-brand: var(--radius);
+  --container-content: var(--content-max);
+  --spacing-tap: var(--tap-min);
+  --font-sans: 'Inter Variable', 'IBM Plex Sans Arabic', ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    color-scheme: light dark;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-surface font-sans text-text antialiased;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  /* Arabic script reads better with the Arabic face first and a little more line height. */
+  :lang(ar) body {
+    font-family: 'IBM Plex Sans Arabic', 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+    line-height: 1.75;
+  }
+
+  h1,
+  h2,
+  h3 {
+    line-height: 1.15;
+    font-weight: 700;
+    text-wrap: balance;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}

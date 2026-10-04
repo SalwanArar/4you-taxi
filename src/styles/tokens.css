@@ -1,0 +1,49 @@
+/*
+ * Design tokens: the only place colours, radius and sizes are defined.
+ * Palette: black and taxi yellow, from the 4you Taxi brand.
+ * Yellow is an accent for buttons and highlights. Put black text on yellow,
+ * never yellow text on a light background (it fails contrast).
+ */
+:root {
+  /* Brand */
+  --brand-black: #0b0b0c;
+  --brand-yellow: #ffc20e;
+  --brand-yellow-hover: #ffd24d;
+  --on-yellow: #0b0b0c;
+
+  /* Surfaces and text (light theme) */
+  --surface: #f8f9fa;
+  --surface-raised: #ffffff;
+  --border: #dee2e6;
+  --text: #111214;
+  --text-muted: #4a4f55;
+
+  /* Car viewer: the car is white, so never a pure white background */
+  --viewer-from: #e9ecef;
+  --viewer-to: #f8f9fa;
+  --viewer-shadow: rgb(0 0 0 / 0.18);
+
+  /* Focus ring */
+  --focus: #0b0b0c;
+
+  /* Shape and layout */
+  --radius: 16px;
+  --content-max: 1100px;
+  --tap-min: 48px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface: #0b0b0c;
+    --surface-raised: #17181a;
+    --border: #2a2c30;
+    --text: #f2f2f3;
+    --text-muted: #a1a1aa;
+
+    --viewer-from: #1c1d20;
+    --viewer-to: #0b0b0c;
+    --viewer-shadow: rgb(0 0 0 / 0.5);
+
+    --focus: #ffc20e;
+  }
+}

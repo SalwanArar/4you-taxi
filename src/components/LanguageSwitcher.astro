@@ -1,0 +1,28 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { content, localeInfo, locales, type Locale } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<nav aria-label={content[locale].languageSwitcherLabel}>
+  <ul class="flex gap-1">
+    {locales.map((l) => (
+      <li>
+        <a
+          href={getRelativeLocaleUrl(l)}
+          lang={l}
+          hreflang={l}
+          aria-current={l === locale ? 'page' : undefined}
+          class="text-muted hover:text-text aria-[current=page]:bg-brand-black aria-[current=page]:text-brand-yellow inline-flex min-h-tap items-center rounded-brand px-3 text-sm font-medium"
+        >
+          {localeInfo[l].label}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
