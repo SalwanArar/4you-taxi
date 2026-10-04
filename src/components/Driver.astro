@@ -1,6 +1,7 @@
 ---
-// The driver: the story's person. One large line in his voice, then his name and languages.
-import { business, content, type Locale } from '../data/site';
+// The driver: the story's person, never named (more than one driver may drive the car).
+// One large line, then the languages spoken.
+import { content, type Locale } from '../data/site';
 
 interface Props {
   locale: Locale;
@@ -20,14 +21,9 @@ const t = content[locale];
         {t.driver.bio}
       </p>
     )}
-    <div class="mt-10 border-t border-line pt-5" data-reveal style="--i: 2">
-      <p class="font-display text-text" style="font-size: var(--fs-lead)">
-        {business.driverName}
-      </p>
-      <p class="mt-1 text-muted">
-        {t.driver.languagesLabel}: {t.driver.languagesSpoken}
-      </p>
-    </div>
+    <p class="mt-10 border-t border-line pt-5 text-muted" data-reveal style="--i: 2">
+      {t.driver.languagesLabel}: {t.driver.languagesSpoken}
+    </p>
   </div>
 </section>
 

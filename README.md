@@ -30,7 +30,7 @@ components to change a word, a number or a translation.
 | Phone number                              | `business.phone` (change **both** lines, below)   |
 | WhatsApp number                           | `business.whatsapp`                               |
 | Email address                             | `business.email`                                  |
-| Business or driver name                   | `business.name`, `business.driverName`            |
+| Business name                             | `business.name`                                   |
 | Car model name                            | `car.model`                                       |
 | Designer credit in the footer             | `designer`                                        |
 | Page title and Google description         | `content.<language>.meta`                         |
@@ -49,7 +49,7 @@ the same names, so when you change a sentence, change it in **all three** blocks
 
 - Only change the text **inside the quotes**: `title: 'Taxi i Jönköpings län',` → keep the `title:`,
   the quotes and the comma.
-- If your text contains an apostrophe, write it as `\'` (for example `'Rashid\'s taxi'`).
+- If your text contains an apostrophe, write it as `\'` (for example `'Today\'s ride'`).
 - **Phone number:** `display` is what people see (`'+46 73 725 01 75'`). `e164` is used by the call and
   SMS buttons and must have no spaces (`'+46737250175'`). The QR code is made from `e164`.
 - **WhatsApp:** country code and number, digits only, no `+` (`'46737250175'`).

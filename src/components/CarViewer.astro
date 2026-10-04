@@ -144,15 +144,16 @@ const poster = `${frames}001${extension}`;
     }
   }
 
-  /* Story mode: a long section, so each of the five scenes gets close to two screens of scroll
-     and there is time to read every line. */
+  /* Story mode: a long section, so each of the first four scenes gets close to two screens of
+     scroll and there is time to read every line. The last scene is short, so the page carries on
+     soon after it: testers stopped scrolling there, thinking the site had ended. */
   .car-viewer[data-scrub][data-story] {
-    height: 850vh;
+    height: 735vh;
   }
 
   @media (min-width: 640px) {
     .car-viewer[data-scrub][data-story] {
-      height: 950vh;
+      height: 810vh;
     }
   }
 

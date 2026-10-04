@@ -3,8 +3,9 @@
 // above the car, the facts and call actions below it. CarViewer's script sets `data-scene` on the
 // section as the visitor scrolls; each element marked `data-scene` shows only in its own scene.
 // Without JS or with reduced motion only the last scene (the tagline and call buttons) is shown.
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import Icon from './Icon.astro';
-import { business, content, type Locale } from '../data/site';
+import { business, content, localeInfo, locales, type Locale } from '../data/site';
 
 interface Props {
   locale: Locale;
@@ -47,9 +48,28 @@ const s = t.story;
 
 <div class="hero-foot wrap">
   <div class="scene-stack">
-    <p class="scene-hint" data-scene="0" aria-hidden="true">
-      {t.car.scrollHint}
-    </p>
+    <div class="scene-start" data-scene="0">
+      <ul class="scene-langs" aria-label={t.languageSwitcherLabel}>
+        {locales.map((l) => (
+          <li>
+            <a
+              href={getRelativeLocaleUrl(l)}
+              lang={l}
+              hreflang={l}
+              aria-current={l === locale ? 'page' : undefined}
+            >
+              {localeInfo[l].label}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="scene-hint" aria-hidden="true">
+        <span class="hint-arrow">
+          <Icon name="arrow-down" size={18} />
+        </span>
+        {t.car.scrollHint}
+      </p>
+    </div>
     <ul class="scene-facts" data-scene="3">
       {t.carFeatures.map((f, i) => (
         <li style={`--i: ${i}`}>
@@ -75,6 +95,12 @@ const s = t.story;
       </div>
       <a href={`tel:${business.phone.e164}`} class="hero-number" dir="ltr">
         {business.phone.display}
+      </a>
+      <a href="#car-title" class="scene-hint scene-more">
+        <span class="hint-arrow">
+          <Icon name="arrow-down" size={18} />
+        </span>
+        {s.more}
       </a>
     </div>
   </div>
@@ -181,10 +207,84 @@ const s = t.story;
     padding-block: 2.75rem 1.5rem;
   }
 
-  .scene-hint {
-    align-self: end;
-    font-size: var(--fs-small);
+  .scene-start {
+    display: grid;
+    align-content: end;
+    gap: 1.25rem;
+  }
+
+  /* Phones: the languages once more, in the first scene, for visitors who miss the header button. */
+  .scene-langs {
+    display: none;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .scene-langs a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-inline: 1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
     color: var(--text-muted);
+    font-size: var(--fs-small);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .scene-langs a[aria-current='page'] {
+    border-color: var(--text-muted);
+    color: var(--text);
+  }
+
+  /* "Scroll" at the start and "more below" at the end: an arrow that nudges downwards. */
+  .scene-hint {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: fit-content;
+    font-size: var(--fs-body);
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .hint-arrow {
+    display: inline-grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    flex: none;
+    border: 1px solid var(--text-muted);
+    border-radius: 50%;
+  }
+
+  .hint-arrow :global(svg) {
+    animation: nudge 1.6s ease-in-out infinite;
+  }
+
+  @keyframes nudge {
+    0%,
+    100% {
+      transform: translateY(-3px);
+    }
+
+    50% {
+      transform: translateY(4px);
+    }
+  }
+
+  .scene-more {
+    flex-basis: 100%;
+    min-height: var(--tap-min);
+    text-decoration: none;
+  }
+
+  .scene-more:hover .hint-arrow {
+    border-color: var(--text);
   }
 
   .scene-facts {
@@ -302,6 +402,14 @@ const s = t.story;
       display: none;
     }
 
+    .scene-langs {
+      display: flex;
+    }
+
+    .scene-end {
+      gap: 0.25rem;
+    }
+
     .scene-facts {
       gap: 0.5rem 1rem;
     }
@@ -327,7 +435,8 @@ const s = t.story;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .ring {
+    .ring,
+    .hint-arrow :global(svg) {
       animation: none;
     }
   }

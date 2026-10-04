@@ -8,20 +8,16 @@ export const locales = ['sv', 'en', 'ar'] as const;
 export type Locale = (typeof locales)[number];
 export const defaultLocale: Locale = 'sv';
 
-/**
- * Settings per language: full name, short name shown in the language switcher on small screens,
- * and text direction.
- */
-export const localeInfo: Record<Locale, { label: string; short: string; dir: 'ltr' | 'rtl' }> = {
-  sv: { label: 'Svenska', short: 'SV', dir: 'ltr' },
-  en: { label: 'English', short: 'EN', dir: 'ltr' },
-  ar: { label: 'العربية', short: 'ع', dir: 'rtl' },
+/** Settings per language: its name, written in that language, and text direction. */
+export const localeInfo: Record<Locale, { label: string; dir: 'ltr' | 'rtl' }> = {
+  sv: { label: 'Svenska', dir: 'ltr' },
+  en: { label: 'English', dir: 'ltr' },
+  ar: { label: 'العربية', dir: 'rtl' },
 };
 
 /** Facts that are the same in every language. */
 export const business = {
   name: '4you Taxi',
-  driverName: 'Rashid Alkanafani',
   phone: {
     /** How the number is shown on the page. */
     display: '+46 73 725 01 75',
@@ -74,6 +70,8 @@ interface Content {
     pickup: { line: string; sub: string };
     drive: { line: string };
     arrival: { line: string; sub: string };
+    /** Shown with an arrow at the end of the story, so visitors know the page goes on. */
+    more: string;
   };
   actions: { call: string; callShort: string; whatsapp: string; sms: string; email: string };
   car: {
@@ -93,7 +91,7 @@ interface Content {
     heading: string;
     languagesLabel: string;
     languagesSpoken: string;
-    /** Shown large. Placeholder lines until Rashid writes his own; '' hides it. */
+    /** Shown large. Placeholder lines until the owner writes their own; '' hides it. */
     bio: string;
   };
   contact: {
@@ -126,14 +124,15 @@ export const content: Record<Locale, Content> = {
     tagline: 'Säker. Snabb. Pålitlig.',
     hero: {
       title: 'Taxi i Jönköpings län',
-      subtitle: 'Säker. Snabb. Pålitlig. En bil och en förare, Rashid.',
+      subtitle: 'Säker. Snabb. Pålitlig.',
     },
     story: {
       night: { line: 'Sen kväll i Jönköping.', sub: 'Bussen har gått. Du behöver en bil.' },
       call: { line: 'Du ringer.' },
-      pickup: { line: 'Rashid svarar.', sub: 'En bil, en förare. Han är på väg.' },
+      pickup: { line: 'Vår förare svarar.', sub: 'Ingen växel, ingen kö. Bilen är på väg.' },
       drive: { line: 'Gott om plats.' },
-      arrival: { line: 'Säker. Snabb. Pålitlig.', sub: 'En bil och en förare, Rashid.' },
+      arrival: { line: 'Säker. Snabb. Pålitlig.', sub: 'Vår förare kör dig hela vägen.' },
+      more: 'Mer om bilen och föraren',
     },
     actions: {
       call: 'Ring nu',
@@ -165,14 +164,14 @@ export const content: Record<Locale, Content> = {
       },
     ],
     driver: {
-      heading: 'Mannen bakom ratten',
-      languagesLabel: 'Talar',
+      heading: 'Bakom ratten',
+      languagesLabel: 'Vår förare talar',
       languagesSpoken: 'Svenska, engelska och arabiska',
-      bio: 'Du ringer, Rashid svarar. Ingen växel och ingen kö, bara föraren själv.',
+      bio: 'Du ringer, vår förare svarar. Ingen växel och ingen kö.',
     },
     contact: {
       heading: 'Din resa är ett samtal bort.',
-      intro: 'Ring eller skriv till Rashid direkt, på svenska, engelska eller arabiska.',
+      intro: 'Ring eller skriv till vår förare direkt, på svenska, engelska eller arabiska.',
       phoneLabel: 'Telefon',
       emailLabel: 'E-post',
       areaLabel: 'Område',
@@ -195,14 +194,18 @@ export const content: Record<Locale, Content> = {
     tagline: 'Safe. Fast. Reliable.',
     hero: {
       title: 'Taxi in Jönköping County',
-      subtitle: 'Safe. Fast. Reliable. One car and one driver, Rashid.',
+      subtitle: 'Safe. Fast. Reliable.',
     },
     story: {
       night: { line: 'Late evening in Jönköping.', sub: 'The bus has gone. You need a ride.' },
       call: { line: 'You call.' },
-      pickup: { line: 'Rashid answers.', sub: "One car, one driver. He's on his way." },
+      pickup: {
+        line: 'Our driver answers.',
+        sub: 'No call centre, no queue. The car is on its way.',
+      },
       drive: { line: 'Plenty of room.' },
-      arrival: { line: 'Safe. Fast. Reliable.', sub: 'One car and one driver, Rashid.' },
+      arrival: { line: 'Safe. Fast. Reliable.', sub: 'Our driver takes you all the way.' },
+      more: 'More about the car and the driver',
     },
     actions: {
       call: 'Call now',
@@ -234,14 +237,14 @@ export const content: Record<Locale, Content> = {
       },
     ],
     driver: {
-      heading: 'The man behind the wheel',
-      languagesLabel: 'Speaks',
+      heading: 'Behind the wheel',
+      languagesLabel: 'Our driver speaks',
       languagesSpoken: 'Swedish, English and Arabic',
-      bio: 'You call, Rashid answers. No call centre and no queue, just the driver himself.',
+      bio: 'You call, our driver answers. No call centre and no queue.',
     },
     contact: {
       heading: 'Your ride is one call away.',
-      intro: 'Call or message Rashid directly, in Swedish, English or Arabic.',
+      intro: 'Call or message our driver directly, in Swedish, English or Arabic.',
       phoneLabel: 'Phone',
       emailLabel: 'Email',
       areaLabel: 'Area',
@@ -257,21 +260,22 @@ export const content: Record<Locale, Content> = {
     meta: {
       title: '4you Taxi – تاكسي في مقاطعة يونشوبينغ',
       description:
-        'اتصل بـ 4you Taxi لرحلة آمنة في مقاطعة يونشوبينغ. السائق يتحدث السويدية والإنجليزية والعربية.',
+        'اتصل بـ 4you Taxi لرحلة آمنة في مقاطعة يونشوبينغ. سائقنا يتكلم العربية والسويدية والإنجليزية.',
     },
     skipLink: 'انتقل إلى المحتوى',
     languageSwitcherLabel: 'اختر اللغة',
     tagline: 'آمن. سريع. موثوق.',
     hero: {
       title: 'تاكسي في مقاطعة يونشوبينغ',
-      subtitle: 'آمن. سريع. موثوق. سيارة واحدة وسائق واحد، رشيد.',
+      subtitle: 'آمن. سريع. موثوق.',
     },
     story: {
-      night: { line: 'مساء متأخر في يونشوبينغ.', sub: 'الحافلة غادرت. تحتاج إلى سيارة.' },
-      call: { line: 'تتصل.' },
-      pickup: { line: 'رشيد يجيب.', sub: 'سيارة واحدة وسائق واحد. إنه في الطريق.' },
-      drive: { line: 'متسع للجميع.' },
-      arrival: { line: 'آمن. سريع. موثوق.', sub: 'سيارة واحدة وسائق واحد، رشيد.' },
+      night: { line: 'آخر الليل بيونشوبينغ.', sub: 'راح آخر باص، وبدك سيارة.' },
+      call: { line: 'بتتصل.' },
+      pickup: { line: 'سائقنا بيرد.', sub: 'بلا مركز اتصالات وبلا انتظار. السيارة جاية لعندك.' },
+      drive: { line: 'في محل للكل.' },
+      arrival: { line: 'آمن. سريع. موثوق.', sub: 'سائقنا معك لآخر الطريق.' },
+      more: 'المزيد عن السيارة والسائق',
     },
     actions: {
       call: 'اتصل الآن',
@@ -284,7 +288,7 @@ export const content: Record<Locale, Content> = {
       heading: 'مكان للجميع',
       alt: 'سيارة تاكسي سكودا أوكتافيا بيضاء',
       rotatingLabel: 'سيارة تاكسي سكودا أوكتافيا بيضاء تدور أثناء التمرير',
-      scrollHint: 'مرّر لتتابع الرحلة',
+      scrollHint: 'مرّر لتكمل الرحلة',
     },
     carFeatures: [
       { icon: 'seats', text: '4 مقاعد', figure: '4', label: 'مقاعد' },
@@ -298,14 +302,14 @@ export const content: Record<Locale, Content> = {
       { icon: 'four-wheel-drive', text: 'دفع رباعي (4x4)', figure: '4x4', label: 'دفع رباعي' },
     ],
     driver: {
-      heading: 'الرجل خلف المقود',
-      languagesLabel: 'يتحدث',
-      languagesSpoken: 'السويدية والإنجليزية والعربية',
-      bio: 'تتصل، فيجيب رشيد. لا مركز اتصال ولا انتظار، فقط السائق نفسه.',
+      heading: 'خلف المقود',
+      languagesLabel: 'سائقنا يتكلم',
+      languagesSpoken: 'العربية والسويدية والإنجليزية',
+      bio: 'بتتصل، وسائقنا بيرد. بلا مركز اتصالات وبلا انتظار.',
     },
     contact: {
-      heading: 'رحلتك على بُعد مكالمة واحدة.',
-      intro: 'اتصل برشيد أو راسله مباشرة، بالسويدية أو الإنجليزية أو العربية.',
+      heading: 'رحلتك على بُعد مكالمة.',
+      intro: 'اتصل بسائقنا أو راسله مباشرة، بالعربية أو السويدية أو الإنجليزية.',
       phoneLabel: 'الهاتف',
       emailLabel: 'البريد الإلكتروني',
       areaLabel: 'المنطقة',
@@ -314,7 +318,7 @@ export const content: Record<Locale, Content> = {
     },
     quickContactLabel: 'اتصال سريع',
     serviceArea: 'مقاطعة يونشوبينغ',
-    availability: 'متاح عند الطلب',
+    availability: 'متوفر عند الطلب',
     footer: { rights: 'جميع الحقوق محفوظة.', designedBy: 'تصميم الموقع:' },
   },
 };
