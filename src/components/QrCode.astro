@@ -1,0 +1,26 @@
+---
+// QR code generated at build time as inline SVG (no JS, no external service).
+import QRCode from 'qrcode';
+
+interface Props {
+  /** What the QR code opens, e.g. 'tel:+46…'. */
+  value: string;
+  label: string;
+}
+
+const { value, label } = Astro.props;
+const svg = await QRCode.toString(value, {
+  type: 'svg',
+  margin: 2,
+  errorCorrectionLevel: 'M',
+  color: { dark: '#0b0b0c', light: '#ffffff' },
+});
+---
+
+<figure class="inline-flex flex-col items-center gap-2">
+  {/* Always dark on white, also in dark mode, so every scanner can read it. */}
+  <div class="size-40 overflow-hidden rounded-brand bg-white" role="img" aria-label={label}>
+    <Fragment set:html={svg} />
+  </div>
+  <figcaption class="text-sm text-muted">{label}</figcaption>
+</figure>

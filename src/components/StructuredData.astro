@@ -1,0 +1,29 @@
+---
+// JSON-LD for search engines (CLAUDE.md §7). Real data only: no opening hours, the service is on call.
+import { business, localeInfo, locales } from '../data/site';
+
+const data = {
+  '@context': 'https://schema.org',
+  '@type': 'TaxiService',
+  name: business.name,
+  telephone: business.phone.e164,
+  email: business.email,
+  areaServed: {
+    '@type': 'AdministrativeArea',
+    name: business.region,
+    address: {
+      '@type': 'PostalAddress',
+      addressRegion: business.region,
+      addressCountry: business.country,
+    },
+  },
+  availableLanguage: locales.map((l) => ({
+    '@type': 'Language',
+    name: localeInfo[l].label,
+    alternateName: l,
+  })),
+  ...(Astro.site ? { url: new URL(Astro.url.pathname, Astro.site).href } : {}),
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(data)} is:inline />

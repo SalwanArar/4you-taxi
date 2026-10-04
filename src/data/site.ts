@@ -72,7 +72,11 @@ interface Content {
     emailLabel: string;
     areaLabel: string;
     availabilityLabel: string;
+    /** Caption under the QR code, which opens a phone call when scanned. */
+    qrLabel: string;
   };
+  /** Accessible name for the fixed Call/WhatsApp bar on phones. */
+  quickContactLabel: string;
   serviceArea: string;
   availability: string;
   footer: { rights: string };
@@ -123,7 +127,9 @@ export const content: Record<Locale, Content> = {
       emailLabel: 'E-post',
       areaLabel: 'Område',
       availabilityLabel: 'Tillgänglighet',
+      qrLabel: 'Skanna för att ringa',
     },
+    quickContactLabel: 'Snabbkontakt',
     serviceArea: 'Jönköpings län',
     availability: 'Tillgänglig vid beställning',
     footer: { rights: 'Alla rättigheter förbehållna.' },
@@ -171,7 +177,9 @@ export const content: Record<Locale, Content> = {
       emailLabel: 'Email',
       areaLabel: 'Area',
       availabilityLabel: 'Availability',
+      qrLabel: 'Scan to call',
     },
+    quickContactLabel: 'Quick contact',
     serviceArea: 'Jönköping County',
     availability: 'Available on call',
     footer: { rights: 'All rights reserved.' },
@@ -219,7 +227,9 @@ export const content: Record<Locale, Content> = {
       emailLabel: 'البريد الإلكتروني',
       areaLabel: 'المنطقة',
       availabilityLabel: 'التوفر',
+      qrLabel: 'امسح الرمز للاتصال',
     },
+    quickContactLabel: 'اتصال سريع',
     serviceArea: 'مقاطعة يونشوبينغ',
     availability: 'متاح عند الطلب',
     footer: { rights: 'جميع الحقوق محفوظة.' },
