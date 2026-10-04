@@ -22,13 +22,13 @@ const t = content[locale];
 
 <div class="hero-foot wrap">
   <div class="flex flex-wrap gap-3">
-    <a href={`tel:${business.phone.e164}`} class="btn btn-call text-lg">
+    <a href={`tel:${business.phone.e164}`} class="btn btn-call text-lg max-[359px]:px-4">
       <Icon name="phone" />
       {t.actions.call}
     </a>
     <a
       href={`https://wa.me/${business.whatsapp}`}
-      class="btn btn-ghost text-lg"
+      class="btn btn-ghost text-lg max-[359px]:px-4"
       rel="noopener"
       target="_blank"
     >
@@ -69,6 +69,24 @@ const t = content[locale];
     justify-content: space-between;
     gap: 1rem 1.5rem;
     padding-block: 2.75rem 1.5rem;
+  }
+
+  /* Phones and tablets keep room for the car facts under the car itself (see CarViewer). */
+  @media (max-width: 1023px) {
+    .hero-foot {
+      padding-top: 1rem;
+    }
+  }
+
+  /* Short phones: tighter spacing, so the car keeps a usable size. */
+  @media (max-height: 640px) {
+    .hero-top {
+      padding-top: calc(var(--header-h) + 1rem);
+    }
+
+    .hero-foot {
+      padding-bottom: 1rem;
+    }
   }
 
   .hero-number {

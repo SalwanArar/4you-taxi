@@ -25,9 +25,9 @@ const t = content[locale];
     </a>
     <div class="flex items-center gap-1 sm:gap-3">
       <LanguageSwitcher locale={locale} />
-      <a href={`tel:${business.phone.e164}`} class="btn btn-ghost px-4">
+      <a href={`tel:${business.phone.e164}`} class="btn btn-ghost min-w-tap px-4 max-[359px]:px-0">
         <Icon name="phone" size={18} />
-        {t.actions.callShort}
+        <span class="max-[359px]:sr-only">{t.actions.callShort}</span>
       </a>
     </div>
   </div>

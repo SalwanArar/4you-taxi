@@ -50,30 +50,32 @@ const poster = `${frames}001${extension}`;
   data-height={height}
 >
   <div class="car-sticky">
-    <div class="car-stage" style={`--car-ratio: ${width} / ${height}`}>
-      <div class="car-floor" aria-hidden="true"></div>
-      <img
-        src={poster}
-        {width}
-        {height}
-        {alt}
-        loading="eager"
-        fetchpriority="high"
-        decoding="async"
-        class="car-frame"
-      />
-      <canvas class="car-frame car-canvas" role="img" aria-label={label}></canvas>
-      <canvas class="car-reflection" data-reflection aria-hidden="true"></canvas>
-      {captions.length > 0 && (
-        <ul class="car-captions" aria-hidden="true">
-          {captions.map((c) => (
-            <li data-caption>{c}</li>
-          ))}
-        </ul>
-      )}
-      <p class="car-hint" data-hint aria-hidden="true">
-        {hint}
-      </p>
+    <div class="car-area">
+      <div class="car-stage" style={`--car-ratio: ${width} / ${height}`}>
+        <div class="car-floor" aria-hidden="true"></div>
+        <img
+          src={poster}
+          {width}
+          {height}
+          {alt}
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          class="car-frame"
+        />
+        <canvas class="car-frame car-canvas" role="img" aria-label={label}></canvas>
+        <canvas class="car-reflection" data-reflection aria-hidden="true"></canvas>
+        {captions.length > 0 && (
+          <ul class="car-captions" aria-hidden="true">
+            {captions.map((c) => (
+              <li data-caption>{c}</li>
+            ))}
+          </ul>
+        )}
+        <p class="car-hint" data-hint aria-hidden="true">
+          {hint}
+        </p>
+      </div>
     </div>
     <slot />
   </div>
@@ -119,14 +121,24 @@ const poster = `${frames}001${extension}`;
     }
   }
 
+  /* The middle row: whatever height the hero text and call actions leave over. The car is sized
+     from this height, so it never runs into the text above or the buttons below, in any language. */
+  .car-area {
+    --caption-room: 0rem; /* space kept free under the car for the facts (phones and tablets) */
+    grid-row: 2;
+    display: grid;
+    align-content: center;
+    min-height: 0;
+    container-type: size;
+  }
+
   .car-stage {
     position: relative;
-    grid-row: 2;
-    align-self: center;
     margin-inline: auto;
+    margin-bottom: var(--caption-room);
     aspect-ratio: var(--car-ratio);
     width: min(100%, 920px, (100svh - 27rem) * var(--car-ratio));
-    min-width: min(100%, 18rem);
+    width: min(100%, 920px, (100cqh - var(--caption-room)) * var(--car-ratio));
   }
 
   .car-frame {
@@ -215,6 +227,29 @@ const poster = `${frames}001${extension}`;
     transform: none;
   }
 
+  /* Phones and tablets: the headline is too wide to leave room beside it, so the facts appear
+     under the car, where the scroll hint was (the hint is gone by the time the first fact shows). */
+  @media (max-width: 1023px) {
+    .car-area {
+      --caption-room: 3rem;
+    }
+
+    .car-captions {
+      inset-inline: 0;
+      top: 100%;
+      bottom: auto;
+      margin: 0.75rem 0 0;
+      text-align: center;
+    }
+
+    .car-captions li {
+      inset-inline: 0;
+      top: 0;
+      bottom: auto;
+      white-space: normal;
+    }
+  }
+
   .car-hint {
     display: none;
     position: absolute;
@@ -229,6 +264,13 @@ const poster = `${frames}001${extension}`;
 
   .car-viewer[data-scrub] .car-hint {
     display: block;
+  }
+
+  /* Very short screens: the car alone; the same facts are listed further down the page. */
+  @container (max-height: 10rem) {
+    .car-captions {
+      display: none;
+    }
   }
 
   .car-hint[data-hidden] {
