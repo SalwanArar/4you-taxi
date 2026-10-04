@@ -371,6 +371,32 @@ const s = t.story;
     transition-delay: calc(300ms + var(--i) * 220ms);
   }
 
+  /* The arrival: the buttons, the number and the "more below" link come in one after another. */
+  :global(.car-viewer[data-scrub][data-story]) .scene-end > * {
+    opacity: 0;
+    transform: translateY(0.75rem);
+    transition:
+      opacity 500ms ease,
+      transform 600ms ease;
+  }
+
+  :global(.car-viewer[data-scrub][data-story][data-scene='4']) .scene-end > * {
+    opacity: 1;
+    transform: none;
+  }
+
+  :global(.car-viewer[data-scrub][data-story][data-scene='4']) .scene-end > :nth-child(1) {
+    transition-delay: 350ms;
+  }
+
+  :global(.car-viewer[data-scrub][data-story][data-scene='4']) .scene-end > :nth-child(2) {
+    transition-delay: 600ms;
+  }
+
+  :global(.car-viewer[data-scrub][data-story][data-scene='4']) .scene-end > :nth-child(3) {
+    transition-delay: 1000ms;
+  }
+
   /* Phones and tablets keep room for the car facts under the car itself (see CarViewer). */
   @media (max-width: 1023px) {
     .hero-foot {
