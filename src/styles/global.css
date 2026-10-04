@@ -52,6 +52,11 @@
 }
 
 @layer components {
+  /* Always-dark areas (header, hero, footer): a yellow focus ring stays visible in both themes. */
+  .on-dark {
+    --focus: var(--brand-yellow);
+  }
+
   /* Buttons: at least 48px tall, one radius, clear focus. */
   .btn {
     @apply inline-flex min-h-tap items-center justify-center gap-2 rounded-brand px-6 font-semibold transition-colors duration-200;

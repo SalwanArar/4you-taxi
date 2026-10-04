@@ -2,6 +2,7 @@
 import Icon from './Icon.astro';
 import LanguageSwitcher from './LanguageSwitcher.astro';
 import { business, content, type Locale } from '../data/site';
+import { withBase } from '../utils/withBase';
 
 interface Props {
   locale: Locale;
@@ -11,10 +12,17 @@ const { locale } = Astro.props;
 const t = content[locale];
 ---
 
-<header class="sticky top-0 z-40 border-b border-border bg-surface/85 backdrop-blur-md">
+<!-- Always dark: the yellow logo needs a dark background, and the hero below is dark too. -->
+<header class="on-dark sticky top-0 z-40 border-b border-white/10 bg-brand-black/90 text-white backdrop-blur-md">
   <div class="mx-auto flex max-w-content items-center justify-between gap-2 px-4 py-2">
-    <a href="#top" class="inline-flex min-h-tap items-center text-lg font-bold whitespace-nowrap">
-      {business.name}
+    <a href="#top" class="inline-flex min-h-tap shrink-0 items-center rounded-brand">
+      <img
+        src={withBase('/logo.webp')}
+        alt={business.name}
+        width="68"
+        height="40"
+        class="h-10 w-auto"
+      />
     </a>
     <div class="flex items-center gap-1 sm:gap-3">
       <LanguageSwitcher locale={locale} />
