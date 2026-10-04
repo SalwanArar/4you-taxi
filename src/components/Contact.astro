@@ -49,13 +49,13 @@ const details: { label: string; value: string; ltr?: boolean }[] = [
         <a
           href={`tel:${business.phone.e164}`}
           dir="ltr"
-          class="tabular-nums no-underline hover:text-taxi"
+          class="inline-flex min-h-tap items-center tabular-nums no-underline hover:text-taxi"
         >
           {business.phone.display}
         </a>
       </p>
 
-      <div class="mt-6 grid grid-cols-2 gap-3 sm:flex sm:flex-wrap">
+      <div class="mt-6 grid grid-cols-1 gap-3 min-[360px]:grid-cols-2 sm:flex sm:flex-wrap">
         {actions.map((a) => (
           <a
             href={a.href}

@@ -220,7 +220,9 @@ export function initCarViewer(root: HTMLElement): void {
     (entries, observer) => {
       if (entries.some((e) => e.isIntersecting)) {
         observer.disconnect();
-        preloadAll();
+        // Leave the network to the first screen (poster, fonts) until the page has loaded.
+        if (document.readyState === 'complete') preloadAll();
+        else window.addEventListener('load', () => preloadAll(), { once: true });
       }
     },
     { rootMargin: '100% 0px' },

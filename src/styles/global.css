@@ -69,6 +69,10 @@
     @apply inline-flex min-h-tap items-center justify-center gap-2 rounded-brand px-6 font-semibold transition-[color,background-color,border-color,transform] duration-200 motion-safe:active:scale-[0.97];
   }
 
+  .btn > svg {
+    flex-shrink: 0;
+  }
+
   .btn:focus-visible {
     border-radius: var(--radius);
   }
