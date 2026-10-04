@@ -12,6 +12,8 @@ export default defineConfig({
   base: process.env.BASE_PATH || undefined,
   // The sitemap needs `site`, so it is only generated for published builds.
   integrations: process.env.SITE_URL ? [sitemap()] : [],
+  // The CSS is small, so inline it and save a render-blocking request.
+  build: { inlineStylesheets: 'always' },
   i18n: {
     locales: ['sv', 'en', 'ar'],
     defaultLocale: 'sv',

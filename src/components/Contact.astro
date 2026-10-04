@@ -58,14 +58,15 @@ const details: { icon: IconName; label: string; value: string; ltr?: boolean }[]
   <div class="mt-10 flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
     <dl class="grid flex-1 gap-6 sm:grid-cols-2">
       {details.map((d) => (
-        <div class="flex gap-3">
-          <Icon name={d.icon} class="mt-1 shrink-0 text-muted" />
-          <div>
-            <dt class="text-sm text-muted">{d.label}</dt>
-            <dd class="font-medium break-all" dir={d.ltr ? 'ltr' : undefined}>
-              {d.value}
-            </dd>
-          </div>
+        <div>
+          <dt class="flex items-center gap-3 text-sm text-muted">
+            <Icon name={d.icon} class="shrink-0" />
+            {d.label}
+          </dt>
+          {/* Indented to line up with the label, past the 20px icon and 12px gap. */}
+          <dd class="ps-8 font-medium break-all">
+            <span dir={d.ltr ? 'ltr' : undefined}>{d.value}</span>
+          </dd>
         </div>
       ))}
     </dl>

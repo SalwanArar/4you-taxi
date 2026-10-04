@@ -5,7 +5,7 @@
  */
 
 const PRIORITY_STEP = 4; // load every 4th frame first, then fill the gaps
-const CONCURRENCY = 6;
+const CONCURRENCY = 4;
 
 export function initCarViewer(root: HTMLElement): void {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -13,11 +13,13 @@ export function initCarViewer(root: HTMLElement): void {
   const base = root.dataset.frames ?? '';
   const ext = root.dataset.extension ?? '';
   const count = Number(root.dataset.count);
+  const frameWidth = Number(root.dataset.width);
+  const frameHeight = Number(root.dataset.height);
   const canvas = root.querySelector<HTMLCanvasElement>('canvas');
   const poster = root.querySelector<HTMLImageElement>('img');
   const hint = root.querySelector<HTMLElement>('[data-hint]');
   const ctx = canvas?.getContext('2d');
-  if (!canvas || !poster || !ctx || !(count > 1)) return;
+  if (!canvas || !poster || !ctx || !(count > 1) || !(frameWidth > 0) || !(frameHeight > 0)) return;
 
   // Frames are kept as decoded bitmaps: drawing a plain <img> can make the browser decode the
   // WebP again on every draw, which stutters on slower phones.
@@ -82,29 +84,36 @@ export function initCarViewer(root: HTMLElement): void {
     schedule();
   };
 
-  // Decode once at no more than the canvas resolution, to keep memory in check.
-  const toBitmap = async (img: HTMLImageElement): Promise<ImageBitmap | HTMLImageElement> => {
-    if (typeof createImageBitmap !== 'function') return img;
-    const scale = Math.min(1, canvas.width / img.naturalWidth, canvas.height / img.naturalHeight);
-    try {
-      return await createImageBitmap(img, {
-        resizeWidth: Math.max(1, Math.round(img.naturalWidth * scale)),
-        resizeHeight: Math.max(1, Math.round(img.naturalHeight * scale)),
-        resizeQuality: 'high',
-      });
-    } catch {
-      return img;
+  // Decode off the main thread where possible: fetch the file and let createImageBitmap decode
+  // the blob (a worker-thread job in modern browsers). Falls back to <img> + decode().
+  const decodeFrame = async (url: string): Promise<ImageBitmap | HTMLImageElement> => {
+    if (typeof createImageBitmap === 'function') {
+      try {
+        const response = await fetch(url);
+        if (response.ok) {
+          // Decode at no more than the canvas resolution, to keep memory in check.
+          const scale = Math.min(1, canvas.width / frameWidth, canvas.height / frameHeight);
+          return await createImageBitmap(await response.blob(), {
+            resizeWidth: Math.max(1, Math.round(frameWidth * scale)),
+            resizeHeight: Math.max(1, Math.round(frameHeight * scale)),
+            resizeQuality: 'medium',
+          });
+        }
+      } catch {
+        // fall through to <img>
+      }
     }
+    const img = new Image();
+    img.src = url;
+    await img.decode();
+    return img;
   };
 
   const load = async (i: number) => {
     if (requested.has(i)) return;
     requested.add(i);
-    const img = new Image();
-    img.src = src(i);
     try {
-      await img.decode();
-      frames[i] = await toBitmap(img);
+      frames[i] = await decodeFrame(src(i));
       schedule();
     } catch {
       requested.delete(i);
