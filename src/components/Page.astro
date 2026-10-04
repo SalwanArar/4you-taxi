@@ -1,8 +1,13 @@
 ---
-// Phase 2 placeholder: the real sections are added in Phase 3.
 import Base from '../layouts/Base.astro';
-import LanguageSwitcher from './LanguageSwitcher.astro';
-import { business, content, type Locale } from '../data/site';
+import CarDetails from './CarDetails.astro';
+import CarViewer from './CarViewer.astro';
+import Contact from './Contact.astro';
+import Driver from './Driver.astro';
+import Footer from './Footer.astro';
+import Header from './Header.astro';
+import Hero from './Hero.astro';
+import { carFrames, content, type Locale } from '../data/site';
 
 interface Props {
   locale: Locale;
@@ -13,22 +18,27 @@ const t = content[locale];
 ---
 
 <Base locale={locale}>
-  <header class="mx-auto flex max-w-content items-center justify-between gap-4 px-4 py-3">
-    <span class="font-bold">{business.name}</span>
-    <LanguageSwitcher locale={locale} />
-  </header>
-  <main class="mx-auto max-w-content px-4 py-16">
-    <h1 class="text-4xl sm:text-5xl">{business.name}</h1>
-    <p class="mt-3 text-xl text-muted">{t.tagline}</p>
-    <p class="mt-6">{t.availability}</p>
-    <p class="mt-2">
-      <a
-        href={`tel:${business.phone.e164}`}
-        dir="ltr"
-        class="inline-flex min-h-tap items-center rounded-brand bg-brand-yellow px-6 font-semibold text-on-yellow hover:bg-brand-yellow-hover"
-      >
-        {business.phone.display}
-      </a>
-    </p>
+  <a
+    href="#main"
+    class="sr-only z-50 rounded-brand bg-brand-yellow px-4 py-3 font-semibold text-on-yellow focus:not-sr-only focus:fixed focus:start-4 focus:top-4"
+  >
+    {t.skipLink}
+  </a>
+  <Header locale={locale} />
+  <main id="main">
+    <Hero locale={locale} />
+    <CarViewer
+      frames={carFrames.basePath}
+      count={carFrames.count}
+      extension={carFrames.extension}
+      width={carFrames.width}
+      height={carFrames.height}
+      alt={t.car.alt}
+      heading={t.car.heading}
+    />
+    <CarDetails locale={locale} />
+    <Driver locale={locale} />
+    <Contact locale={locale} />
   </main>
+  <Footer locale={locale} />
 </Base>

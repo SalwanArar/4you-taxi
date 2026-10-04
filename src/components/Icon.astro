@@ -1,0 +1,41 @@
+---
+// Maps the icon names used in site.ts and components to Lucide icons (inline SVG, no JS).
+import Baby from '@lucide/astro/icons/baby';
+import Clock from '@lucide/astro/icons/clock';
+import Languages from '@lucide/astro/icons/languages';
+import Luggage from '@lucide/astro/icons/luggage';
+import Mail from '@lucide/astro/icons/mail';
+import MapPin from '@lucide/astro/icons/map-pin';
+import MessageCircle from '@lucide/astro/icons/message-circle';
+import MessageSquare from '@lucide/astro/icons/message-square';
+import Mountain from '@lucide/astro/icons/mountain';
+import Phone from '@lucide/astro/icons/phone';
+import Users from '@lucide/astro/icons/users';
+
+const icons = {
+  phone: Phone,
+  whatsapp: MessageCircle,
+  sms: MessageSquare,
+  email: Mail,
+  area: MapPin,
+  availability: Clock,
+  languages: Languages,
+  seats: Users,
+  'child-seat': Baby,
+  luggage: Luggage,
+  'four-wheel-drive': Mountain,
+};
+
+export type IconName = keyof typeof icons;
+
+interface Props {
+  name: IconName;
+  size?: number;
+  class?: string;
+}
+
+const { name, size = 20, class: className } = Astro.props;
+const Component = icons[name];
+---
+
+<Component size={size} class={className} aria-hidden="true" focusable="false" />

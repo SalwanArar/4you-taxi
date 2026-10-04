@@ -1,0 +1,70 @@
+---
+import Icon, { type IconName } from './Icon.astro';
+import { business, content, type Locale } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = content[locale];
+
+const actions: {
+  icon: IconName;
+  label: string;
+  href: string;
+  primary?: boolean;
+  external?: boolean;
+}[] = [
+  { icon: 'phone', label: t.actions.call, href: `tel:${business.phone.e164}`, primary: true },
+  {
+    icon: 'whatsapp',
+    label: t.actions.whatsapp,
+    href: `https://wa.me/${business.whatsapp}`,
+    external: true,
+  },
+  { icon: 'sms', label: t.actions.sms, href: `sms:${business.phone.e164}` },
+  { icon: 'email', label: t.actions.email, href: `mailto:${business.email}` },
+];
+
+const details: { icon: IconName; label: string; value: string; ltr?: boolean }[] = [
+  { icon: 'phone', label: t.contact.phoneLabel, value: business.phone.display, ltr: true },
+  { icon: 'email', label: t.contact.emailLabel, value: business.email, ltr: true },
+  { icon: 'area', label: t.contact.areaLabel, value: t.serviceArea },
+  { icon: 'availability', label: t.contact.availabilityLabel, value: t.availability },
+];
+---
+
+<section id="contact" class="section" aria-labelledby="contact-title">
+  <h2 id="contact-title" class="section-heading">
+    {t.contact.heading}
+  </h2>
+  <p class="mt-2 text-lg text-muted">{t.contact.intro}</p>
+
+  <div class="mt-8 grid gap-3 sm:grid-cols-2">
+    {actions.map((a) => (
+      <a
+        href={a.href}
+        class:list={['btn text-lg', a.primary ? 'btn-primary' : 'btn-outline']}
+        {...(a.external ? { target: '_blank', rel: 'noopener' } : {})}
+      >
+        <Icon name={a.icon} />
+        {a.label}
+      </a>
+    ))}
+  </div>
+
+  <dl class="mt-10 grid gap-6 sm:grid-cols-2">
+    {details.map((d) => (
+      <div class="flex gap-3">
+        <Icon name={d.icon} class="mt-1 shrink-0 text-muted" />
+        <div>
+          <dt class="text-sm text-muted">{d.label}</dt>
+          <dd class="font-medium break-all" dir={d.ltr ? 'ltr' : undefined}>
+            {d.value}
+          </dd>
+        </div>
+      </div>
+    ))}
+  </dl>
+</section>

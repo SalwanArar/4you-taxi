@@ -1,0 +1,36 @@
+---
+import Icon from './Icon.astro';
+import { business, content, type Locale } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = content[locale];
+---
+
+<section class="border-y border-border bg-surface-raised" aria-labelledby="driver-title">
+  <div class="section flex flex-col gap-8 sm:flex-row sm:items-center">
+    {/* Initials badge until a driver photo is supplied (src/assets/driver/). */}
+    <div
+      class="flex size-28 shrink-0 items-center justify-center rounded-full bg-brand-black text-3xl font-bold text-brand-yellow"
+      aria-hidden="true"
+    >
+      {business.driverInitials}
+    </div>
+    <div>
+      <h2 id="driver-title" class="section-heading">
+        {t.driver.heading}
+      </h2>
+      <p class="mt-2 text-xl font-semibold">{business.driverName}</p>
+      <p class="mt-3 flex items-center gap-2 text-muted">
+        <Icon name="languages" />
+        <span>
+          {t.driver.languagesLabel}: {t.driver.languagesSpoken}
+        </span>
+      </p>
+      {t.driver.bio && <p class="mt-4 max-w-2xl">{t.driver.bio}</p>}
+    </div>
+  </div>
+</section>

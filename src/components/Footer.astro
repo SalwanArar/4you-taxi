@@ -1,0 +1,21 @@
+---
+import { business, content, type Locale } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = content[locale];
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-brand-black text-white/70">
+  <div class="mx-auto max-w-content px-4 py-10 text-sm">
+    <p class="font-semibold text-white">{business.name}</p>
+    <p class="mt-1">{t.serviceArea}</p>
+    <p class="mt-4">
+      © {year} {business.name}. {t.footer.rights}
+    </p>
+  </div>
+</footer>

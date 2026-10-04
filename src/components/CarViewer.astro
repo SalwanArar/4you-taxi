@@ -1,0 +1,50 @@
+---
+// Phase 3: shows frame 1 only. Phase 5 adds the scroll-driven rotation (CLAUDE.md §6)
+// behind this same API, so the page does not change.
+interface Props {
+  /** Path prefix of the frames, e.g. '/car360/frame_'. */
+  frames: string;
+  /** Number of frames. */
+  count: number;
+  extension: string;
+  width: number;
+  height: number;
+  alt: string;
+  heading: string;
+}
+
+const { frames, extension, width, height, alt, heading } = Astro.props;
+const poster = `${frames}001${extension}`;
+---
+
+<section id="car" class="car-viewer" aria-label={heading}>
+  <div class="relative mx-auto max-w-content px-4 py-12 sm:py-20">
+    <div class="car-shadow" aria-hidden="true"></div>
+    <img
+      src={poster}
+      {width}
+      {height}
+      {alt}
+      loading="eager"
+      decoding="async"
+      class="relative mx-auto h-auto w-full max-w-4xl"
+    />
+  </div>
+</section>
+
+<style>
+  .car-viewer {
+    background: radial-gradient(ellipse at center, var(--viewer-to) 0%, var(--viewer-from) 100%);
+  }
+
+  /* Soft ground shadow under the car. */
+  .car-shadow {
+    position: absolute;
+    inset-inline: 25%;
+    bottom: 22%;
+    height: 8%;
+    border-radius: 50%;
+    background: var(--viewer-shadow);
+    filter: blur(18px);
+  }
+</style>
