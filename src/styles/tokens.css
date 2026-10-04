@@ -43,5 +43,6 @@
   --content-max: 1180px;
   --tap-min: 52px;
   --header-h: 69px; /* sticky header: 52px button + 2 x 8px padding + 1px border */
+  --call-bar-h: 77px; /* phones: fixed Call/WhatsApp bar: 52px buttons + 12px padding x 2 + 1px border */
   --section-space: clamp(4rem, 9vw, 6.5rem);
 }

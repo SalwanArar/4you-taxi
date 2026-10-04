@@ -64,6 +64,17 @@ interface Content {
   languageSwitcherLabel: string;
   tagline: string;
   hero: { title: string; subtitle: string };
+  /**
+   * The opening, told as one ride in five scenes while the visitor scrolls (see Hero.astro).
+   * `call` shows the phone number under it; `drive` shows the car facts; `arrival` the call buttons.
+   */
+  story: {
+    night: { line: string; sub: string };
+    call: { line: string };
+    pickup: { line: string; sub: string };
+    drive: { line: string };
+    arrival: { line: string; sub: string };
+  };
   actions: { call: string; callShort: string; whatsapp: string; sms: string; email: string };
   car: {
     heading: string;
@@ -117,6 +128,13 @@ export const content: Record<Locale, Content> = {
       title: 'Taxi i Jönköpings län',
       subtitle: 'Säker. Snabb. Pålitlig. En bil och en förare, Rashid.',
     },
+    story: {
+      night: { line: 'Sen kväll i Jönköping.', sub: 'Bussen har gått. Du behöver en bil.' },
+      call: { line: 'Du ringer.' },
+      pickup: { line: 'Rashid svarar.', sub: 'En bil, en förare. Han är på väg.' },
+      drive: { line: 'Gott om plats.' },
+      arrival: { line: 'Säker. Snabb. Pålitlig.', sub: 'En bil och en förare, Rashid.' },
+    },
     actions: {
       call: 'Ring nu',
       callShort: 'Ring',
@@ -128,7 +146,7 @@ export const content: Record<Locale, Content> = {
       heading: 'Plats för alla',
       alt: 'Vit Škoda Octavia-taxi',
       rotatingLabel: 'Vit Škoda Octavia-taxi som snurrar när du skrollar',
-      scrollHint: 'Skrolla för att snurra bilen',
+      scrollHint: 'Skrolla för att följa resan',
     },
     carFeatures: [
       { icon: 'seats', text: '4 platser', figure: '4', label: 'platser' },
@@ -179,6 +197,13 @@ export const content: Record<Locale, Content> = {
       title: 'Taxi in Jönköping County',
       subtitle: 'Safe. Fast. Reliable. One car and one driver, Rashid.',
     },
+    story: {
+      night: { line: 'Late evening in Jönköping.', sub: 'The bus has gone. You need a ride.' },
+      call: { line: 'You call.' },
+      pickup: { line: 'Rashid answers.', sub: "One car, one driver. He's on his way." },
+      drive: { line: 'Plenty of room.' },
+      arrival: { line: 'Safe. Fast. Reliable.', sub: 'One car and one driver, Rashid.' },
+    },
     actions: {
       call: 'Call now',
       callShort: 'Call',
@@ -190,7 +215,7 @@ export const content: Record<Locale, Content> = {
       heading: 'Room for everyone',
       alt: 'White Škoda Octavia taxi',
       rotatingLabel: 'White Škoda Octavia taxi, rotating as you scroll',
-      scrollHint: 'Scroll to rotate the car',
+      scrollHint: 'Scroll to follow the ride',
     },
     carFeatures: [
       { icon: 'seats', text: '4 seats', figure: '4', label: 'seats' },
@@ -241,6 +266,13 @@ export const content: Record<Locale, Content> = {
       title: 'تاكسي في مقاطعة يونشوبينغ',
       subtitle: 'آمن. سريع. موثوق. سيارة واحدة وسائق واحد، رشيد.',
     },
+    story: {
+      night: { line: 'مساء متأخر في يونشوبينغ.', sub: 'الحافلة غادرت. تحتاج إلى سيارة.' },
+      call: { line: 'تتصل.' },
+      pickup: { line: 'رشيد يجيب.', sub: 'سيارة واحدة وسائق واحد. إنه في الطريق.' },
+      drive: { line: 'متسع للجميع.' },
+      arrival: { line: 'آمن. سريع. موثوق.', sub: 'سيارة واحدة وسائق واحد، رشيد.' },
+    },
     actions: {
       call: 'اتصل الآن',
       callShort: 'اتصل',
@@ -252,7 +284,7 @@ export const content: Record<Locale, Content> = {
       heading: 'مكان للجميع',
       alt: 'سيارة تاكسي سكودا أوكتافيا بيضاء',
       rotatingLabel: 'سيارة تاكسي سكودا أوكتافيا بيضاء تدور أثناء التمرير',
-      scrollHint: 'مرّر لتدوير السيارة',
+      scrollHint: 'مرّر لتتابع الرحلة',
     },
     carFeatures: [
       { icon: 'seats', text: '4 مقاعد', figure: '4', label: 'مقاعد' },

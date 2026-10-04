@@ -39,7 +39,7 @@ const t = content[locale];
       label={t.car.rotatingLabel}
       labelledBy="hero-title"
       hint={t.car.scrollHint}
-      captions={t.carFeatures.slice(0, 3).map((f) => f.text)}
+      story={{ edges: [0, 0.12, 0.26, 0.44, 0.74], turnStart: 0.26, turnEnd: 0.86 }}
     >
       <Hero locale={locale} />
     </CarViewer>

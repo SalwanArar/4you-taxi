@@ -132,13 +132,35 @@ export function initCarViewer(root: HTMLElement): void {
     });
   };
 
+  // Story mode (see Hero.astro): the scroll is split into scenes at `data-scene-edges`, and the
+  // car turns only between `data-turn-start` and `data-turn-end`. Without them the car turns
+  // through the whole section.
+  const edges = (root.dataset.sceneEdges ?? '').split(',').filter(Boolean).map(Number);
+  const turnStart = Number(root.dataset.turnStart ?? 0);
+  const turnEnd = Number(root.dataset.turnEnd ?? 1);
+
+  const frameFor = (p: number): number => {
+    const turn = Math.min(1, Math.max(0, (p - turnStart) / (turnEnd - turnStart)));
+    return Math.round(turn * (count - 1));
+  };
+
+  const updateScene = (p: number) => {
+    if (!edges.length) return;
+    let scene = 0;
+    edges.forEach((edge, i) => {
+      if (p >= edge) scene = i;
+    });
+    if (root.dataset.scene !== String(scene)) root.dataset.scene = String(scene);
+  };
+
   const onScroll = () => {
     const p = progress();
     updateCaptions(p);
-    const index = Math.round(p * (count - 1));
+    updateScene(p);
+    if (hint && p > 0.01) hint.dataset.hidden = 'true';
+    const index = frameFor(p);
     if (index === wanted) return;
     wanted = index;
-    if (hint) hint.dataset.hidden = 'true';
     schedule();
   };
 
@@ -207,7 +229,8 @@ export function initCarViewer(root: HTMLElement): void {
   // From here on the section is tall and sticky (see CarViewer.astro styles).
   root.dataset.scrub = 'true';
   resize();
-  wanted = Math.round(progress() * (count - 1));
+  wanted = frameFor(progress());
+  updateScene(progress());
   load(0);
 
   window.addEventListener('scroll', onScroll, { passive: true });

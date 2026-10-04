@@ -1,5 +1,8 @@
 ---
-// Hero text and call actions, slotted into CarViewer: the text sits above the car, the actions below.
+// The opening, told as one ride in five scenes, slotted into CarViewer (story mode): the lines sit
+// above the car, the facts and call actions below it. CarViewer's script sets `data-scene` on the
+// section as the visitor scrolls; each element marked `data-scene` shows only in its own scene.
+// Without JS or with reduced motion only the last scene (the tagline and call buttons) is shown.
 import Icon from './Icon.astro';
 import { business, content, type Locale } from '../data/site';
 
@@ -9,84 +12,234 @@ interface Props {
 
 const { locale } = Astro.props;
 const t = content[locale];
+const s = t.story;
 ---
 
 <div class="hero-top wrap">
-  <h1 id="hero-title" class="hero-title">
+  <h1 id="hero-title" class="story-title">
     {t.hero.title}
   </h1>
-  <p class="mt-3 text-muted" style="font-size: var(--fs-lead)">
-    {t.hero.subtitle}
-  </p>
+  <div class="scene-stack">
+    <p class="scene-line" data-scene="0">
+      {s.night.line}
+      <span class="scene-sub">{s.night.sub}</span>
+    </p>
+    <p class="scene-line" data-scene="1">
+      <span class="ring" aria-hidden="true"></span>
+      {s.call.line}
+      <a href={`tel:${business.phone.e164}`} class="scene-sub scene-number" dir="ltr">
+        {business.phone.display}
+      </a>
+    </p>
+    <p class="scene-line" data-scene="2">
+      {s.pickup.line}
+      <span class="scene-sub">{s.pickup.sub}</span>
+    </p>
+    <p class="scene-line" data-scene="3">
+      {s.drive.line}
+    </p>
+    <p class="scene-line" data-scene="4">
+      {s.arrival.line}
+      <span class="scene-sub">{s.arrival.sub}</span>
+    </p>
+  </div>
 </div>
 
 <div class="hero-foot wrap">
-  <div class="flex flex-wrap gap-3">
-    <a href={`tel:${business.phone.e164}`} class="btn btn-call text-lg max-[359px]:px-4">
-      <Icon name="phone" />
-      {t.actions.call}
-    </a>
-    <a
-      href={`https://wa.me/${business.whatsapp}`}
-      class="btn btn-ghost text-lg max-[359px]:px-4"
-      rel="noopener"
-      target="_blank"
-    >
-      <Icon name="whatsapp" />
-      {t.actions.whatsapp}
-    </a>
+  <div class="scene-stack">
+    <p class="scene-hint" data-scene="0" aria-hidden="true">
+      {t.car.scrollHint}
+    </p>
+    <ul class="scene-facts" data-scene="3">
+      {t.carFeatures.map((f, i) => (
+        <li style={`--i: ${i}`}>
+          <span class="fact-figure">{f.figure}</span> <span class="fact-label">{f.label}</span>
+        </li>
+      ))}
+    </ul>
+    <div class="scene-end" data-scene="4">
+      <div class="scene-actions">
+        <a href={`tel:${business.phone.e164}`} class="btn btn-call text-lg">
+          <Icon name="phone" />
+          {t.actions.call}
+        </a>
+        <a
+          href={`https://wa.me/${business.whatsapp}`}
+          class="btn btn-ghost text-lg"
+          rel="noopener"
+          target="_blank"
+        >
+          <Icon name="whatsapp" />
+          {t.actions.whatsapp}
+        </a>
+      </div>
+      <a href={`tel:${business.phone.e164}`} class="hero-number" dir="ltr">
+        {business.phone.display}
+      </a>
+    </div>
   </div>
-  <a href={`tel:${business.phone.e164}`} class="hero-number" dir="ltr">
-    {business.phone.display}
-  </a>
 </div>
 
 <style>
   .hero-top {
     position: relative;
+    z-index: 1;
     grid-row: 1;
     padding-top: calc(var(--header-h) + clamp(1.25rem, 5vh, 3.5rem));
   }
 
-  .hero-title {
-    font-size: var(--fs-display);
-    letter-spacing: -0.035em;
-    line-height: 1;
-    max-width: 14ch;
+  /* The page's name, small, like the title card of a film. */
+  .story-title {
+    font-size: var(--fs-body);
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1.4;
+    color: var(--text-muted);
   }
 
-  :global(:lang(ar)) .hero-title {
+  /* All scenes share one place on screen: they are stacked in the same grid cell, so the row is as
+     tall as the tallest and the car never moves when the text changes. */
+  .scene-stack {
+    display: grid;
+  }
+
+  .scene-stack > * {
+    grid-area: 1 / 1;
+  }
+
+  /* Also capped by the screen height, so short laptop windows keep room for the car. */
+  .scene-line {
+    margin-top: 0.75rem;
+    max-width: 22ch;
+    font-family: var(--font-display);
+    font-size: min(var(--fs-display), 9svh);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+
+  :global(:lang(ar)) .scene-line {
+    font-family: var(--font-arabic);
     letter-spacing: 0;
     line-height: 1.25;
   }
 
+  .scene-sub {
+    display: block;
+    margin-top: 1rem;
+    max-width: 36ch;
+    font-family: var(--font-body);
+    font-size: var(--fs-lead);
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  :global(:lang(ar)) .scene-sub {
+    font-family: var(--font-arabic);
+  }
+
+  .scene-number {
+    width: fit-content;
+    min-height: var(--tap-min);
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+    text-decoration: none;
+  }
+
+  /* A ringing phone: a small yellow light with a pulse. */
+  .ring {
+    display: inline-block;
+    width: 0.75rem;
+    height: 0.75rem;
+    margin-inline-end: 0.875rem;
+    border-radius: 50%;
+    background: var(--taxi);
+    vertical-align: 0.35em;
+    animation: ring 1.4s ease-out infinite;
+  }
+
+  @keyframes ring {
+    from {
+      box-shadow: 0 0 0 0 rgb(255 194 14 / 0.6);
+    }
+
+    to {
+      box-shadow: 0 0 0 1.1rem rgb(255 194 14 / 0);
+    }
+  }
+
   .hero-foot {
     position: relative;
+    z-index: 1;
     grid-row: 3;
+    padding-block: 2.75rem 1.5rem;
+  }
+
+  .scene-hint {
+    align-self: end;
+    font-size: var(--fs-small);
+    color: var(--text-muted);
+  }
+
+  .scene-facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 1.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 640px) {
+    .scene-facts {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .scene-facts li {
+    border-top: 1px solid var(--line);
+    padding-top: 0.75rem;
+  }
+
+  .fact-figure {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3.4vw, 2.5rem);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  :global(:lang(ar)) .fact-figure {
+    font-family: var(--font-arabic);
+    letter-spacing: 0;
+    line-height: 1.35;
+  }
+
+  .fact-label {
+    display: block;
+    font-size: var(--fs-small);
+    color: var(--text-muted);
+  }
+
+  .scene-end {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: 1rem 1.5rem;
-    padding-block: 2.75rem 1.5rem;
   }
 
-  /* Phones and tablets keep room for the car facts under the car itself (see CarViewer). */
-  @media (max-width: 1023px) {
-    .hero-foot {
-      padding-top: 1rem;
-    }
-  }
-
-  /* Short phones: tighter spacing, so the car keeps a usable size. */
-  @media (max-height: 640px) {
-    .hero-top {
-      padding-top: calc(var(--header-h) + 1rem);
-    }
-
-    .hero-foot {
-      padding-bottom: 1rem;
-    }
+  .scene-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
   }
 
   .hero-number {
@@ -101,5 +254,112 @@ const t = content[locale];
 
   .hero-number:hover {
     color: var(--text);
+  }
+
+  /* Without the film (no JS, reduced motion): only the last scene, like a classic hero. */
+  :global(.car-viewer:not([data-scrub])) .scene-stack > :not([data-scene='4']) {
+    display: none;
+  }
+
+  /* The film: every scene element waits hidden and rises in when its scene starts. Hidden ones
+     are also out of the tab order (visibility), so the keyboard never lands on an unseen button. */
+  :global(.car-viewer[data-scrub][data-story]) [data-scene] {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(1.25rem);
+    transition:
+      opacity 500ms ease,
+      transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      visibility 0s linear 700ms;
+  }
+
+  :global(.car-viewer[data-scrub][data-story][data-scene='0']) [data-scene='0'],
+  :global(.car-viewer[data-scrub][data-story][data-scene='1']) [data-scene='1'],
+  :global(.car-viewer[data-scrub][data-story][data-scene='2']) [data-scene='2'],
+  :global(.car-viewer[data-scrub][data-story][data-scene='3']) [data-scene='3'],
+  :global(.car-viewer[data-scrub][data-story][data-scene='4']) [data-scene='4'] {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition:
+      opacity 700ms ease 150ms,
+      transform 900ms cubic-bezier(0.2, 0.7, 0.2, 1) 150ms,
+      visibility 0s;
+  }
+
+  /* The drive: the facts arrive one after another. */
+  :global(.car-viewer[data-scrub][data-story]) .scene-facts li {
+    opacity: 0;
+    transform: translateY(0.75rem);
+    transition:
+      opacity 500ms ease,
+      transform 600ms ease;
+  }
+
+  :global(.car-viewer[data-scrub][data-story][data-scene='3']) .scene-facts li {
+    opacity: 1;
+    transform: none;
+    transition-delay: calc(300ms + var(--i) * 220ms);
+  }
+
+  /* Phones and tablets keep room for the car facts under the car itself (see CarViewer). */
+  @media (max-width: 1023px) {
+    .hero-foot {
+      padding-top: 1rem;
+    }
+  }
+
+  /* Phones: the call bar is always on screen at the bottom, so the hero keeps clear of it and
+     does not repeat its buttons. */
+  @media (max-width: 639px) {
+    .hero-top {
+      padding-top: calc(var(--header-h) + 1rem);
+    }
+
+    .scene-line {
+      font-size: clamp(2rem, 9vw, 2.5rem);
+    }
+
+    .scene-sub {
+      margin-top: 0.75rem;
+      font-size: var(--fs-body);
+    }
+
+    .hero-foot {
+      padding-bottom: calc(var(--call-bar-h) + 0.75rem);
+    }
+
+    .scene-actions {
+      display: none;
+    }
+
+    .scene-facts {
+      gap: 0.5rem 1rem;
+    }
+
+    .scene-facts li {
+      padding-top: 0.5rem;
+    }
+
+    .fact-figure {
+      font-size: 1.25rem;
+    }
+  }
+
+  /* Short phones: tighter spacing, so the car keeps a usable size. */
+  @media (max-height: 640px) {
+    .hero-top {
+      padding-top: calc(var(--header-h) + 1rem);
+    }
+
+    .scene-line {
+      font-size: 1.875rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ring {
+      animation: none;
+    }
   }
 </style>

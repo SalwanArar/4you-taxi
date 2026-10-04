@@ -19,6 +19,11 @@ interface Props {
   hint: string;
   /** Short facts shown one after another while the car turns (from site.ts). */
   captions?: string[];
+  /**
+   * Story mode: the section plays as scenes. `edges` are where each scene starts (0 to 1 of the
+   * scroll); the car is hidden in the first two scenes and turns between `turnStart` and `turnEnd`.
+   */
+  story?: { edges: number[]; turnStart: number; turnEnd: number };
   id?: string;
 }
 
@@ -33,6 +38,7 @@ const {
   labelledBy,
   hint,
   captions = [],
+  story,
   id,
 } = Astro.props;
 const poster = `${frames}001${extension}`;
@@ -48,6 +54,10 @@ const poster = `${frames}001${extension}`;
   data-count={count}
   data-width={width}
   data-height={height}
+  data-story={story ? '' : undefined}
+  data-scene-edges={story?.edges.join(',')}
+  data-turn-start={story?.turnStart}
+  data-turn-end={story?.turnEnd}
 >
   <div class="car-sticky">
     <div class="car-area">
@@ -80,6 +90,17 @@ const poster = `${frames}001${extension}`;
     <slot />
   </div>
 </section>
+
+{story && <script is:inline>
+  // Switch to the film before first paint, so the opening scene does not flash the end.
+  (function () {
+    const el = document.currentScript && document.currentScript.previousElementSibling;
+    if (el && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      el.dataset.scrub = 'true';
+      el.dataset.scene = '0';
+    }
+  })();
+</script>}
 
 <style>
   /* Pure black, lit from above by one soft light. */
@@ -119,6 +140,67 @@ const poster = `${frames}001${extension}`;
     .car-viewer[data-scrub] {
       height: 300vh;
     }
+  }
+
+  /* Story mode: a longer section, so each of the five scenes gets about one screen of scroll. */
+  .car-viewer[data-scrub][data-story] {
+    height: 520vh;
+  }
+
+  @media (min-width: 640px) {
+    .car-viewer[data-scrub][data-story] {
+      height: 600vh;
+    }
+  }
+
+  /* The night: the overhead light is low and the car is still in the dark. It comes up at the
+     pickup (scene 2) and warms at the arrival (scene 4). */
+  .car-viewer[data-scrub][data-story] .car-sticky::before {
+    opacity: 0.25;
+    transition: opacity 900ms ease;
+  }
+
+  .car-viewer[data-scrub][data-story]:is([data-scene='2'], [data-scene='3']) .car-sticky::before {
+    opacity: 1;
+  }
+
+  .car-viewer[data-scrub][data-story] .car-sticky::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(70% 60% at 50% 0%, rgb(255 194 14 / 0.1), transparent 70%);
+    opacity: 0;
+    transition: opacity 900ms ease;
+    pointer-events: none;
+  }
+
+  .car-viewer[data-scrub][data-story][data-scene='4'] .car-sticky::before,
+  .car-viewer[data-scrub][data-story][data-scene='4'] .car-sticky::after {
+    opacity: 1;
+  }
+
+  .car-viewer[data-scrub][data-story] .car-stage {
+    opacity: 0;
+    transform: scale(0.94);
+    transition:
+      opacity 900ms ease,
+      transform 1200ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .car-viewer[data-scrub][data-story]:is([data-scene='2'], [data-scene='3'], [data-scene='4'])
+    .car-stage {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* In story mode the hint sits in the middle of the dark stage, where the car will appear. */
+  .car-viewer[data-story] .car-hint {
+    top: 50%;
+    margin-top: 0;
+  }
+
+  .car-viewer[data-scrub][data-story] .car-stage .car-hint {
+    display: none;
   }
 
   /* The middle row: whatever height the hero text and call actions leave over. The car is sized
