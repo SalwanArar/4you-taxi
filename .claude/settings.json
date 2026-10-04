@@ -1,0 +1,5 @@
+{
+  "enabledPlugins": {
+    "designs-drift@anthropic-plugin-directory": true
+  }
+}
