@@ -22,7 +22,7 @@ const t = content[locale];
 <Base locale={locale}>
   <a
     href="#main"
-    class="sr-only z-50 rounded-brand bg-brand-yellow px-4 py-3 font-semibold text-on-yellow focus:not-sr-only focus:fixed focus:start-4 focus:top-4"
+    class="sr-only z-50 rounded-brand bg-taxi px-4 py-3 font-semibold text-on-taxi focus:not-sr-only focus:fixed focus:start-4 focus:top-4"
   >
     {t.skipLink}
   </a>
@@ -39,6 +39,7 @@ const t = content[locale];
       label={t.car.rotatingLabel}
       labelledBy="hero-title"
       hint={t.car.scrollHint}
+      captions={t.carFeatures.slice(0, 3).map((f) => f.text)}
     >
       <Hero locale={locale} />
     </CarViewer>

@@ -1,5 +1,4 @@
 ---
-import Icon from './Icon.astro';
 import { car, content, type Locale } from '../data/site';
 
 interface Props {
@@ -11,18 +10,15 @@ const t = content[locale];
 ---
 
 <section class="section" aria-labelledby="car-title">
-  <h2 id="car-title" class="section-heading">
-    {t.car.heading}
-  </h2>
-  <p class="mt-2 text-lg text-muted">{car.model}</p>
-  <ul class="mt-8 grid gap-4 sm:grid-cols-2">
-    {t.carFeatures.map((f) => (
-      <li class="flex items-center gap-4 rounded-brand border border-border bg-surface-raised p-5">
-        <span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-brand-yellow text-on-yellow">
-          <Icon name={f.icon} size={24} />
-        </span>
-        <span class="font-medium">{f.text}</span>
-      </li>
-    ))}
-  </ul>
+  <div class="section-grid">
+    <h2 id="car-title" class="section-heading">
+      {t.car.heading}
+    </h2>
+    <ul class="rows">
+      <li class="rows-lead">{car.model}</li>
+      {t.carFeatures.map((f) => (
+        <li>{f.text}</li>
+      ))}
+    </ul>
+  </div>
 </section>

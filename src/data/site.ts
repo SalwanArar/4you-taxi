@@ -22,8 +22,6 @@ export const localeInfo: Record<Locale, { label: string; short: string; dir: 'lt
 export const business = {
   name: '4you Taxi',
   driverName: 'Rashid Alkanafani',
-  /** Shown in the round badge until there is a driver photo. */
-  driverInitials: 'RA',
   phone: {
     /** How the number is shown on the page. */
     display: '+46 73 725 01 75',

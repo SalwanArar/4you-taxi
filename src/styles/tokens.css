@@ -1,49 +1,45 @@
 /*
- * Design tokens: the only place colours, radius and sizes are defined.
- * Palette: black and taxi yellow, from the 4you Taxi brand.
- * Yellow is an accent for buttons and highlights. Put black text on yellow,
- * never yellow text on a light background (it fails contrast).
+ * Design tokens: the only place colours, type, radius and sizes are defined.
+ * Direction "Evening light" (chosen by the owner 2026-10-04): a pure black page, the white car
+ * standing under one soft light, calm type, and taxi yellow kept for the call button only.
+ * The site is always dark; there is no light theme.
  */
 :root {
-  /* Brand */
-  --brand-black: #0b0b0c;
-  --brand-yellow: #ffc20e;
-  --brand-yellow-hover: #ffd24d;
-  --on-yellow: #0b0b0c;
+  color-scheme: dark;
 
-  /* Surfaces and text (light theme) */
-  --surface: #f8f9fa;
-  --surface-raised: #ffffff;
-  --border: #dee2e6;
-  --text: #111214;
-  --text-muted: #4a4f55;
+  /* Colour */
+  --night: #000000; /* page background */
+  --asphalt: #121211; /* raised surfaces (call bar, sign-like buttons) */
+  --line: #2a2925; /* dividers and outlines */
+  --text: #f2efe6; /* warm white, easier on the eye than pure white */
+  --text-muted: #a39f93; /* 7.9:1 on black */
+  --taxi: #ffc20e; /* the call action, nothing else */
+  --taxi-hover: #ffd24d;
+  --on-taxi: #000000;
+  --light-glow: rgb(255 236 180 / 0.14); /* the overhead light in the hero */
+  --floor-glow: rgb(255 255 255 / 0.06);
+  --focus: #ffc20e;
 
-  /* Car viewer: the car is white, so never a pure white background */
-  --viewer-from: #e9ecef;
-  --viewer-to: #f8f9fa;
-  --viewer-shadow: rgb(0 0 0 / 0.18);
-
-  /* Focus ring */
-  --focus: #0b0b0c;
+  /* Type: a Swedish display grotesk for headlines, IBM Plex for text and Arabic.
+     Sizes are shared by all three languages, so headlines match in Swedish, English and Arabic. */
+  --font-display:
+    'Familjen Grotesk Variable', 'IBM Plex Sans Arabic', ui-sans-serif, system-ui, sans-serif;
+  --font-body:
+    'IBM Plex Sans Variable', 'IBM Plex Sans Arabic', ui-sans-serif, system-ui, sans-serif;
+  --font-arabic:
+    'IBM Plex Sans Arabic', 'IBM Plex Sans Variable', ui-sans-serif, system-ui, sans-serif;
+  --fs-display: clamp(2.5rem, 6.5vw, 5rem);
+  --fs-number: clamp(2rem, 5.5vw, 4rem);
+  --fs-heading: clamp(1.75rem, 3.4vw, 2.5rem);
+  --fs-lead: 1.25rem;
+  --fs-body: 1.0625rem;
+  --fs-small: 0.9375rem;
 
   /* Shape and layout */
-  --radius: 16px;
-  --content-max: 1100px;
-  --tap-min: 48px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --surface: #0b0b0c;
-    --surface-raised: #17181a;
-    --border: #2a2c30;
-    --text: #f2f2f3;
-    --text-muted: #a1a1aa;
-
-    --viewer-from: #1c1d20;
-    --viewer-to: #0b0b0c;
-    --viewer-shadow: rgb(0 0 0 / 0.5);
-
-    --focus: #ffc20e;
-  }
+  --radius: 999px; /* buttons are pills */
+  --radius-box: 12px; /* the QR code tile */
+  --content-max: 1180px;
+  --tap-min: 52px;
+  --header-h: 69px; /* sticky header: 52px button + 2 x 8px padding + 1px border */
+  --section-space: clamp(4rem, 9vw, 6.5rem);
 }

@@ -1,6 +1,7 @@
 ---
-// Scroll-driven car rotation (CLAUDE.md §6), used as the page hero: the slotted content is
-// overlaid on the car. Frame 1 is a normal <img>: it is the poster (and LCP image), the no-JS
+// Scroll-driven car rotation (CLAUDE.md §6), used as the page hero. The car stands under one
+// soft light; the slotted hero content sits above and below it, and short captions with car facts
+// fade in at set points while it turns. Frame 1 is a normal <img>: it is the poster (and LCP image), the no-JS
 // fallback and the reduced-motion view. The script swaps in a canvas once it runs.
 interface Props {
   /** Path prefix of the frames, e.g. '/car360/frame_'. */
@@ -16,16 +17,30 @@ interface Props {
   /** id of the heading inside the slot that names this section. */
   labelledBy: string;
   hint: string;
+  /** Short facts shown one after another while the car turns (from site.ts). */
+  captions?: string[];
   id?: string;
 }
 
-const { frames, count, extension, width, height, alt, label, labelledBy, hint, id } = Astro.props;
+const {
+  frames,
+  count,
+  extension,
+  width,
+  height,
+  alt,
+  label,
+  labelledBy,
+  hint,
+  captions = [],
+  id,
+} = Astro.props;
 const poster = `${frames}001${extension}`;
 ---
 
 <section
   id={id}
-  class="car-viewer on-dark"
+  class="car-viewer"
   aria-labelledby={labelledBy}
   data-car-viewer
   data-frames={frames}
@@ -36,7 +51,7 @@ const poster = `${frames}001${extension}`;
 >
   <div class="car-sticky">
     <div class="car-stage" style={`--car-ratio: ${width} / ${height}`}>
-      <div class="car-shadow" aria-hidden="true"></div>
+      <div class="car-floor" aria-hidden="true"></div>
       <img
         src={poster}
         {width}
@@ -48,31 +63,48 @@ const poster = `${frames}001${extension}`;
         class="car-frame"
       />
       <canvas class="car-frame car-canvas" role="img" aria-label={label}></canvas>
+      {captions.length > 0 && (
+        <ul class="car-captions" aria-hidden="true">
+          {captions.map((c) => (
+            <li data-caption>{c}</li>
+          ))}
+        </ul>
+      )}
+      <p class="car-hint" data-hint aria-hidden="true">
+        {hint}
+      </p>
     </div>
-    <div class="car-scrim" aria-hidden="true"></div>
-    <div class="car-overlay">
-      <slot />
-    </div>
-    <p class="car-hint" data-hint aria-hidden="true">
-      {hint}
-    </p>
+    <slot />
   </div>
 </section>
 
 <style>
-  /* The hero is always dark (brand black), in both colour schemes: white text, white car. */
+  /* Pure black, lit from above by one soft light. */
+  /* Slides up under the translucent sticky header, so the first screen is the whole hero. */
   .car-viewer {
-    background: radial-gradient(ellipse at 50% 75%, #26282c 0%, var(--brand-black) 70%);
-    color: #fff;
+    position: relative;
+    margin-top: calc(-1 * var(--header-h));
+    background: var(--night);
   }
 
-  /* One screen tall. Without JS or with reduced motion it simply stays that way. */
+  /* One screen tall, laid out in three rows: hero text, the car, the call actions.
+     Without JS or with reduced motion it simply stays one screen. */
   .car-sticky {
     position: sticky;
     top: 0;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
     height: 100vh;
-    height: max(100svh, 38rem);
+    height: max(100svh, 36rem);
     overflow: hidden;
+  }
+
+  .car-sticky::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(60% 55% at 50% 0%, var(--light-glow), transparent 70%);
+    pointer-events: none;
   }
 
   /* Scrubbing mode, switched on by the script: tall section, the stage stays pinned. */
@@ -86,14 +118,14 @@ const poster = `${frames}001${extension}`;
     }
   }
 
-  /* Car sits low and large; the text overlays its upper part. */
   .car-stage {
-    position: absolute;
-    inset-inline: 0;
-    bottom: 3.5rem;
+    position: relative;
+    grid-row: 2;
+    align-self: center;
     margin-inline: auto;
     aspect-ratio: var(--car-ratio);
-    width: min(100%, 1200px, calc((100svh - 8rem) * var(--car-ratio)));
+    width: min(100%, 920px, (100svh - 27rem) * var(--car-ratio));
+    min-width: min(100%, 18rem);
   }
 
   .car-frame {
@@ -115,51 +147,65 @@ const poster = `${frames}001${extension}`;
     visibility: hidden;
   }
 
-  /* Soft ground shadow under the car. */
-  .car-shadow {
+  /* The pool of light on the ground, with a soft shadow right under the car. */
+  .car-floor {
     position: absolute;
-    inset-inline: 12%;
-    bottom: 2%;
-    height: 10%;
+    inset-inline: -12%;
+    bottom: -10%;
+    height: 34%;
+    background:
+      radial-gradient(38% 22% at 50% 50%, rgb(0 0 0 / 0.85), transparent 100%),
+      radial-gradient(50% 50% at 50% 50%, var(--floor-glow), transparent 100%);
+  }
+
+  /* Car facts, one at a time, while it turns. */
+  .car-captions {
+    position: absolute;
+    inset-inline-end: 1rem;
+    bottom: 100%;
+    margin: 0 0 0.5rem;
+    padding: 0;
+    list-style: none;
+    font-size: var(--fs-lead);
+  }
+
+  .car-captions li {
+    position: absolute;
+    inset-inline-end: 0;
+    bottom: 0;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(0.4rem);
+    transition:
+      opacity 300ms ease,
+      transform 300ms ease;
+  }
+
+  .car-captions li::before {
+    content: '';
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-inline-end: 0.625rem;
     border-radius: 50%;
-    background: rgb(0 0 0 / 0.7);
-    filter: blur(18px);
+    background: var(--taxi);
+    vertical-align: middle;
   }
 
-  /* Darkens the top of the stage so the text stays readable where it crosses the car. */
-  .car-scrim {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to bottom,
-      rgb(11 11 12 / 0.92) 0%,
-      rgb(11 11 12 / 0.75) 30%,
-      rgb(11 11 12 / 0) 62%
-    );
-    pointer-events: none;
-  }
-
-  .car-overlay {
-    position: relative;
-    max-width: var(--content-max);
-    margin-inline: auto;
-    padding: 6rem 1rem 0;
-  }
-
-  @media (min-width: 640px) {
-    .car-overlay {
-      padding-top: 7.5rem;
-    }
+  .car-captions li[data-on] {
+    opacity: 1;
+    transform: none;
   }
 
   .car-hint {
     display: none;
     position: absolute;
     inset-inline: 0;
-    bottom: 1rem;
+    top: 100%;
+    margin-top: 0.75rem;
     text-align: center;
-    font-size: 0.875rem;
-    color: rgb(255 255 255 / 0.75);
+    font-size: var(--fs-small);
+    color: var(--text-muted);
     transition: opacity 400ms ease;
   }
 
@@ -172,7 +218,8 @@ const poster = `${frames}001${extension}`;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .car-hint {
+    .car-hint,
+    .car-captions li {
       transition: none;
     }
   }

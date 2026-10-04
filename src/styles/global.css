@@ -1,47 +1,59 @@
 @import 'tailwindcss';
 @import './tokens.css';
 
-/* Expose the tokens to Tailwind as utilities (bg-surface, text-muted, rounded-brand, …). */
+/* Expose the tokens to Tailwind as utilities (bg-night, text-muted, border-line, …). */
 @theme inline {
-  --color-brand-black: var(--brand-black);
-  --color-brand-yellow: var(--brand-yellow);
-  --color-brand-yellow-hover: var(--brand-yellow-hover);
-  --color-on-yellow: var(--on-yellow);
-  --color-surface: var(--surface);
-  --color-surface-raised: var(--surface-raised);
-  --color-border: var(--border);
+  --color-night: var(--night);
+  --color-asphalt: var(--asphalt);
+  --color-line: var(--line);
   --color-text: var(--text);
   --color-muted: var(--text-muted);
+  --color-taxi: var(--taxi);
+  --color-taxi-hover: var(--taxi-hover);
+  --color-on-taxi: var(--on-taxi);
   --radius-brand: var(--radius);
+  --radius-box: var(--radius-box);
   --container-content: var(--content-max);
   --spacing-tap: var(--tap-min);
-  --font-sans: 'Inter Variable', 'IBM Plex Sans Arabic', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
 }
 
 @layer base {
   html {
-    color-scheme: light dark;
     -webkit-text-size-adjust: 100%;
   }
 
   body {
-    @apply bg-surface font-sans text-text antialiased;
-    font-size: 1rem;
+    @apply bg-night font-sans text-text antialiased;
+    font-size: var(--fs-body);
     line-height: 1.6;
   }
 
-  /* Arabic script reads better with the Arabic face first and a little more line height. */
+  /* Arabic: the Arabic face everywhere (it also carries the Latin digits), a little more line height. */
+  :lang(ar) body,
+  :lang(ar) .font-display {
+    font-family: var(--font-arabic);
+  }
+
   :lang(ar) body {
-    font-family: 'IBM Plex Sans Arabic', 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
     line-height: 1.75;
   }
 
   h1,
   h2,
   h3 {
-    line-height: 1.15;
-    font-weight: 700;
+    font-family: var(--font-display);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
     text-wrap: balance;
+  }
+
+  :lang(ar) :is(h1, h2, h3) {
+    font-family: var(--font-arabic);
+    line-height: 1.3;
+    letter-spacing: 0;
   }
 
   :focus-visible {
@@ -52,35 +64,50 @@
 }
 
 @layer components {
-  /* Always-dark areas (header, hero, footer): a yellow focus ring stays visible in both themes. */
-  .on-dark {
-    --focus: var(--brand-yellow);
-  }
-
-  /* Buttons: at least 48px tall, one radius, clear focus. */
+  /* Buttons: pills at least 52px tall. Yellow is reserved for the call action. */
   .btn {
     @apply inline-flex min-h-tap items-center justify-center gap-2 rounded-brand px-6 font-semibold transition-colors duration-200;
   }
 
-  .btn-primary {
-    @apply bg-brand-yellow text-on-yellow hover:bg-brand-yellow-hover;
+  .btn:focus-visible {
+    border-radius: var(--radius);
   }
 
-  /* Outline button for dark backgrounds (hero). */
-  .btn-on-dark {
-    @apply border-2 border-white/40 text-white hover:border-white hover:bg-white/10;
+  .btn-call {
+    @apply bg-taxi text-on-taxi hover:bg-taxi-hover;
   }
 
-  /* Outline button for the page background. */
-  .btn-outline {
-    @apply border-2 border-border text-text hover:border-text;
+  .btn-ghost {
+    @apply border border-line text-text hover:border-text;
   }
 
+  .wrap {
+    @apply mx-auto w-full max-w-content px-4;
+  }
+
+  /* Content sections: a hairline on top, heading on the left and content on the right on wide screens. */
   .section {
-    @apply mx-auto max-w-content px-4 py-16 sm:py-24;
+    @apply border-t border-line;
+    padding-block: var(--section-space);
+  }
+
+  .section-grid {
+    @apply mx-auto grid w-full max-w-content gap-6 px-4 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-10;
   }
 
   .section-heading {
-    @apply text-3xl sm:text-4xl;
+    font-size: var(--fs-heading);
+  }
+
+  /* A plain list of facts, one per line, separated by hairlines. */
+  .rows > * {
+    @apply border-b border-line py-4;
+    font-size: var(--fs-lead);
+  }
+
+  .rows > .rows-lead {
+    @apply pt-0 font-display;
+    font-size: var(--fs-heading);
+    line-height: 1.15;
   }
 }

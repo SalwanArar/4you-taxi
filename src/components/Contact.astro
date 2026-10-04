@@ -28,51 +28,62 @@ const actions: {
   { icon: 'email', label: t.actions.email, href: `mailto:${business.email}` },
 ];
 
-const details: { icon: IconName; label: string; value: string; ltr?: boolean }[] = [
-  { icon: 'phone', label: t.contact.phoneLabel, value: business.phone.display, ltr: true },
-  { icon: 'email', label: t.contact.emailLabel, value: business.email, ltr: true },
-  { icon: 'area', label: t.contact.areaLabel, value: t.serviceArea },
-  { icon: 'availability', label: t.contact.availabilityLabel, value: t.availability },
+const details: { label: string; value: string; ltr?: boolean }[] = [
+  { label: t.contact.emailLabel, value: business.email, ltr: true },
+  { label: t.contact.areaLabel, value: t.serviceArea },
+  { label: t.contact.availabilityLabel, value: t.availability },
 ];
 ---
 
 <section id="contact" class="section" aria-labelledby="contact-title">
-  <h2 id="contact-title" class="section-heading">
-    {t.contact.heading}
-  </h2>
-  <p class="mt-2 text-lg text-muted">{t.contact.intro}</p>
+  <div class="section-grid">
+    <div>
+      <h2 id="contact-title" class="section-heading">
+        {t.contact.heading}
+      </h2>
+      <p class="mt-3 text-muted">{t.contact.intro}</p>
+    </div>
+    <div>
+      <p class="font-display" style="font-size: var(--fs-number); line-height: 1.1">
+        <span class="sr-only">{t.contact.phoneLabel}: </span>
+        <a
+          href={`tel:${business.phone.e164}`}
+          dir="ltr"
+          class="tabular-nums no-underline hover:text-taxi"
+        >
+          {business.phone.display}
+        </a>
+      </p>
 
-  <div class="mt-8 grid gap-3 sm:grid-cols-2">
-    {actions.map((a) => (
-      <a
-        href={a.href}
-        class:list={['btn text-lg', a.primary ? 'btn-primary' : 'btn-outline']}
-        {...(a.external ? { target: '_blank', rel: 'noopener' } : {})}
-      >
-        <Icon name={a.icon} />
-        {a.label}
-      </a>
-    ))}
-  </div>
+      <div class="mt-6 grid grid-cols-2 gap-3 sm:flex sm:flex-wrap">
+        {actions.map((a) => (
+          <a
+            href={a.href}
+            class:list={['btn px-4 text-center text-lg', a.primary ? 'btn-call' : 'btn-ghost']}
+            {...(a.external ? { target: '_blank', rel: 'noopener' } : {})}
+          >
+            <Icon name={a.icon} />
+            {a.label}
+          </a>
+        ))}
+      </div>
 
-  <div class="mt-10 flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
-    <dl class="grid flex-1 gap-6 sm:grid-cols-2">
-      {details.map((d) => (
-        <div>
-          <dt class="flex items-center gap-3 text-sm text-muted">
-            <Icon name={d.icon} class="shrink-0" />
-            {d.label}
-          </dt>
-          {/* Indented to line up with the label, past the 20px icon and 12px gap. */}
-          <dd class="ps-8 font-medium break-all">
-            <span dir={d.ltr ? 'ltr' : undefined}>{d.value}</span>
-          </dd>
+      <div class="mt-10 flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
+        <dl class="rows flex-1">
+          {details.map((d) => (
+            <div class="flex flex-wrap justify-between gap-x-6 gap-y-1">
+              <dt class="text-muted">{d.label}</dt>
+              <dd class="break-all" dir={d.ltr ? 'ltr' : undefined}>
+                {d.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
+        {/* Hidden on phones: the visitor is already on the phone that would scan it. */}
+        <div class="hidden sm:block">
+          <QrCode value={`tel:${business.phone.e164}`} label={t.contact.qrLabel} />
         </div>
-      ))}
-    </dl>
-    {/* Hidden on phones: the visitor is already on the phone that would scan it. */}
-    <div class="hidden sm:block">
-      <QrCode value={`tel:${business.phone.e164}`} label={t.contact.qrLabel} />
+      </div>
     </div>
   </div>
 </section>

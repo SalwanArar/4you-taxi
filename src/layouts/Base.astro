@@ -1,5 +1,6 @@
 ---
-import '@fontsource-variable/inter';
+import '@fontsource-variable/familjen-grotesk/wght.css';
+import '@fontsource-variable/ibm-plex-sans/wght.css';
 import '../styles/global.css';
 import { getAbsoluteLocaleUrl } from 'astro:i18n';
 import StructuredData from '../components/StructuredData.astro';
@@ -26,7 +27,7 @@ const ogLocale: Record<Locale, string> = { sv: 'sv_SE', en: 'en_GB', ar: 'ar_AR'
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{meta.title}</title>
     <meta name="description" content={meta.description} />
-    <meta name="theme-color" content="#0b0b0c" />
+    <meta name="theme-color" content="#000000" />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/png" sizes="32x32" href={withBase('/favicon-32.png')} />
     <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />

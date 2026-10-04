@@ -12,10 +12,9 @@ const { locale } = Astro.props;
 const t = content[locale];
 ---
 
-<!-- Always dark: the yellow logo needs a dark background, and the hero below is dark too. -->
-<header class="on-dark sticky top-0 z-40 border-b border-white/10 bg-brand-black/90 text-white backdrop-blur-md">
-  <div class="mx-auto flex max-w-content items-center justify-between gap-2 px-4 py-2">
-    <a href="#top" class="inline-flex min-h-tap shrink-0 items-center rounded-brand">
+<header class="sticky top-0 z-40 border-b border-line/60 bg-night/80 backdrop-blur-md">
+  <div class="wrap flex items-center justify-between gap-2 py-2">
+    <a href="#top" class="inline-flex min-h-tap shrink-0 items-center rounded-box">
       <img
         src={withBase('/logo.webp')}
         alt={business.name}
@@ -26,7 +25,7 @@ const t = content[locale];
     </a>
     <div class="flex items-center gap-1 sm:gap-3">
       <LanguageSwitcher locale={locale} />
-      <a href={`tel:${business.phone.e164}`} class="btn btn-primary px-4">
+      <a href={`tel:${business.phone.e164}`} class="btn btn-ghost px-4">
         <Icon name="phone" size={18} />
         {t.actions.callShort}
       </a>

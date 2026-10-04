@@ -13,13 +13,13 @@ const svg = await QRCode.toString(value, {
   type: 'svg',
   margin: 2,
   errorCorrectionLevel: 'M',
-  color: { dark: '#0b0b0c', light: '#ffffff' },
+  color: { dark: '#000000', light: '#ffffff' },
 });
 ---
 
 <figure class="inline-flex flex-col items-center gap-2">
   {/* Always dark on white, also in dark mode, so every scanner can read it. */}
-  <div class="size-40 overflow-hidden rounded-brand bg-white" role="img" aria-label={label}>
+  <div class="size-40 overflow-hidden rounded-box bg-white" role="img" aria-label={label}>
     <Fragment set:html={svg} />
   </div>
   <figcaption class="text-sm text-muted">{label}</figcaption>

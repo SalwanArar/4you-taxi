@@ -18,6 +18,7 @@ export function initCarViewer(root: HTMLElement): void {
   const canvas = root.querySelector<HTMLCanvasElement>('canvas');
   const poster = root.querySelector<HTMLImageElement>('img');
   const hint = root.querySelector<HTMLElement>('[data-hint]');
+  const captions = Array.from(root.querySelectorAll<HTMLElement>('[data-caption]'));
   const ctx = canvas?.getContext('2d');
   if (!canvas || !poster || !ctx || !(count > 1) || !(frameWidth > 0) || !(frameHeight > 0)) return;
 
@@ -67,8 +68,19 @@ export function initCarViewer(root: HTMLElement): void {
     return Math.min(1, Math.max(0, -rect.top / scrollable));
   };
 
+  // Each caption gets an equal slice of the turn, centred in it, and shows for most of that slice.
+  const updateCaptions = (p: number) => {
+    const n = captions.length;
+    captions.forEach((el, i) => {
+      const centre = (i + 1) / (n + 1);
+      el.toggleAttribute('data-on', Math.abs(p - centre) < 0.4 / (n + 1));
+    });
+  };
+
   const onScroll = () => {
-    const index = Math.round(progress() * (count - 1));
+    const p = progress();
+    updateCaptions(p);
+    const index = Math.round(p * (count - 1));
     if (index === wanted) return;
     wanted = index;
     if (hint) hint.dataset.hidden = 'true';
