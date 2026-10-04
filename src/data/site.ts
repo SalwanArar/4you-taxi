@@ -32,6 +32,11 @@ export const business = {
   country: 'SE',
 } as const;
 
+/** The car. Only confirmed facts (see CLAUDE.md §1). */
+export const car = {
+  model: 'Škoda Octavia',
+} as const;
+
 /** Car rotation frames in public/car360/. Update `count` if frames are added or removed. */
 export const carFrames = {
   basePath: '/car360/frame_',
@@ -51,6 +56,8 @@ export const content: Record<
     serviceArea: string;
     languagesSpoken: string;
     languageSwitcherLabel: string;
+    /** Car details section: 4 to 6 short, confirmed facts. */
+    carFeatures: string[];
   }
 > = {
   sv: {
@@ -64,6 +71,12 @@ export const content: Record<
     serviceArea: 'Jönköpings län',
     languagesSpoken: 'Svenska, engelska och arabiska',
     languageSwitcherLabel: 'Välj språk',
+    carFeatures: [
+      '4 platser',
+      'Barnstol kan monteras',
+      'Stort bagageutrymme',
+      'Fyrhjulsdrift (4x4)',
+    ],
   },
   en: {
     meta: {
@@ -76,6 +89,12 @@ export const content: Record<
     serviceArea: 'Jönköping County',
     languagesSpoken: 'Swedish, English and Arabic',
     languageSwitcherLabel: 'Choose language',
+    carFeatures: [
+      '4 seats',
+      'Child seat can be fitted',
+      'Large luggage space',
+      'Four-wheel drive (4x4)',
+    ],
   },
   ar: {
     meta: {
@@ -88,5 +107,6 @@ export const content: Record<
     serviceArea: 'مقاطعة يونشوبينغ',
     languagesSpoken: 'السويدية والإنجليزية والعربية',
     languageSwitcherLabel: 'اختر اللغة',
+    carFeatures: ['4 مقاعد', 'يمكن تركيب مقعد للأطفال', 'مساحة كبيرة للأمتعة', 'دفع رباعي (4x4)'],
   },
 };
