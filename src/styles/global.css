@@ -95,6 +95,16 @@
     padding-block: var(--section-space);
   }
 
+  /* After the story, each chapter fills the screen with its content centred, so the rest of the
+     page is long enough that one quick flick no longer runs straight past it. Scrolling itself
+     stays native (CLAUDE.md: never hijack scrolling). */
+  .section-screen {
+    display: grid;
+    align-content: center;
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+
   .section-grid {
     @apply mx-auto grid w-full max-w-content gap-6 px-4 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-10;
   }
