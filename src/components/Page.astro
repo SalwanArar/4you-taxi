@@ -18,6 +18,9 @@ interface Props {
 
 const { locale } = Astro.props;
 const t = content[locale];
+// Where each of the five story scenes starts, as a share of the opening's scroll. The car turns
+// from the pickup (scene 2) to the arrival (scene 4).
+const storyEdges = [0, 0.133, 0.288, 0.487, 0.818];
 ---
 
 <Base locale={locale}>
@@ -40,9 +43,9 @@ const t = content[locale];
       label={t.car.rotatingLabel}
       labelledBy="hero-title"
       hint={t.car.scrollHint}
-      story={{ edges: [0, 0.133, 0.288, 0.487, 0.818], turnStart: 0.288, turnEnd: 0.818 }}
+      story={{ edges: storyEdges, turnStart: storyEdges[2], turnEnd: storyEdges[4] }}
     >
-      <Hero locale={locale} />
+      <Hero locale={locale} storyEdges={storyEdges} />
       <SceneArt />
     </CarViewer>
     <CarDetails locale={locale} />

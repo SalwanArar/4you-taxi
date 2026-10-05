@@ -2,10 +2,13 @@
 // Drawn pictures for the first two scenes of the story (see Hero.astro), shown where the car will
 // later stand: a street at night with the last bus pulling away, then a phone ringing.
 // Pure SVG and CSS in the site's own colours; decorative, so hidden from screen readers.
+// Both move with the scroll (CarViewer's script sets --t0 and --t1, 0 to 1 through each scene), so
+// the first scroll already changes something: the camera moves in, lights come on, the bus drives
+// off; then the phone rises and its answer button slides across.
 import { withBase } from '../utils/withBase';
 ---
 
-<div class="scene-art" aria-hidden="true">
+<div class="scene-art" aria-hidden="true" data-scroll-vars>
   <svg
     class="art art-night"
     data-scene="0"
@@ -32,84 +35,88 @@ import { withBase } from '../utils/withBase';
       </linearGradient>
     </defs>
 
-    <!-- Stars -->
-    <g class="stars">
-      <circle cx="90" cy="40" r="1.2"></circle>
-      <circle cx="210" cy="78" r="0.9"></circle>
-      <circle cx="330" cy="30" r="1.1"></circle>
-      <circle cx="470" cy="62" r="0.8"></circle>
-      <circle cx="610" cy="24" r="1.2"></circle>
-      <circle cx="720" cy="70" r="0.9"></circle>
-    </g>
+    <g class="cam">
+      <!-- Stars -->
+      <g class="stars">
+        <circle cx="90" cy="40" r="1.2"></circle>
+        <circle cx="210" cy="78" r="0.9"></circle>
+        <circle cx="330" cy="30" r="1.1"></circle>
+        <circle cx="470" cy="62" r="0.8"></circle>
+        <circle cx="610" cy="24" r="1.2"></circle>
+        <circle cx="720" cy="70" r="0.9"></circle>
+      </g>
 
-    <!-- Town on the far side: low blocks, a church spire, a few lit windows -->
-    <g class="town">
-      <rect x="0" y="210" width="70" height="60"></rect>
-      <rect x="64" y="186" width="56" height="84"></rect>
-      <rect x="116" y="222" width="80" height="48"></rect>
-      <rect x="190" y="198" width="44" height="72"></rect>
-      <path d="M262 270 V196 L280 150 L298 196 V270 Z"></path>
-      <rect x="300" y="214" width="96" height="56"></rect>
-      <rect x="392" y="192" width="60" height="78"></rect>
-      <rect x="448" y="226" width="90" height="44"></rect>
-      <rect x="534" y="204" width="52" height="66"></rect>
-      <rect x="582" y="230" width="100" height="40"></rect>
-      <rect x="678" y="196" width="56" height="74"></rect>
-      <rect x="730" y="220" width="70" height="50"></rect>
-    </g>
-    <g class="windows">
-      <rect x="80" y="200" width="6" height="8"></rect>
-      <rect x="98" y="222" width="6" height="8"></rect>
-      <rect x="206" y="214" width="6" height="8"></rect>
-      <rect x="406" y="206" width="6" height="8"></rect>
-      <rect x="424" y="236" width="6" height="8"></rect>
-      <rect x="548" y="218" width="6" height="8"></rect>
-      <rect x="694" y="210" width="6" height="8"></rect>
-      <rect x="712" y="238" width="6" height="8"></rect>
-    </g>
+      <!-- Town on the far side: low blocks, a church spire, a few lit windows -->
+      <g class="town">
+        <rect x="0" y="210" width="70" height="60"></rect>
+        <rect x="64" y="186" width="56" height="84"></rect>
+        <rect x="116" y="222" width="80" height="48"></rect>
+        <rect x="190" y="198" width="44" height="72"></rect>
+        <path d="M262 270 V196 L280 150 L298 196 V270 Z"></path>
+        <rect x="300" y="214" width="96" height="56"></rect>
+        <rect x="392" y="192" width="60" height="78"></rect>
+        <rect x="448" y="226" width="90" height="44"></rect>
+        <rect x="534" y="204" width="52" height="66"></rect>
+        <rect x="582" y="230" width="100" height="40"></rect>
+        <rect x="678" y="196" width="56" height="74"></rect>
+        <rect x="730" y="220" width="70" height="50"></rect>
+      </g>
+      <g class="windows">
+        <rect x="80" y="200" width="6" height="8" style="--w: 0"></rect>
+        <rect x="98" y="222" width="6" height="8" style="--w: 1"></rect>
+        <rect x="206" y="214" width="6" height="8" style="--w: 2"></rect>
+        <rect x="406" y="206" width="6" height="8" style="--w: 3"></rect>
+        <rect x="424" y="236" width="6" height="8" style="--w: 4"></rect>
+        <rect x="548" y="218" width="6" height="8" style="--w: 5"></rect>
+        <rect x="694" y="210" width="6" height="8" style="--w: 6"></rect>
+        <rect x="712" y="238" width="6" height="8" style="--w: 7"></rect>
+      </g>
 
-    <!-- The street -->
-    <rect x="0" y="270" width="800" height="130" fill="url(#road)"></rect>
-    <line class="kerb" x1="0" y1="270.5" x2="800" y2="270.5"></line>
-    <g class="dashes">
-      <rect x="20" y="330" width="56" height="3"></rect>
-      <rect x="130" y="330" width="56" height="3"></rect>
-      <rect x="240" y="330" width="56" height="3"></rect>
-      <rect x="350" y="330" width="56" height="3"></rect>
-      <rect x="460" y="330" width="56" height="3"></rect>
-      <rect x="570" y="330" width="56" height="3"></rect>
-      <rect x="680" y="330" width="56" height="3"></rect>
-    </g>
+      <!-- The street -->
+      <rect x="0" y="270" width="800" height="130" fill="url(#road)"></rect>
+      <line class="kerb" x1="0" y1="270.5" x2="800" y2="270.5"></line>
+      <g class="dashes">
+        <rect x="20" y="330" width="56" height="3"></rect>
+        <rect x="130" y="330" width="56" height="3"></rect>
+        <rect x="240" y="330" width="56" height="3"></rect>
+        <rect x="350" y="330" width="56" height="3"></rect>
+        <rect x="460" y="330" width="56" height="3"></rect>
+        <rect x="570" y="330" width="56" height="3"></rect>
+        <rect x="680" y="330" width="56" height="3"></rect>
+      </g>
 
-    <!-- Street lamps, their glow and the pools of light on the wet road -->
-    <g class="lamps">
-      <ellipse cx="150" cy="300" rx="120" ry="26" fill="url(#lamp-pool)"></ellipse>
-      <ellipse cx="420" cy="300" rx="120" ry="26" fill="url(#lamp-pool)"></ellipse>
-      <rect class="reflection" x="146" y="284" width="8" height="70"></rect>
-      <rect class="reflection" x="416" y="284" width="8" height="70"></rect>
+      <!-- Street lamps, their glow and the pools of light on the wet road -->
       <path class="post" d="M140 272 V132 Q140 118 154 118 H166"></path>
       <path class="post" d="M410 272 V132 Q410 118 424 118 H436"></path>
-      <circle cx="166" cy="124" r="70" fill="url(#lamp-glow)"></circle>
-      <circle cx="436" cy="124" r="70" fill="url(#lamp-glow)"></circle>
+      <g class="light light-1">
+        <ellipse cx="150" cy="300" rx="120" ry="26" fill="url(#lamp-pool)"></ellipse>
+        <rect class="reflection" x="146" y="284" width="8" height="70"></rect>
+        <circle cx="166" cy="124" r="70" fill="url(#lamp-glow)"></circle>
+      </g>
+      <g class="light light-2">
+        <ellipse cx="420" cy="300" rx="120" ry="26" fill="url(#lamp-pool)"></ellipse>
+        <rect class="reflection" x="416" y="284" width="8" height="70"></rect>
+        <circle cx="436" cy="124" r="70" fill="url(#lamp-glow)"></circle>
+      </g>
       <rect class="head" x="156" y="118" width="20" height="6" rx="2"></rect>
       <rect class="head" x="426" y="118" width="20" height="6" rx="2"></rect>
-    </g>
 
-    <!-- The empty bus stop -->
-    <g class="stop">
-      <line x1="560" y1="272" x2="560" y2="176"></line>
-      <rect x="546" y="168" width="28" height="22" rx="3"></rect>
-      <rect x="590" y="252" width="62" height="4" rx="1"></rect>
-      <line x1="596" y1="256" x2="596" y2="272"></line>
-      <line x1="646" y1="256" x2="646" y2="272"></line>
-    </g>
+      <!-- The empty bus stop -->
+      <g class="stop">
+        <line x1="560" y1="272" x2="560" y2="176"></line>
+        <rect x="546" y="168" width="28" height="22" rx="3"></rect>
+        <rect x="590" y="252" width="62" height="4" rx="1"></rect>
+        <line x1="596" y1="256" x2="596" y2="272"></line>
+        <line x1="646" y1="256" x2="646" y2="272"></line>
+      </g>
 
-    <!-- The last bus, already far away: two red tail lights drifting off -->
-    <g class="bus">
-      <circle cx="760" cy="282" r="16" fill="url(#tail-glow)"></circle>
-      <circle cx="776" cy="282" r="16" fill="url(#tail-glow)"></circle>
-      <circle class="tail" cx="760" cy="282" r="2.4"></circle>
-      <circle class="tail" cx="776" cy="282" r="2.4"></circle>
+      <!-- The last bus, already far away: two red tail lights drifting off -->
+      <g class="bus">
+        <circle cx="760" cy="282" r="16" fill="url(#tail-glow)"></circle>
+        <circle cx="776" cy="282" r="16" fill="url(#tail-glow)"></circle>
+        <circle class="tail" cx="760" cy="282" r="2.4"></circle>
+        <circle class="tail" cx="776" cy="282" r="2.4"></circle>
+      </g>
     </g>
   </svg>
 
@@ -140,17 +147,24 @@ import { withBase } from '../utils/withBase';
     </g>
 
     <!-- The phone -->
-    <rect class="phone" x="330" y="30" width="140" height="350" rx="26"></rect>
-    <rect x="338" y="38" width="124" height="334" rx="20" fill="url(#screen)"></rect>
-    <rect class="notch" x="380" y="46" width="40" height="8" rx="4"></rect>
-    <image href={withBase('/logo.webp')} x="366" y="96" width="68" height="40" />
-    <rect class="name" x="362" y="152" width="76" height="6" rx="3"></rect>
-    <rect class="name" x="374" y="166" width="52" height="5" rx="2.5"></rect>
+    <g class="handset">
+      <rect class="phone" x="330" y="30" width="140" height="350" rx="26"></rect>
+      <rect x="338" y="38" width="124" height="334" rx="20" fill="url(#screen)"></rect>
+      <rect class="notch" x="380" y="46" width="40" height="8" rx="4"></rect>
+      <image href={withBase('/logo.webp')} x="366" y="96" width="68" height="40" />
+      <rect class="name" x="362" y="152" width="76" height="6" rx="3"></rect>
+      <rect class="name" x="374" y="166" width="52" height="5" rx="2.5"></rect>
 
-    <!-- Call button with a handset -->
-    <g class="answer">
-      <circle cx="400" cy="318" r="22"></circle>
-      <path d="M392.5 307.5c1.2 0 2.3.6 2.8 1.7l1.6 3.4c.5 1 .3 2.2-.5 3l-1.6 1.6c1.3 2.6 3.4 4.7 6 6l1.6-1.6c.8-.8 2-1 3-.5l3.4 1.6c1.1.5 1.7 1.6 1.7 2.8v2.2c0 1.7-1.4 3.1-3.1 3-11.6-.7-20.9-10-21.6-21.6-.1-1.7 1.3-3.1 3-3.1z"></path>
+      <!-- Slide to answer: the track fills and the button slides across as you scroll -->
+      <rect class="track" x="346" y="296" width="108" height="44" rx="22"></rect>
+      <rect class="track-fill" x="346" y="296" width="108" height="44" rx="22"></rect>
+      <g class="answer">
+        <circle cx="368" cy="318" r="18"></circle>
+        <path
+          transform="translate(-32 0)"
+          d="M392.5 307.5c1.2 0 2.3.6 2.8 1.7l1.6 3.4c.5 1 .3 2.2-.5 3l-1.6 1.6c1.3 2.6 3.4 4.7 6 6l1.6-1.6c.8-.8 2-1 3-.5l3.4 1.6c1.1.5 1.7 1.6 1.7 2.8v2.2c0 1.7-1.4 3.1-3.1 3-11.6-.7-20.9-10-21.6-21.6-.1-1.7 1.3-3.1 3-3.1z"
+        ></path>
+      </g>
     </g>
   </svg>
 </div>
@@ -174,6 +188,13 @@ import { withBase } from '../utils/withBase';
     overflow: visible;
   }
 
+  /* The camera moves slowly into the street as you scroll. */
+  .cam {
+    transform-box: view-box;
+    transform-origin: 400px 290px;
+    transform: scale(calc(1 + var(--t0, 0) * 0.14));
+  }
+
   .stars circle {
     fill: var(--text);
     opacity: 0.5;
@@ -184,9 +205,19 @@ import { withBase } from '../utils/withBase';
     fill: #141412;
   }
 
+  /* Windows light up one by one. */
   .windows rect {
     fill: var(--taxi);
-    opacity: 0.55;
+    opacity: clamp(0, (var(--t0, 0) * 11 - var(--w) + 1) * 0.55, 0.55);
+  }
+
+  /* The street lamps switch on, the first almost at once, the second a little later. */
+  .light-1 {
+    opacity: clamp(0.25, 0.25 + var(--t0, 0) * 6, 1);
+  }
+
+  .light-2 {
+    opacity: clamp(0.08, (var(--t0, 0) - 0.3) * 4, 1);
   }
 
   .kerb {
@@ -223,21 +254,15 @@ import { withBase } from '../utils/withBase';
     fill: #ff5a46;
   }
 
-  /* The bus drifts off to the right and fades while the scene is on screen. */
+  /* The last bus pulls away from the stop and out of sight as you scroll. */
   .bus {
-    animation: drive-off 6s ease-in infinite;
+    transform: translateX(calc(-170px + var(--t0, 0) * 230px));
+    opacity: calc(1 - var(--t0, 0) * 0.85);
   }
 
-  @keyframes drive-off {
-    from {
-      transform: translateX(-90px);
-      opacity: 1;
-    }
-
-    to {
-      transform: translateX(40px);
-      opacity: 0;
-    }
+  /* The phone rises into view over the first part of the scene. */
+  .handset {
+    transform: translateY(calc((1 - min(1, var(--t1, 0) * 2.5)) * 70px));
   }
 
   .phone {
@@ -253,6 +278,23 @@ import { withBase } from '../utils/withBase';
   .name {
     fill: var(--text-muted);
     opacity: 0.6;
+  }
+
+  .track {
+    fill: #262521;
+  }
+
+  /* Slide to answer: done just as the scene ends and the car appears. */
+  .track-fill {
+    fill: var(--taxi);
+    opacity: 0.35;
+    transform-box: fill-box;
+    transform-origin: left center;
+    transform: scaleX(calc(0.4 + clamp(0, (var(--t1, 0) - 0.3) / 0.6, 1) * 0.6));
+  }
+
+  .answer {
+    transform: translateX(calc(clamp(0, (var(--t1, 0) - 0.3) / 0.6, 1) * 64px));
   }
 
   .answer circle {
@@ -293,7 +335,6 @@ import { withBase } from '../utils/withBase';
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .bus,
     .rings circle {
       animation: none;
     }

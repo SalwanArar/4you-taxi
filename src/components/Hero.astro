@@ -9,14 +9,23 @@ import { business, content, localeInfo, locales, type Locale } from '../data/sit
 
 interface Props {
   locale: Locale;
+  /** Where each scene starts (0 to 1), the same `edges` as CarViewer's story. */
+  storyEdges: number[];
 }
 
-const { locale } = Astro.props;
+const { locale, storyEdges } = Astro.props;
 const t = content[locale];
 const s = t.story;
 ---
 
 <div class="hero-top wrap">
+  <ol class="story-progress" aria-hidden="true">
+    {storyEdges.map(() => (
+      <li>
+        <span data-progress-fill />
+      </li>
+    ))}
+  </ol>
   <h1 id="hero-title" class="story-title">
     {t.hero.title}
   </h1>
@@ -112,6 +121,40 @@ const s = t.story;
     z-index: 1;
     grid-row: 1;
     padding-top: calc(var(--header-h) + clamp(1.25rem, 5vh, 3.5rem));
+  }
+
+  /* One segment per scene, like the progress bars of a phone story: each fills as you scroll
+     through its scene (CarViewer's script scales each fill), so every scroll shows movement. */
+  .story-progress {
+    display: none;
+    gap: 0.375rem;
+    margin: 0 0 1rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  :global(.car-viewer[data-scrub][data-story]) .story-progress {
+    display: flex;
+  }
+
+  .story-progress li {
+    flex: 1;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--line);
+    overflow: hidden;
+  }
+
+  .story-progress span {
+    display: block;
+    height: 100%;
+    background: var(--text);
+    transform-origin: left center;
+    transform: scaleX(0);
+  }
+
+  :global([dir='rtl']) .story-progress span {
+    transform-origin: right center;
   }
 
   /* The page's name, small, like the title card of a film. */

@@ -144,6 +144,41 @@ export function initCarViewer(root: HTMLElement): void {
     return Math.round(turn * (count - 1));
   };
 
+  // Scroll position handed to CSS, so the drawings move with every scroll: --t0 and --t1 are the
+  // progress through scenes 0 and 1 (0 to 1). The progress line's fills are scaled directly.
+  const scrollVars = Array.from(root.querySelectorAll<HTMLElement>('[data-scroll-vars]'));
+  const progressFills = Array.from(root.querySelectorAll<HTMLElement>('[data-progress-fill]'));
+  const within = (p: number, i: number) => {
+    const start = edges[i] ?? 0;
+    const end = edges[i + 1] ?? 1;
+    return Math.min(1, Math.max(0, (p - start) / (end - start)));
+  };
+  // Only changed values are written: a write restyles everything under that element.
+  const written = new Map<HTMLElement, Record<string, string>>();
+  const setVar = (el: HTMLElement, name: string, value: string) => {
+    const last = written.get(el) ?? {};
+    if (last[name] === value) return;
+    last[name] = value;
+    written.set(el, last);
+    el.style.setProperty(name, value);
+  };
+  const updateScrollVars = (p: number) => {
+    if (!edges.length) return;
+    const values = {
+      '--t0': within(p, 0).toFixed(3),
+      '--t1': within(p, 1).toFixed(3),
+    };
+    for (const el of scrollVars) {
+      for (const [name, value] of Object.entries(values)) setVar(el, name, value);
+    }
+    progressFills.forEach((el, i) => {
+      const fill = within(p, i).toFixed(3);
+      if (el.dataset.fill === fill) return;
+      el.dataset.fill = fill;
+      el.style.transform = `scaleX(${fill})`;
+    });
+  };
+
   const updateScene = (p: number) => {
     if (!edges.length) return;
     let scene = 0;
@@ -157,6 +192,7 @@ export function initCarViewer(root: HTMLElement): void {
     const p = progress();
     updateCaptions(p);
     updateScene(p);
+    updateScrollVars(p);
     if (hint && p > 0.01) hint.dataset.hidden = 'true';
     const index = frameFor(p);
     if (index === wanted) return;
@@ -231,6 +267,7 @@ export function initCarViewer(root: HTMLElement): void {
   resize();
   wanted = frameFor(progress());
   updateScene(progress());
+  updateScrollVars(progress());
   load(0);
 
   window.addEventListener('scroll', onScroll, { passive: true });

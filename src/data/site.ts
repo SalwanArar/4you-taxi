@@ -46,9 +46,9 @@ export const car = {
 export const carFrames = {
   basePath: '/car360/frame_',
   extension: '.webp',
-  count: 73,
+  count: 145,
   width: 884,
-  height: 436,
+  height: 437,
 } as const;
 
 /** Icons available for the car features list (Lucide icon names). */
