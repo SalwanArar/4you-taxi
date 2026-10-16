@@ -7,7 +7,7 @@ const data = {
   '@type': 'TaxiService',
   name: business.name,
   telephone: business.phone.e164,
-  email: business.email,
+  ...(business.email ? { email: business.email } : {}),
   areaServed: {
     '@type': 'AdministrativeArea',
     name: business.region,

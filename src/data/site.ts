@@ -17,7 +17,7 @@ export const localeInfo: Record<Locale, { label: string; dir: 'ltr' | 'rtl' }> =
 
 /** Facts that are the same in every language. */
 export const business = {
-  name: '4you Taxi',
+  name: 'Länstaxi Jönköping',
   phone: {
     /** How the number is shown on the page. */
     display: '+46 73 725 01 75',
@@ -26,7 +26,8 @@ export const business = {
   },
   /** WhatsApp number: country code and number, digits only (used in https://wa.me/…). */
   whatsapp: '46737250175',
-  email: 'rashidalkanafani@gmail.com',
+  /** Company email. Leave '' to hide the email button and row until there is one. */
+  email: '' as string,
   region: 'Jönköpings län',
   country: 'SE',
 } as const;
@@ -87,7 +88,8 @@ interface Content {
    * captions while the car turns); `figure` is shown large and `label` small under it.
    */
   carFeatures: { icon: FeatureIcon; text: string; figure: string; label: string }[];
-  driver: {
+  /** About the company: one large line, then the languages spoken. */
+  about: {
     heading: string;
     languagesLabel: string;
     languagesSpoken: string;
@@ -115,9 +117,9 @@ interface Content {
 export const content: Record<Locale, Content> = {
   sv: {
     meta: {
-      title: '4you Taxi – Taxi i Jönköpings län',
+      title: 'Länstaxi Jönköping – Taxi i Jönköpings län',
       description:
-        'Ring 4you Taxi för en trygg resa i Jönköpings län. Föraren talar svenska, engelska och arabiska.',
+        'Ring Länstaxi Jönköping för en trygg resa i Jönköpings län. Vi talar svenska, engelska och arabiska.',
     },
     skipLink: 'Hoppa till innehållet',
     languageSwitcherLabel: 'Välj språk',
@@ -129,10 +131,10 @@ export const content: Record<Locale, Content> = {
     story: {
       night: { line: 'Sen kväll i Jönköping.', sub: 'Bussen har gått. Du behöver en bil.' },
       call: { line: 'Du ringer.' },
-      pickup: { line: 'Vår förare svarar.', sub: 'Ingen växel, ingen kö. Bilen är på väg.' },
+      pickup: { line: 'Vi svarar.', sub: 'Ingen växel, ingen kö. Bilen är på väg.' },
       drive: { line: 'Gott om plats.' },
-      arrival: { line: 'Säker. Snabb. Pålitlig.', sub: 'Vår förare kör dig hela vägen.' },
-      more: 'Mer om bilen och föraren',
+      arrival: { line: 'Säker. Snabb. Pålitlig.', sub: 'Vi kör dig hela vägen.' },
+      more: 'Mer om bilen och oss',
     },
     actions: {
       call: 'Ring nu',
@@ -163,15 +165,15 @@ export const content: Record<Locale, Content> = {
         label: 'fyrhjulsdrift',
       },
     ],
-    driver: {
-      heading: 'Bakom ratten',
-      languagesLabel: 'Vår förare talar',
+    about: {
+      heading: 'Om oss',
+      languagesLabel: 'Vi talar',
       languagesSpoken: 'Svenska, engelska och arabiska',
-      bio: 'Du ringer, vår förare svarar. Ingen växel och ingen kö.',
+      bio: 'Du ringer, vi svarar. Ingen växel och ingen kö.',
     },
     contact: {
       heading: 'Din resa är ett samtal bort.',
-      intro: 'Ring eller skriv till vår förare direkt, på svenska, engelska eller arabiska.',
+      intro: 'Ring eller skriv till oss direkt, på svenska, engelska eller arabiska.',
       phoneLabel: 'Telefon',
       emailLabel: 'E-post',
       areaLabel: 'Område',
@@ -185,9 +187,9 @@ export const content: Record<Locale, Content> = {
   },
   en: {
     meta: {
-      title: '4you Taxi – Taxi in Jönköping County',
+      title: 'Länstaxi Jönköping – Taxi in Jönköping County',
       description:
-        'Call 4you Taxi for a safe ride in Jönköping County. The driver speaks Swedish, English and Arabic.',
+        'Call Länstaxi Jönköping for a safe ride in Jönköping County. We speak Swedish, English and Arabic.',
     },
     skipLink: 'Skip to content',
     languageSwitcherLabel: 'Choose language',
@@ -199,13 +201,10 @@ export const content: Record<Locale, Content> = {
     story: {
       night: { line: 'Late evening in Jönköping.', sub: 'The bus has gone. You need a ride.' },
       call: { line: 'You call.' },
-      pickup: {
-        line: 'Our driver answers.',
-        sub: 'No call centre, no queue. The car is on its way.',
-      },
+      pickup: { line: 'We answer.', sub: 'No call centre, no queue. The car is on its way.' },
       drive: { line: 'Plenty of room.' },
-      arrival: { line: 'Safe. Fast. Reliable.', sub: 'Our driver takes you all the way.' },
-      more: 'More about the car and the driver',
+      arrival: { line: 'Safe. Fast. Reliable.', sub: 'We take you all the way.' },
+      more: 'More about the car and us',
     },
     actions: {
       call: 'Call now',
@@ -236,15 +235,15 @@ export const content: Record<Locale, Content> = {
         label: 'four-wheel drive',
       },
     ],
-    driver: {
-      heading: 'Behind the wheel',
-      languagesLabel: 'Our driver speaks',
+    about: {
+      heading: 'About us',
+      languagesLabel: 'We speak',
       languagesSpoken: 'Swedish, English and Arabic',
-      bio: 'You call, our driver answers. No call centre and no queue.',
+      bio: 'You call, we answer. No call centre and no queue.',
     },
     contact: {
       heading: 'Your ride is one call away.',
-      intro: 'Call or message our driver directly, in Swedish, English or Arabic.',
+      intro: 'Call or message us directly, in Swedish, English or Arabic.',
       phoneLabel: 'Phone',
       emailLabel: 'Email',
       areaLabel: 'Area',
@@ -258,9 +257,9 @@ export const content: Record<Locale, Content> = {
   },
   ar: {
     meta: {
-      title: '4you Taxi – تاكسي في مقاطعة يونشوبينغ',
+      title: 'Länstaxi Jönköping – تاكسي في مقاطعة يونشوبينغ',
       description:
-        'اتصل بـ 4you Taxi لرحلة آمنة في مقاطعة يونشوبينغ. سائقنا يتكلم العربية والسويدية والإنجليزية.',
+        'اتصل بـ Länstaxi Jönköping لرحلة آمنة في مقاطعة يونشوبينغ. نتكلم العربية والسويدية والإنجليزية.',
     },
     skipLink: 'انتقل إلى المحتوى',
     languageSwitcherLabel: 'اختر اللغة',
@@ -272,10 +271,10 @@ export const content: Record<Locale, Content> = {
     story: {
       night: { line: 'آخر الليل بيونشوبينغ.', sub: 'راح آخر باص، وبدك سيارة.' },
       call: { line: 'بتتصل.' },
-      pickup: { line: 'سائقنا بيرد.', sub: 'بلا مركز اتصالات وبلا انتظار. السيارة جاية لعندك.' },
+      pickup: { line: 'منرد عليك.', sub: 'بلا مركز اتصالات وبلا انتظار. السيارة جاية لعندك.' },
       drive: { line: 'في محل للكل.' },
-      arrival: { line: 'آمن. سريع. موثوق.', sub: 'سائقنا معك لآخر الطريق.' },
-      more: 'المزيد عن السيارة والسائق',
+      arrival: { line: 'آمن. سريع. موثوق.', sub: 'منوصلك لآخر الطريق.' },
+      more: 'المزيد عن السيارة وعنّا',
     },
     actions: {
       call: 'اتصل الآن',
@@ -301,15 +300,15 @@ export const content: Record<Locale, Content> = {
       { icon: 'luggage', text: 'مساحة كبيرة للأمتعة', figure: 'مساحة كبيرة', label: 'للأمتعة' },
       { icon: 'four-wheel-drive', text: 'دفع رباعي (4x4)', figure: '4x4', label: 'دفع رباعي' },
     ],
-    driver: {
-      heading: 'خلف المقود',
-      languagesLabel: 'سائقنا يتكلم',
+    about: {
+      heading: 'من نحن',
+      languagesLabel: 'نتكلم',
       languagesSpoken: 'العربية والسويدية والإنجليزية',
-      bio: 'بتتصل، وسائقنا بيرد. بلا مركز اتصالات وبلا انتظار.',
+      bio: 'بتتصل، ومنرد عليك. بلا مركز اتصالات وبلا انتظار.',
     },
     contact: {
       heading: 'رحلتك على بُعد مكالمة.',
-      intro: 'اتصل بسائقنا أو راسله مباشرة، بالعربية أو السويدية أو الإنجليزية.',
+      intro: 'اتصل بنا أو راسلنا مباشرة، بالعربية أو السويدية أو الإنجليزية.',
       phoneLabel: 'الهاتف',
       emailLabel: 'البريد الإلكتروني',
       areaLabel: 'المنطقة',

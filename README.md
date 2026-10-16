@@ -1,6 +1,6 @@
-# 4you Taxi
+# Länstaxi Jönköping
 
-One-page website for 4you Taxi in Jönköpings län, in Swedish (`/`), English (`/en/`) and Arabic (`/ar/`, right to left).
+One-page website for Länstaxi Jönköping in Jönköpings län, in Swedish (`/`), English (`/en/`) and Arabic (`/ar/`, right to left).
 Built with [Astro](https://astro.build) and Tailwind CSS. See `CLAUDE.md` for the full project brief.
 
 ## Requirements
@@ -29,7 +29,7 @@ components to change a word, a number or a translation.
 | ----------------------------------------- | ------------------------------------------------- |
 | Phone number                              | `business.phone` (change **both** lines, below)   |
 | WhatsApp number                           | `business.whatsapp`                               |
-| Email address                             | `business.email`                                  |
+| Email address (`''` hides it)             | `business.email`                                  |
 | Business name                             | `business.name`                                   |
 | Car model name                            | `car.model`                                       |
 | Designer credit in the footer             | `designer`                                        |
@@ -37,7 +37,7 @@ components to change a word, a number or a translation.
 | Big headline and line under it            | `content.<language>.hero`                         |
 | Button labels (Call now, WhatsApp, …)     | `content.<language>.actions`                      |
 | Car facts (also the captions as it turns) | `content.<language>.carFeatures`                  |
-| Languages the driver speaks, short bio    | `content.<language>.driver`                       |
+| About us: languages spoken, short line    | `content.<language>.about`                        |
 | Contact heading and intro line            | `content.<language>.contact`                      |
 | Area and availability                     | `content.<language>.serviceArea`, `.availability` |
 | Footer text                               | `content.<language>.footer`                       |
@@ -55,7 +55,7 @@ the same names, so when you change a sentence, change it in **all three** blocks
 - **WhatsApp:** country code and number, digits only, no `+` (`'46737250175'`).
 - **Car facts:** 4 to 6 short items. The first three also appear while the car turns. Only list things
   that are true for the car.
-- **Driver bio:** empty (`''`) hides it. Write a sentence between the quotes to show it.
+- **About us line (`about.bio`):** empty (`''`) hides it. Write a sentence between the quotes to show it.
 - Swedish and Arabic texts are drafts; have a native speaker read any new sentence.
 
 Colours, fonts, radius and sizes are in `src/styles/tokens.css`. The car images are in
