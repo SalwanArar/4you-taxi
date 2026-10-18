@@ -47,9 +47,9 @@ export const car = {
 export const carFrames = {
   basePath: '/car360/frame_',
   extension: '.webp',
-  count: 145,
-  width: 884,
-  height: 437,
+  count: 120,
+  width: 950,
+  height: 418,
 } as const;
 
 /** Icons available for the car features list (Lucide icon names). */
@@ -145,8 +145,8 @@ export const content: Record<Locale, Content> = {
     },
     car: {
       heading: 'Plats för alla',
-      alt: 'Vit Škoda Octavia-taxi',
-      rotatingLabel: 'Vit Škoda Octavia-taxi som snurrar när du skrollar',
+      alt: 'Vit kombitaxi med Länstaxi Jönköpings logga',
+      rotatingLabel: 'Vit kombitaxi med Länstaxi Jönköpings logga, som snurrar när du skrollar',
       scrollHint: 'Skrolla för att följa resan',
     },
     carFeatures: [
@@ -215,8 +215,8 @@ export const content: Record<Locale, Content> = {
     },
     car: {
       heading: 'Room for everyone',
-      alt: 'White Škoda Octavia taxi',
-      rotatingLabel: 'White Škoda Octavia taxi, rotating as you scroll',
+      alt: 'White estate taxi with the Länstaxi Jönköping logo',
+      rotatingLabel: 'White estate taxi with the Länstaxi Jönköping logo, rotating as you scroll',
       scrollHint: 'Scroll to follow the ride',
     },
     carFeatures: [
@@ -285,8 +285,8 @@ export const content: Record<Locale, Content> = {
     },
     car: {
       heading: 'مكان للجميع',
-      alt: 'سيارة تاكسي سكودا أوكتافيا بيضاء',
-      rotatingLabel: 'سيارة تاكسي سكودا أوكتافيا بيضاء تدور أثناء التمرير',
+      alt: 'سيارة تاكسي ستيشن بيضاء عليها شعار Länstaxi Jönköping',
+      rotatingLabel: 'سيارة تاكسي ستيشن بيضاء عليها شعار Länstaxi Jönköping، تدور أثناء التمرير',
       scrollHint: 'مرّر لتكمل الرحلة',
     },
     carFeatures: [
