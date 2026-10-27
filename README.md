@@ -68,7 +68,7 @@ Colours, fonts, radius and sizes are in `src/styles/tokens.css`. The car images 
 3. Change the text, then click **Commit changes…**, write a short note such as "New phone number",
    and choose **Commit directly to the `main` branch**.
 4. Wait a few minutes. Check progress under the **Actions** tab (green tick = live), then reload
-   <https://salwanarar.github.io/4you-taxi/>.
+   <https://lanstaxi.se/>.
 
 If the Actions run turns red, the file has a typing mistake (usually a missing quote or comma). Open
 the failed run to see the line number, fix it the same way, and commit again.
@@ -108,6 +108,7 @@ git reset --hard
 ## Publishing (GitHub Pages)
 
 `.github/workflows/deploy.yml` builds the site and publishes it to
-<https://salwanarar.github.io/4you-taxi/> on every push to `main` (and to the current work branch).
-It sets `SITE_URL` and `BASE_PATH` so links and car frames work under `/4you-taxi/`.
+<https://lanstaxi.se/> on every push to `main` (and to the current work branch).
+It sets `SITE_URL` for canonical links and the sitemap. `public/CNAME` tells GitHub Pages to serve
+the site on that domain.
 Local `npm run dev` is unaffected and still serves from the root.
