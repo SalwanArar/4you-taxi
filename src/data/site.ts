@@ -47,7 +47,7 @@ export const car = {
 export const carFrames = {
   basePath: '/car360/frame_',
   extension: '.webp',
-  count: 145,
+  count: 120,
   width: 884,
   height: 437,
 } as const;
