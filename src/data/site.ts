@@ -43,9 +43,10 @@ export const car = {
   model: 'Škoda Octavia',
 } as const;
 
-/** Car rotation frames in public/car360/. Update `count` if frames are added or removed. */
+/** Car rotation frames in public/car360/v3/. Update `count` if frames are added or removed. When the
+ * frames change, put them in a new folder (v4, …) so phones don't keep showing cached old ones. */
 export const carFrames = {
-  basePath: '/car360/frame_',
+  basePath: '/car360/v3/frame_',
   extension: '.webp',
   count: 120,
   width: 884,

@@ -59,7 +59,8 @@ the same names, so when you change a sentence, change it in **all three** blocks
 - Swedish and Arabic texts are drafts; have a native speaker read any new sentence.
 
 Colours, fonts, radius and sizes are in `src/styles/tokens.css`. The car images are in
-`public/car360/` (see `CLAUDE.md` §6 before replacing them).
+`public/car360/v3/` (see `CLAUDE.md` §6 before replacing them). New frames go in a new folder (`v4`, …)
+with `carFrames.basePath` in `site.ts` pointing at it, so phones don't show cached old frames.
 
 ### Option A: edit on github.com (no software needed)
 
