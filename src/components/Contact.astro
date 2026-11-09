@@ -1,8 +1,9 @@
 ---
 import Icon, { type IconName } from './Icon.astro';
+import { Image } from 'astro:assets';
 import QrCode from './QrCode.astro';
-import { business, carFrames, content, type Locale } from '../data/site';
-import { withBase } from '../utils/withBase';
+import { business, content, type Locale } from '../data/site';
+import finaleCar from '../assets/car/taxi-front-right.png';
 
 interface Props {
   locale: Locale;
@@ -31,11 +32,6 @@ const actions: {
     : []),
 ];
 
-// The last frame of the rotation: the car waits for you at the end of the page.
-const lastFrame = withBase(
-  `${carFrames.basePath}${String(carFrames.count).padStart(3, '0')}${carFrames.extension}`,
-);
-
 const details: { label: string; value: string; ltr?: boolean }[] = [
   ...(business.email ? [{ label: t.contact.emailLabel, value: business.email, ltr: true }] : []),
   { label: t.contact.areaLabel, value: t.serviceArea },
@@ -46,11 +42,14 @@ const details: { label: string; value: string; ltr?: boolean }[] = [
 <section id="contact" class="section" aria-labelledby="contact-title">
   <div class="wrap">
     <div class="finale" data-reveal>
-      <img
-        src={lastFrame}
+      {/* A photo of the real car: it waits for you at the end of the page. */}
+      <Image
+        src={finaleCar}
         alt=""
-        width={carFrames.width}
-        height={carFrames.height}
+        widths={[420, 640, 840]}
+        sizes="(min-width: 480px) 26rem, calc(100vw - 2rem)"
+        format="webp"
+        quality={80}
         loading="lazy"
         decoding="async"
         class="finale-car"
