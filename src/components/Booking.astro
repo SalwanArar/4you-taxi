@@ -1,0 +1,171 @@
+---
+// Book ahead: the visitor fills in date, time, pickup and destination, and the page writes a
+// WhatsApp or SMS message for them to send. No backend, nothing stored (CLAUDE.md: no booking
+// engine). The section needs JS to build the message, so it stays hidden without it; the call,
+// WhatsApp and SMS buttons in Contact still work.
+import Icon from './Icon.astro';
+import { business, content, type Locale } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = content[locale].booking;
+---
+
+<section
+  id="book"
+  class="section booking-section"
+  aria-labelledby="book-title"
+  data-booking-section
+  hidden
+>
+  <div class="section-grid">
+    <div>
+      <h2 id="book-title" class="statement">
+        {t.heading}
+      </h2>
+      <p class="mt-4 max-w-[40ch] text-muted">{t.intro}</p>
+    </div>
+
+    <form
+      class="booking"
+      data-booking
+      data-whatsapp={business.whatsapp}
+      data-phone={business.phone.e164}
+      data-message={JSON.stringify(t.message)}
+    >
+      <div class="grid grid-cols-2 gap-4">
+        <label class="field">
+          <span>{t.date}</span>
+          <input type="date" name="date" required data-date />
+        </label>
+        <label class="field">
+          <span>{t.time}</span>
+          <input type="time" name="time" required />
+        </label>
+      </div>
+      <label class="field">
+        <span>{t.pickup}</span>
+        <input type="text" name="pickup" required autocomplete="street-address" maxlength="120" />
+      </label>
+      <label class="field">
+        <span>{t.destination}</span>
+        <input type="text" name="destination" required maxlength="120" />
+      </label>
+      <label class="check">
+        <input type="checkbox" name="childSeat" />
+        <span>{t.childSeat}</span>
+      </label>
+
+      <div class="grid grid-cols-1 gap-3 min-[420px]:grid-cols-2">
+        <button type="submit" name="via" value="whatsapp" class="btn btn-ghost">
+          <Icon name="whatsapp" />
+          {t.sendWhatsapp}
+        </button>
+        <button type="submit" name="via" value="sms" class="btn btn-ghost">
+          <Icon name="sms" />
+          {t.sendSms}
+        </button>
+      </div>
+      <p class="text-muted" style="font-size: var(--fs-small)">
+        {t.note}
+      </p>
+    </form>
+  </div>
+</section>
+
+<script>
+  type Message = Record<
+    'greeting' | 'date' | 'time' | 'pickup' | 'destination' | 'childSeat' | 'yes' | 'no',
+    string
+  >;
+
+  for (const form of document.querySelectorAll<HTMLFormElement>('[data-booking]')) {
+    form.closest<HTMLElement>('[data-booking-section]')?.removeAttribute('hidden');
+
+    // No booking in the past: today (in the visitor's time zone) is the earliest date.
+    const date = form.querySelector<HTMLInputElement>('[data-date]');
+    if (date) {
+      const now = new Date();
+      const pad = (n: number) => String(n).padStart(2, '0');
+      date.min = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const m = JSON.parse(form.dataset.message ?? '{}') as Message;
+      const data = new FormData(form);
+      const value = (key: string) => String(data.get(key) ?? '').trim();
+      const text = [
+        m.greeting,
+        '',
+        `${m.date}: ${value('date')}`,
+        `${m.time}: ${value('time')}`,
+        `${m.pickup}: ${value('pickup')}`,
+        `${m.destination}: ${value('destination')}`,
+        `${m.childSeat}: ${data.get('childSeat') ? m.yes : m.no}`,
+      ].join('\n');
+      const body = encodeURIComponent(text);
+
+      const via = (event.submitter as HTMLButtonElement | null)?.value;
+      if (via === 'sms') {
+        // "?&body=" is understood by both iOS and Android messaging apps.
+        window.location.href = `sms:${form.dataset.phone}?&body=${body}`;
+      } else {
+        window.open(`https://wa.me/${form.dataset.whatsapp}?text=${body}`, '_blank', 'noopener');
+      }
+    });
+  }
+</script>
+
+<style>
+  .booking {
+    display: grid;
+    gap: 1.25rem;
+    max-width: 36rem;
+  }
+
+  .field {
+    display: grid;
+    gap: 0.5rem;
+    font-size: var(--fs-small);
+    color: var(--text-muted);
+  }
+
+  .field input {
+    width: 100%;
+    min-height: var(--tap-min);
+    padding: 0 1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-box);
+    background: var(--asphalt);
+    color: var(--text);
+    font-size: var(--fs-body);
+  }
+
+  .field input:hover {
+    border-color: var(--text-muted);
+  }
+
+  .field input:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+    border-color: var(--text);
+  }
+
+  .check {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: var(--tap-min);
+    cursor: pointer;
+  }
+
+  .check input {
+    width: 1.375rem;
+    height: 1.375rem;
+    accent-color: var(--taxi);
+  }
+</style>

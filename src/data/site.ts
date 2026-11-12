@@ -107,6 +107,33 @@ interface Content {
     /** Caption under the QR code, which opens a phone call when scanned. */
     qrLabel: string;
   };
+  /**
+   * Book ahead: a short form that writes a WhatsApp or SMS message for the visitor to send.
+   * Nothing is stored or sent by the site; the driver confirms the ride by replying.
+   */
+  booking: {
+    heading: string;
+    intro: string;
+    date: string;
+    time: string;
+    pickup: string;
+    destination: string;
+    childSeat: string;
+    sendWhatsapp: string;
+    sendSms: string;
+    note: string;
+    /** The message that is written for the visitor. Lines in order; each label is followed by the answer. */
+    message: {
+      greeting: string;
+      date: string;
+      time: string;
+      pickup: string;
+      destination: string;
+      childSeat: string;
+      yes: string;
+      no: string;
+    };
+  };
   /** Accessible name for the fixed Call/WhatsApp bar on phones. */
   quickContactLabel: string;
   serviceArea: string;
@@ -181,6 +208,28 @@ export const content: Record<Locale, Content> = {
       availabilityLabel: 'Tillgänglighet',
       qrLabel: 'Skanna för att ringa',
     },
+    booking: {
+      heading: 'Boka i förväg',
+      intro: 'Ska du till flyget eller tåget? Fyll i, så skrivs ett meddelande till oss.',
+      date: 'Datum',
+      time: 'Tid',
+      pickup: 'Hämtning',
+      destination: 'Destination',
+      childSeat: 'Jag behöver barnstol',
+      sendWhatsapp: 'Skicka via WhatsApp',
+      sendSms: 'Skicka via SMS',
+      note: 'Inget sparas på webbplatsen. Resan är bokad när vi har svarat och bekräftat.',
+      message: {
+        greeting: 'Hej! Jag vill boka en taxi.',
+        date: 'Datum',
+        time: 'Tid',
+        pickup: 'Hämtning',
+        destination: 'Destination',
+        childSeat: 'Barnstol',
+        yes: 'Ja',
+        no: 'Nej',
+      },
+    },
     quickContactLabel: 'Snabbkontakt',
     serviceArea: 'Jönköpings län',
     availability: 'Kör på beställning',
@@ -251,6 +300,28 @@ export const content: Record<Locale, Content> = {
       availabilityLabel: 'Availability',
       qrLabel: 'Scan to call',
     },
+    booking: {
+      heading: 'Book ahead',
+      intro: 'Catching a flight or a train? Fill this in and a message to us is written for you.',
+      date: 'Date',
+      time: 'Time',
+      pickup: 'Pickup',
+      destination: 'Destination',
+      childSeat: 'I need a child seat',
+      sendWhatsapp: 'Send via WhatsApp',
+      sendSms: 'Send via SMS',
+      note: 'Nothing is saved on this site. Your ride is booked once we reply and confirm.',
+      message: {
+        greeting: 'Hi! I would like to book a taxi.',
+        date: 'Date',
+        time: 'Time',
+        pickup: 'Pickup',
+        destination: 'Destination',
+        childSeat: 'Child seat',
+        yes: 'Yes',
+        no: 'No',
+      },
+    },
     quickContactLabel: 'Quick contact',
     serviceArea: 'Jönköping County',
     availability: 'Available on call',
@@ -315,6 +386,28 @@ export const content: Record<Locale, Content> = {
       areaLabel: 'المنطقة',
       availabilityLabel: 'التوفر',
       qrLabel: 'امسح الرمز للاتصال',
+    },
+    booking: {
+      heading: 'احجز مسبقاً',
+      intro: 'رايح عالمطار أو عالقطار؟ عبّي المعلومات، ومنكتبلك رسالة جاهزة تبعتها إلنا.',
+      date: 'التاريخ',
+      time: 'الوقت',
+      pickup: 'مكان الانطلاق',
+      destination: 'الوجهة',
+      childSeat: 'بحتاج مقعد أطفال',
+      sendWhatsapp: 'إرسال عبر واتساب',
+      sendSms: 'إرسال برسالة نصية',
+      note: 'ما منحفظ شي على الموقع. الحجز بيتأكد لما نرد عليك.',
+      message: {
+        greeting: 'مرحبا! بدي احجز تاكسي.',
+        date: 'التاريخ',
+        time: 'الوقت',
+        pickup: 'مكان الانطلاق',
+        destination: 'الوجهة',
+        childSeat: 'مقعد أطفال',
+        yes: 'نعم',
+        no: 'لا',
+      },
     },
     quickContactLabel: 'اتصال سريع',
     serviceArea: 'مقاطعة يونشوبينغ',

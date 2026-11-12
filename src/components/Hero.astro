@@ -29,6 +29,16 @@ const s = t.story;
   <h1 id="hero-title" class="story-title">
     {t.hero.title}
   </h1>
+  <p class="hero-facts">
+    <a href={`tel:${business.phone.e164}`} dir="ltr">
+      <Icon name="phone" size={16} />
+      {business.phone.display}
+    </a>
+    <span>
+      <Icon name="area" size={16} />
+      {t.serviceArea}
+    </span>
+  </p>
   <div class="scene-stack">
     <p class="scene-line" data-scene="0">
       {s.night.line}
@@ -163,6 +173,37 @@ const s = t.story;
     font-weight: 500;
     letter-spacing: 0;
     line-height: 1.4;
+    color: var(--text-muted);
+  }
+
+  /* The number and area, always visible under the title so nobody has to scroll for them. */
+  .hero-facts {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 1.25rem;
+    font-size: var(--fs-small);
+    color: var(--text);
+  }
+
+  .hero-facts > * {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    min-height: 2.75rem;
+  }
+
+  .hero-facts a {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    text-decoration: none;
+  }
+
+  .hero-facts a:hover {
+    color: var(--taxi);
+  }
+
+  .hero-facts :global(svg) {
     color: var(--text-muted);
   }
 
