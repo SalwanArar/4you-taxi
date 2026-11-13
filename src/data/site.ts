@@ -43,16 +43,6 @@ export const car = {
   model: 'Škoda Octavia',
 } as const;
 
-/** Car rotation frames in public/car360/v3/. Update `count` if frames are added or removed. When the
- * frames change, put them in a new folder (v4, …) so phones don't keep showing cached old ones. */
-export const carFrames = {
-  basePath: '/car360/v3/frame_',
-  extension: '.webp',
-  count: 120,
-  width: 884,
-  height: 437,
-} as const;
-
 /** Icons available for the car features list (Lucide icon names). */
 export type FeatureIcon = 'seats' | 'child-seat' | 'luggage' | 'four-wheel-drive';
 
@@ -79,14 +69,12 @@ interface Content {
   car: {
     heading: string;
     alt: string;
-    /** Accessible name of the rotating car. */
-    rotatingLabel: string;
-    /** Small hint shown until the visitor starts scrolling through the car. */
+    /** Small hint shown until the visitor starts scrolling through the story. */
     scrollHint: string;
   };
   /**
-   * Car details section: 4 to 6 short, confirmed facts. `text` is the full fact (also used for the
-   * captions while the car turns); `figure` is shown large and `label` small under it.
+   * Car details section: 4 to 6 short, confirmed facts. `text` is the full fact; `figure` is
+   * shown large and `label` small under it.
    */
   carFeatures: { icon: FeatureIcon; text: string; figure: string; label: string }[];
   /** About the company: one large line, then the languages spoken. */
@@ -174,7 +162,6 @@ export const content: Record<Locale, Content> = {
     car: {
       heading: 'Plats för alla',
       alt: 'Vit Škoda Octavia-taxi',
-      rotatingLabel: 'Vit Škoda Octavia-taxi som snurrar när du skrollar',
       scrollHint: 'Skrolla för att följa resan',
     },
     carFeatures: [
@@ -266,7 +253,6 @@ export const content: Record<Locale, Content> = {
     car: {
       heading: 'Room for everyone',
       alt: 'White Škoda Octavia taxi',
-      rotatingLabel: 'White Škoda Octavia taxi, rotating as you scroll',
       scrollHint: 'Scroll to follow the ride',
     },
     carFeatures: [
@@ -358,7 +344,6 @@ export const content: Record<Locale, Content> = {
     car: {
       heading: 'مكان للجميع',
       alt: 'سيارة تاكسي سكودا أوكتافيا بيضاء',
-      rotatingLabel: 'سيارة تاكسي سكودا أوكتافيا بيضاء تدور أثناء التمرير',
       scrollHint: 'مرّر لتكمل الرحلة',
     },
     carFeatures: [

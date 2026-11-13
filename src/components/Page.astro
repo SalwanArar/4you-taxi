@@ -10,8 +10,7 @@ import Header from './Header.astro';
 import SceneArt from './SceneArt.astro';
 import Hero from './Hero.astro';
 import StickyCallBar from './StickyCallBar.astro';
-import { carFrames, content, type Locale } from '../data/site';
-import { withBase } from '../utils/withBase';
+import { content, type Locale } from '../data/site';
 
 interface Props {
   locale: Locale;
@@ -19,8 +18,8 @@ interface Props {
 
 const { locale } = Astro.props;
 const t = content[locale];
-// Where each of the five story scenes starts, as a share of the opening's scroll. The car turns
-// from the pickup (scene 2) to the arrival (scene 4).
+// Where each of the five story scenes starts, as a share of the opening's scroll. The car drives
+// in at the pickup (scene 2), drives on (scene 3) and stops at the arrival (scene 4).
 const storyEdges = [0, 0.133, 0.288, 0.487, 0.818];
 ---
 
@@ -35,16 +34,10 @@ const storyEdges = [0, 0.133, 0.288, 0.487, 0.818];
   <main id="main">
     <CarViewer
       id="top"
-      frames={withBase(carFrames.basePath)}
-      count={carFrames.count}
-      extension={carFrames.extension}
-      width={carFrames.width}
-      height={carFrames.height}
       alt={t.car.alt}
-      label={t.car.rotatingLabel}
       labelledBy="hero-title"
       hint={t.car.scrollHint}
-      story={{ edges: storyEdges, turnStart: storyEdges[2], turnEnd: storyEdges[4] }}
+      story={{ edges: storyEdges }}
     >
       <Hero locale={locale} storyEdges={storyEdges} />
       <SceneArt />
