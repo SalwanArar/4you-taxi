@@ -17,7 +17,8 @@ const { locale } = Astro.props;
   <details data-lang-menu>
     <summary class="btn btn-ghost lang-button">
       <Icon name="globe" size={18} />
-      <span>{localeInfo[locale].label}</span>
+      {/* Phones: globe only, so the logo has room; the name is still read out. */}
+      <span class="max-sm:sr-only">{localeInfo[locale].label}</span>
       <Icon name="chevron-down" size={16} class="lang-chevron" />
     </summary>
     <ul class="lang-list">
