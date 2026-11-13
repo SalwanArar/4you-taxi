@@ -43,16 +43,6 @@ export const car = {
   model: 'Škoda Octavia',
 } as const;
 
-/** Car rotation frames in public/car360/v3/. Update `count` if frames are added or removed. When the
- * frames change, put them in a new folder (v4, …) so phones don't keep showing cached old ones. */
-export const carFrames = {
-  basePath: '/car360/v3/frame_',
-  extension: '.webp',
-  count: 120,
-  width: 884,
-  height: 437,
-} as const;
-
 /** Icons available for the car features list (Lucide icon names). */
 export type FeatureIcon = 'seats' | 'child-seat' | 'luggage' | 'four-wheel-drive';
 
@@ -79,14 +69,12 @@ interface Content {
   car: {
     heading: string;
     alt: string;
-    /** Accessible name of the rotating car. */
-    rotatingLabel: string;
-    /** Small hint shown until the visitor starts scrolling through the car. */
+    /** Small hint shown until the visitor starts scrolling through the story. */
     scrollHint: string;
   };
   /**
-   * Car details section: 4 to 6 short, confirmed facts. `text` is the full fact (also used for the
-   * captions while the car turns); `figure` is shown large and `label` small under it.
+   * Car details section: 4 to 6 short, confirmed facts. `text` is the full fact; `figure` is
+   * shown large and `label` small under it.
    */
   carFeatures: { icon: FeatureIcon; text: string; figure: string; label: string }[];
   /** About the company: one large line, then the languages spoken. */
@@ -106,6 +94,33 @@ interface Content {
     availabilityLabel: string;
     /** Caption under the QR code, which opens a phone call when scanned. */
     qrLabel: string;
+  };
+  /**
+   * Book ahead: a short form that writes a WhatsApp or SMS message for the visitor to send.
+   * Nothing is stored or sent by the site; the driver confirms the ride by replying.
+   */
+  booking: {
+    heading: string;
+    intro: string;
+    date: string;
+    time: string;
+    pickup: string;
+    destination: string;
+    childSeat: string;
+    sendWhatsapp: string;
+    sendSms: string;
+    note: string;
+    /** The message that is written for the visitor. Lines in order; each label is followed by the answer. */
+    message: {
+      greeting: string;
+      date: string;
+      time: string;
+      pickup: string;
+      destination: string;
+      childSeat: string;
+      yes: string;
+      no: string;
+    };
   };
   /** Accessible name for the fixed Call/WhatsApp bar on phones. */
   quickContactLabel: string;
@@ -147,7 +162,6 @@ export const content: Record<Locale, Content> = {
     car: {
       heading: 'Plats för alla',
       alt: 'Vit Škoda Octavia-taxi',
-      rotatingLabel: 'Vit Škoda Octavia-taxi som snurrar när du skrollar',
       scrollHint: 'Skrolla för att följa resan',
     },
     carFeatures: [
@@ -180,6 +194,28 @@ export const content: Record<Locale, Content> = {
       areaLabel: 'Område',
       availabilityLabel: 'Tillgänglighet',
       qrLabel: 'Skanna för att ringa',
+    },
+    booking: {
+      heading: 'Boka i förväg',
+      intro: 'Ska du till flyget eller tåget? Fyll i, så skrivs ett meddelande till oss.',
+      date: 'Datum',
+      time: 'Tid',
+      pickup: 'Hämtning',
+      destination: 'Destination',
+      childSeat: 'Jag behöver barnstol',
+      sendWhatsapp: 'Skicka via WhatsApp',
+      sendSms: 'Skicka via SMS',
+      note: 'Inget sparas på webbplatsen. Resan är bokad när vi har svarat och bekräftat.',
+      message: {
+        greeting: 'Hej! Jag vill boka en taxi.',
+        date: 'Datum',
+        time: 'Tid',
+        pickup: 'Hämtning',
+        destination: 'Destination',
+        childSeat: 'Barnstol',
+        yes: 'Ja',
+        no: 'Nej',
+      },
     },
     quickContactLabel: 'Snabbkontakt',
     serviceArea: 'Jönköpings län',
@@ -217,7 +253,6 @@ export const content: Record<Locale, Content> = {
     car: {
       heading: 'Room for everyone',
       alt: 'White Škoda Octavia taxi',
-      rotatingLabel: 'White Škoda Octavia taxi, rotating as you scroll',
       scrollHint: 'Scroll to follow the ride',
     },
     carFeatures: [
@@ -250,6 +285,28 @@ export const content: Record<Locale, Content> = {
       areaLabel: 'Area',
       availabilityLabel: 'Availability',
       qrLabel: 'Scan to call',
+    },
+    booking: {
+      heading: 'Book ahead',
+      intro: 'Catching a flight or a train? Fill this in and a message to us is written for you.',
+      date: 'Date',
+      time: 'Time',
+      pickup: 'Pickup',
+      destination: 'Destination',
+      childSeat: 'I need a child seat',
+      sendWhatsapp: 'Send via WhatsApp',
+      sendSms: 'Send via SMS',
+      note: 'Nothing is saved on this site. Your ride is booked once we reply and confirm.',
+      message: {
+        greeting: 'Hi! I would like to book a taxi.',
+        date: 'Date',
+        time: 'Time',
+        pickup: 'Pickup',
+        destination: 'Destination',
+        childSeat: 'Child seat',
+        yes: 'Yes',
+        no: 'No',
+      },
     },
     quickContactLabel: 'Quick contact',
     serviceArea: 'Jönköping County',
@@ -287,7 +344,6 @@ export const content: Record<Locale, Content> = {
     car: {
       heading: 'مكان للجميع',
       alt: 'سيارة تاكسي سكودا أوكتافيا بيضاء',
-      rotatingLabel: 'سيارة تاكسي سكودا أوكتافيا بيضاء تدور أثناء التمرير',
       scrollHint: 'مرّر لتكمل الرحلة',
     },
     carFeatures: [
@@ -315,6 +371,28 @@ export const content: Record<Locale, Content> = {
       areaLabel: 'المنطقة',
       availabilityLabel: 'التوفر',
       qrLabel: 'امسح الرمز للاتصال',
+    },
+    booking: {
+      heading: 'احجز مسبقاً',
+      intro: 'رايح عالمطار أو عالقطار؟ عبّي المعلومات، ومنكتبلك رسالة جاهزة تبعتها إلنا.',
+      date: 'التاريخ',
+      time: 'الوقت',
+      pickup: 'مكان الانطلاق',
+      destination: 'الوجهة',
+      childSeat: 'بحتاج مقعد أطفال',
+      sendWhatsapp: 'إرسال عبر واتساب',
+      sendSms: 'إرسال برسالة نصية',
+      note: 'ما منحفظ شي على الموقع. الحجز بيتأكد لما نرد عليك.',
+      message: {
+        greeting: 'مرحبا! بدي احجز تاكسي.',
+        date: 'التاريخ',
+        time: 'الوقت',
+        pickup: 'مكان الانطلاق',
+        destination: 'الوجهة',
+        childSeat: 'مقعد أطفال',
+        yes: 'نعم',
+        no: 'لا',
+      },
     },
     quickContactLabel: 'اتصال سريع',
     serviceArea: 'مقاطعة يونشوبينغ',

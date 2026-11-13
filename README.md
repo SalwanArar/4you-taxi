@@ -53,14 +53,13 @@ the same names, so when you change a sentence, change it in **all three** blocks
 - **Phone number:** `display` is what people see (`'+46 73 725 01 75'`). `e164` is used by the call and
   SMS buttons and must have no spaces (`'+46737250175'`). The QR code is made from `e164`.
 - **WhatsApp:** country code and number, digits only, no `+` (`'46737250175'`).
-- **Car facts:** 4 to 6 short items. The first three also appear while the car turns. Only list things
-  that are true for the car.
+- **Car facts:** 4 to 6 short items. They also appear under the car in the opening story. Only list
+  things that are true for the car.
 - **About us line (`about.bio`):** empty (`''`) hides it. Write a sentence between the quotes to show it.
 - Swedish and Arabic texts are drafts; have a native speaker read any new sentence.
 
-Colours, fonts, radius and sizes are in `src/styles/tokens.css`. The car images are in
-`public/car360/v3/` (see `CLAUDE.md` §6 before replacing them). New frames go in a new folder (`v4`, …)
-with `carFrames.basePath` in `site.ts` pointing at it, so phones don't show cached old frames.
+Colours, fonts, radius and sizes are in `src/styles/tokens.css`. The car in the opening story is a
+drawing in `src/components/CarDrawing.astro` (see `CLAUDE.md` §6 before changing it).
 
 ### Option A: edit on github.com (no software needed)
 

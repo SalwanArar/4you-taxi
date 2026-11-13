@@ -1,48 +1,25 @@
 ---
-// Scroll-driven car rotation (CLAUDE.md §6), used as the page hero. The car stands under one
-// soft light; the slotted hero content sits above and below it, and short captions with car facts
-// fade in at set points while it turns. Frame 1 is a normal <img>: it is the poster (and LCP image), the no-JS
-// fallback and the reduced-motion view. The script swaps in a canvas once it runs.
+// The page hero: the night story, told around the drawn taxi (CarDrawing.astro). The slotted hero
+// content sits above and below the car. As the visitor scrolls, the script hands the progress
+// through each scene to CSS (--t0 … --t4): the car drives in, drives on, then stops for you.
+// Without JS or with reduced motion the section is one screen with the car standing still.
+import CarDrawing from './CarDrawing.astro';
+
 interface Props {
-  /** Path prefix of the frames, e.g. '/car360/v3/frame_'. */
-  frames: string;
-  /** Number of frames. */
-  count: number;
-  extension: string;
-  width: number;
-  height: number;
+  /** Accessible name of the car drawing. */
   alt: string;
-  /** Accessible name of the rotating canvas. */
-  label: string;
   /** id of the heading inside the slot that names this section. */
   labelledBy: string;
   hint: string;
-  /** Short facts shown one after another while the car turns (from site.ts). */
-  captions?: string[];
   /**
-   * Story mode: the section plays as scenes. `edges` are where each scene starts (0 to 1 of the
-   * scroll); the car is hidden in the first two scenes and turns between `turnStart` and
-   * `turnEnd`, then holds its last frame.
+   * The section plays as scenes. `edges` are where each scene starts (0 to 1 of the scroll); the
+   * car is out of sight in the first two scenes and drives in at the third.
    */
-  story?: { edges: number[]; turnStart: number; turnEnd: number };
+  story: { edges: number[] };
   id?: string;
 }
 
-const {
-  frames,
-  count,
-  extension,
-  width,
-  height,
-  alt,
-  label,
-  labelledBy,
-  hint,
-  captions = [],
-  story,
-  id,
-} = Astro.props;
-const poster = `${frames}001${extension}`;
+const { alt, labelledBy, hint, story, id } = Astro.props;
 ---
 
 <section
@@ -50,39 +27,17 @@ const poster = `${frames}001${extension}`;
   class="car-viewer"
   aria-labelledby={labelledBy}
   data-car-viewer
-  data-frames={frames}
-  data-extension={extension}
-  data-count={count}
-  data-width={width}
-  data-height={height}
-  data-story={story ? '' : undefined}
-  data-scene-edges={story?.edges.join(',')}
-  data-turn-start={story?.turnStart}
-  data-turn-end={story?.turnEnd}
+  data-story
+  data-scene-edges={story.edges.join(',')}
 >
   <div class="car-sticky">
     <div class="car-area">
-      <div class="car-stage" style={`--car-ratio: ${width} / ${height}`}>
+      <div class="car-stage" data-scroll-vars>
         <div class="car-floor" aria-hidden="true"></div>
-        <img
-          src={poster}
-          {width}
-          {height}
-          {alt}
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
-          class="car-frame"
-        />
-        <canvas class="car-frame car-canvas" role="img" aria-label={label}></canvas>
-        <canvas class="car-reflection" data-reflection aria-hidden="true"></canvas>
-        {captions.length > 0 && (
-          <ul class="car-captions" aria-hidden="true">
-            {captions.map((c) => (
-              <li data-caption>{c}</li>
-            ))}
-          </ul>
-        )}
+        <div class="car-road" aria-hidden="true"></div>
+        <div class="car-drive">
+          <CarDrawing label={alt} />
+        </div>
         <p class="car-hint" data-hint aria-hidden="true">
           {hint}
         </p>
@@ -92,7 +47,7 @@ const poster = `${frames}001${extension}`;
   </div>
 </section>
 
-{story && <script is:inline>
+<script is:inline>
   // Switch to the film before first paint, so the opening scene does not flash the end.
   (function () {
     const el = document.currentScript && document.currentScript.previousElementSibling;
@@ -101,7 +56,7 @@ const poster = `${frames}001${extension}`;
       el.dataset.scene = '0';
     }
   })();
-</script>}
+</script>
 
 <style>
   /* Pure black, lit from above by one soft light. */
@@ -131,17 +86,6 @@ const poster = `${frames}001${extension}`;
     inset: 0;
     background: radial-gradient(60% 55% at 50% 0%, var(--light-glow), transparent 70%);
     pointer-events: none;
-  }
-
-  /* Scrubbing mode, switched on by the script: tall section, the stage stays pinned. */
-  .car-viewer[data-scrub] {
-    height: 250vh;
-  }
-
-  @media (min-width: 640px) {
-    .car-viewer[data-scrub] {
-      height: 300vh;
-    }
   }
 
   /* Story mode: a long section, so each of the first four scenes gets close to two screens of
@@ -222,6 +166,7 @@ const poster = `${frames}001${extension}`;
   }
 
   .car-stage {
+    --car-ratio: 1130 / 445;
     position: relative;
     margin-inline: auto;
     margin-bottom: var(--caption-room);
@@ -230,40 +175,11 @@ const poster = `${frames}001${extension}`;
     width: min(100%, 920px, (100cqh - var(--caption-room)) * var(--car-ratio));
   }
 
-  .car-frame {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  .car-canvas {
-    visibility: hidden;
-  }
-
-  .car-viewer[data-ready] .car-canvas {
-    visibility: visible;
-  }
-
-  .car-viewer[data-ready] img.car-frame {
-    visibility: hidden;
-  }
-
-  /* A faint mirror image of the car on the glossy ground, drawn and faded by the script.
-     It sits half a stage lower so it has room below the wheels. */
-  .car-reflection {
-    position: absolute;
-    inset-inline: 0;
-    top: 50%;
-    width: 100%;
-    height: 100%;
-    opacity: 0.13;
-    pointer-events: none;
-    visibility: hidden;
-  }
-
-  .car-viewer[data-ready] .car-reflection {
-    visibility: visible;
+  /* Phones and tablets: a little room under the car, so the facts below never touch it. */
+  @media (max-width: 1023px) {
+    .car-area {
+      --caption-room: 3rem;
+    }
   }
 
   /* The pool of light on the ground, with a soft shadow right under the car. */
@@ -275,68 +191,6 @@ const poster = `${frames}001${extension}`;
     background:
       radial-gradient(38% 22% at 50% 50%, rgb(0 0 0 / 0.85), transparent 100%),
       radial-gradient(50% 50% at 50% 50%, var(--floor-glow), transparent 100%);
-  }
-
-  /* Car facts, one at a time, while it turns. */
-  .car-captions {
-    position: absolute;
-    inset-inline-end: 1rem;
-    bottom: 100%;
-    margin: 0 0 0.5rem;
-    padding: 0;
-    list-style: none;
-    font-size: var(--fs-lead);
-  }
-
-  .car-captions li {
-    position: absolute;
-    inset-inline-end: 0;
-    bottom: 0;
-    white-space: nowrap;
-    opacity: 0;
-    transform: translateY(0.4rem);
-    transition:
-      opacity 300ms ease,
-      transform 300ms ease;
-  }
-
-  .car-captions li::before {
-    content: '';
-    display: inline-block;
-    width: 0.5rem;
-    height: 0.5rem;
-    margin-inline-end: 0.625rem;
-    border-radius: 50%;
-    background: var(--taxi);
-    vertical-align: middle;
-  }
-
-  .car-captions li[data-on] {
-    opacity: 1;
-    transform: none;
-  }
-
-  /* Phones and tablets: the headline is too wide to leave room beside it, so the facts appear
-     under the car, where the scroll hint was (the hint is gone by the time the first fact shows). */
-  @media (max-width: 1023px) {
-    .car-area {
-      --caption-room: 3rem;
-    }
-
-    .car-captions {
-      inset-inline: 0;
-      top: 100%;
-      bottom: auto;
-      margin: 0.75rem 0 0;
-      text-align: center;
-    }
-
-    .car-captions li {
-      inset-inline: 0;
-      top: 0;
-      bottom: auto;
-      white-space: normal;
-    }
   }
 
   .car-hint {
@@ -355,11 +209,54 @@ const poster = `${frames}001${extension}`;
     display: block;
   }
 
-  /* Very short screens: the car alone; the same facts are listed further down the page. */
-  @container (max-height: 10rem) {
-    .car-captions {
-      display: none;
-    }
+  /* The drawing's own box: its viewBox is 1130 x 445 (car plus headlight beam and reflection). */
+  .car-drive {
+    position: absolute;
+    inset: 0;
+  }
+
+  .car-drive :global(.car-drawing) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  /* Lane markings, drawn at the height of the wheels' contact with the road. */
+  .car-road {
+    position: absolute;
+    inset-inline: -50vw;
+    top: 82.5%;
+    height: 3px;
+    background: repeating-linear-gradient(90deg, #2a2925 0 56px, transparent 56px 120px);
+    mask-image: linear-gradient(90deg, transparent, #000 35%, #000 65%, transparent);
+  }
+
+  /* Driving in (scene 2): the car rolls in from the right and eases to a stop at the centre.
+     --t2 runs 0 to 1 through the scene; the car arrives at 70% of it. */
+  .car-viewer[data-scrub] .car-stage {
+    --arrive: clamp(0, var(--t2, 1) / 0.7, 1);
+    --ease: calc(1 - (1 - var(--arrive)) * (1 - var(--arrive)));
+  }
+
+  .car-viewer[data-scrub] .car-drive {
+    transform: translateX(calc((1 - var(--ease)) * (50vw + 60%)));
+  }
+
+  /* Wheels turn with the distance travelled: in while driving in (scene 2), then on the road
+     (scene 3). The car faces left, so they turn anticlockwise. */
+  .car-viewer[data-scrub] .car-drive :global(.spokes) {
+    transform: rotate(calc((var(--ease) * -900 + var(--t3, 0) * -1500) * 1deg));
+  }
+
+  /* Driving on (scene 3): the lane markings slide past under the car. */
+  .car-viewer[data-scrub] .car-road {
+    background-position-x: calc(var(--t3, 0) * 1920px);
+  }
+
+  /* Stopping (scene 4): the brake lights come on. */
+  .car-drive :global(.car-brake) {
+    opacity: clamp(0, var(--t4, 1) * 5, 1);
   }
 
   .car-hint[data-hidden] {
@@ -367,8 +264,7 @@ const poster = `${frames}001${extension}`;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .car-hint,
-    .car-captions li {
+    .car-hint {
       transition: none;
     }
   }
