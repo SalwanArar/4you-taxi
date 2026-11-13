@@ -32,6 +32,51 @@ export const business = {
   country: 'SE',
 } as const;
 
+/** True while a value is still a [[PLACEHOLDER]] waiting for the owner's real data. */
+export const isPlaceholder = (value: string) => value.startsWith('[[');
+
+/**
+ * The registered company, shown in the footer. Use the exact name and numbers from the
+ * registration papers. Leave a value '' to hide that line.
+ */
+export const company = {
+  /** Registered company name (as at Bolagsverket). */
+  legalName: '[[COMPANY_NAME]]',
+  /** Organisationsnummer, for example 559999-9999. */
+  orgNumber: '[[ORG_NR]]',
+  /** Taxi licence number (tillstånd för taxitrafik, from Transportstyrelsen). */
+  licence: '[[TAXI_LICENCE_NR]]',
+} as const;
+
+/**
+ * Prices, written exactly as they should be shown, for example '345 kr'. Including VAT.
+ * Leave a value '' to hide that row.
+ */
+export const prices = {
+  /** Jämförpris: the price for a 10 km, 15 minute trip, the same figure as on the car. */
+  comparison: '[[JAMFORPRIS]]' as string,
+  meter: {
+    start: '[[START_FEE]]' as string,
+    perKm: '[[PRICE_PER_KM]]' as string,
+    perMinute: '[[PRICE_PER_MINUTE]]' as string,
+  },
+  /** Fixed prices to popular places. Names per language are in content.prices.fixed. */
+  fixed: {
+    airport: '[[PRICE_AIRPORT]]' as string,
+    station: '[[PRICE_STATION]]' as string,
+  },
+};
+
+/** Ways to pay. Labels per language are in content.prices.methods. */
+export type PaymentMethod = 'card' | 'swish' | 'mobilePay' | 'cash' | 'invoice';
+
+/**
+ * The ways customers can pay, in the order they are shown. Empty until the owner confirms;
+ * the page then shows a [[PAYMENT_METHODS]] placeholder.
+ * For example: ['card', 'swish', 'mobilePay', 'cash', 'invoice']
+ */
+export const paymentMethods: PaymentMethod[] = [];
+
 /** Who designed and built the site, credited in the footer. */
 export const designer = {
   name: 'Salwan Arar',
@@ -122,11 +167,28 @@ interface Content {
       no: string;
     };
   };
+  /** Prices and payment. Amounts are in `prices` above; only words are here. */
+  prices: {
+    heading: string;
+    comparisonLabel: string;
+    comparisonNote: string;
+    meterHeading: string;
+    start: string;
+    perKm: string;
+    perMinute: string;
+    fixedHeading: string;
+    fixed: { airport: string; station: string };
+    /** Where the fixed prices start from. '' hides it. */
+    fixedNote: string;
+    paymentHeading: string;
+    methods: Record<PaymentMethod, string>;
+    vatNote: string;
+  };
   /** Accessible name for the fixed Call/WhatsApp bar on phones. */
   quickContactLabel: string;
   serviceArea: string;
   availability: string;
-  footer: { rights: string; designedBy: string };
+  footer: { rights: string; designedBy: string; orgNumber: string; licence: string };
 }
 
 /** Text per language. Swedish and Arabic are drafts and should be checked by a native speaker. */
@@ -220,7 +282,33 @@ export const content: Record<Locale, Content> = {
     quickContactLabel: 'Snabbkontakt',
     serviceArea: 'Jönköpings län',
     availability: 'Kör på beställning',
-    footer: { rights: 'Alla rättigheter förbehållna.', designedBy: 'Webbplats av' },
+    prices: {
+      heading: 'Priser',
+      comparisonLabel: 'Jämförpris',
+      comparisonNote: 'för en resa på 10 km och 15 minuter',
+      meterHeading: 'Taxameter',
+      start: 'Startavgift',
+      perKm: 'Per km',
+      perMinute: 'Per minut',
+      fixedHeading: 'Fasta priser',
+      fixed: { airport: 'Jönköping Airport (Axamo)', station: 'Resecentrum' },
+      fixedNote: '[[FIXED_PRICES_FROM]]',
+      paymentHeading: 'Betala med',
+      methods: {
+        card: 'Kort',
+        swish: 'Swish',
+        mobilePay: 'Apple Pay och Google Pay',
+        cash: 'Kontanter',
+        invoice: 'Faktura',
+      },
+      vatNote: 'Alla priser inklusive moms.',
+    },
+    footer: {
+      rights: 'Alla rättigheter förbehållna.',
+      designedBy: 'Webbplats av',
+      orgNumber: 'Org.nr',
+      licence: 'Taxitillstånd',
+    },
   },
   en: {
     meta: {
@@ -311,7 +399,33 @@ export const content: Record<Locale, Content> = {
     quickContactLabel: 'Quick contact',
     serviceArea: 'Jönköping County',
     availability: 'Available on call',
-    footer: { rights: 'All rights reserved.', designedBy: 'Website by' },
+    prices: {
+      heading: 'Prices',
+      comparisonLabel: 'Comparison price',
+      comparisonNote: 'for a 10 km, 15 minute trip',
+      meterHeading: 'Meter',
+      start: 'Start fee',
+      perKm: 'Per km',
+      perMinute: 'Per minute',
+      fixedHeading: 'Fixed prices',
+      fixed: { airport: 'Jönköping Airport (Axamo)', station: 'Travel Centre (Resecentrum)' },
+      fixedNote: '[[FIXED_PRICES_FROM]]',
+      paymentHeading: 'Pay by',
+      methods: {
+        card: 'Card',
+        swish: 'Swish',
+        mobilePay: 'Apple Pay and Google Pay',
+        cash: 'Cash',
+        invoice: 'Invoice',
+      },
+      vatNote: 'All prices include VAT.',
+    },
+    footer: {
+      rights: 'All rights reserved.',
+      designedBy: 'Website by',
+      orgNumber: 'Org. no.',
+      licence: 'Taxi licence',
+    },
   },
   ar: {
     meta: {
@@ -397,6 +511,32 @@ export const content: Record<Locale, Content> = {
     quickContactLabel: 'اتصال سريع',
     serviceArea: 'مقاطعة يونشوبينغ',
     availability: 'متوفر عند الطلب',
-    footer: { rights: 'جميع الحقوق محفوظة.', designedBy: 'تصميم الموقع:' },
+    prices: {
+      heading: 'الأسعار',
+      comparisonLabel: 'السعر المرجعي',
+      comparisonNote: 'لرحلة مسافتها 10 كم ومدتها 15 دقيقة',
+      meterHeading: 'العدّاد',
+      start: 'رسم البدء',
+      perKm: 'لكل كيلومتر',
+      perMinute: 'لكل دقيقة',
+      fixedHeading: 'أسعار ثابتة',
+      fixed: { airport: 'مطار يونشوبينغ (Axamo)', station: 'محطة القطار والباص (Resecentrum)' },
+      fixedNote: '[[FIXED_PRICES_FROM]]',
+      paymentHeading: 'طرق الدفع',
+      methods: {
+        card: 'بطاقة',
+        swish: 'Swish',
+        mobilePay: 'Apple Pay و Google Pay',
+        cash: 'نقداً',
+        invoice: 'فاتورة',
+      },
+      vatNote: 'جميع الأسعار تشمل ضريبة القيمة المضافة.',
+    },
+    footer: {
+      rights: 'جميع الحقوق محفوظة.',
+      designedBy: 'تصميم الموقع:',
+      orgNumber: 'رقم المنشأة',
+      licence: 'رخصة التاكسي',
+    },
   },
 };

@@ -1,6 +1,19 @@
 ---
 // JSON-LD for search engines (CLAUDE.md §7). Real data only: no opening hours, the service is on call.
-import { business, localeInfo, locales } from '../data/site';
+import {
+  business,
+  company,
+  content,
+  defaultLocale,
+  isPlaceholder,
+  localeInfo,
+  locales,
+  paymentMethods,
+} from '../data/site';
+
+// Only real values are published: placeholders and empty values are left out.
+const real = (value: string) => (value && !isPlaceholder(value) ? value : undefined);
+const methods = paymentMethods.map((m) => content[defaultLocale].prices.methods[m]);
 
 const data = {
   '@context': 'https://schema.org',
@@ -8,6 +21,9 @@ const data = {
   name: business.name,
   telephone: business.phone.e164,
   ...(business.email ? { email: business.email } : {}),
+  ...(real(company.legalName) ? { legalName: company.legalName } : {}),
+  ...(real(company.orgNumber) ? { taxID: company.orgNumber } : {}),
+  ...(methods.length ? { paymentAccepted: methods.join(', ') } : {}),
   areaServed: {
     '@type': 'AdministrativeArea',
     name: business.region,

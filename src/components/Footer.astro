@@ -1,5 +1,5 @@
 ---
-import { business, content, designer, type Locale } from '../data/site';
+import { business, company, content, designer, type Locale } from '../data/site';
 import { withBase } from '../utils/withBase';
 
 interface Props {
@@ -9,6 +9,12 @@ interface Props {
 const { locale } = Astro.props;
 const t = content[locale];
 const year = new Date().getFullYear();
+// The registered company behind the service; a value left '' in site.ts is not shown.
+const legal = [
+  company.legalName,
+  company.orgNumber && `${t.footer.orgNumber} ${company.orgNumber}`,
+  company.licence && `${t.footer.licence} ${company.licence}`,
+].filter(Boolean);
 ---
 
 <footer class="border-t border-line text-muted">
@@ -33,5 +39,15 @@ const year = new Date().getFullYear();
         </a>
       </p>
     </div>
+    {legal.length > 0 && (
+      <p class="w-full">
+        {legal.map((item, i) => (
+          <>
+            {i > 0 && <span aria-hidden="true"> · </span>}
+            <span class="whitespace-nowrap">{item}</span>
+          </>
+        ))}
+      </p>
+    )}
   </div>
 </footer>

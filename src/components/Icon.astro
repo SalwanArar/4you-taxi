@@ -2,9 +2,12 @@
 // Maps the icon names used in site.ts and components to Lucide icons (inline SVG, no JS).
 import ArrowDown from '@lucide/astro/icons/arrow-down';
 import Baby from '@lucide/astro/icons/baby';
+import Banknote from '@lucide/astro/icons/banknote';
 import Check from '@lucide/astro/icons/check';
 import ChevronDown from '@lucide/astro/icons/chevron-down';
 import Clock from '@lucide/astro/icons/clock';
+import CreditCard from '@lucide/astro/icons/credit-card';
+import FileText from '@lucide/astro/icons/file-text';
 import Globe from '@lucide/astro/icons/globe';
 import Languages from '@lucide/astro/icons/languages';
 import Luggage from '@lucide/astro/icons/luggage';
@@ -14,6 +17,7 @@ import MessageCircle from '@lucide/astro/icons/message-circle';
 import MessageSquare from '@lucide/astro/icons/message-square';
 import Mountain from '@lucide/astro/icons/mountain';
 import Phone from '@lucide/astro/icons/phone';
+import Smartphone from '@lucide/astro/icons/smartphone';
 import Users from '@lucide/astro/icons/users';
 
 const icons = {
@@ -32,6 +36,11 @@ const icons = {
   'child-seat': Baby,
   luggage: Luggage,
   'four-wheel-drive': Mountain,
+  card: CreditCard,
+  swish: Smartphone,
+  mobilePay: Smartphone,
+  cash: Banknote,
+  invoice: FileText,
 };
 
 export type IconName = keyof typeof icons;

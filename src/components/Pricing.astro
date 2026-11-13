@@ -1,0 +1,130 @@
+---
+// Prices and ways to pay. Amounts come from `prices` in site.ts; a row whose amount is '' is hidden.
+import Icon from './Icon.astro';
+import { content, paymentMethods, prices, type Locale } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = content[locale].prices;
+
+const meter = [
+  { label: t.start, value: prices.meter.start },
+  { label: t.perKm, value: prices.meter.perKm },
+  { label: t.perMinute, value: prices.meter.perMinute },
+].filter((r) => r.value);
+
+const fixed = [
+  { label: t.fixed.airport, value: prices.fixed.airport },
+  { label: t.fixed.station, value: prices.fixed.station },
+].filter((r) => r.value);
+---
+
+<section id="prices" class="section" aria-labelledby="prices-title">
+  <div class="wrap">
+    <h2 id="prices-title" class="statement" data-reveal>
+      {t.heading}
+    </h2>
+
+    <div class="mt-12 grid gap-12 md:grid-cols-2 md:gap-10">
+      {prices.comparison && (
+        <div class="border-t border-line pt-5" data-reveal>
+          <p class="text-muted">{t.comparisonLabel}</p>
+          <p class="figure mt-2 font-display tabular-nums">{prices.comparison}</p>
+          <p class="mt-2 text-muted">{t.comparisonNote}</p>
+        </div>
+      )}
+
+      <div class="grid gap-10" data-reveal style="--i: 1">
+        {meter.length > 0 && (
+          <div>
+            <h3 class="border-t border-line pt-5 text-muted">{t.meterHeading}</h3>
+            <dl class="rows mt-2">
+              {meter.map((r) => (
+                <div>
+                  <dt>{r.label}</dt>
+                  <dd class="tabular-nums">{r.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        )}
+        {fixed.length > 0 && (
+          <div>
+            <h3 class="border-t border-line pt-5 text-muted">{t.fixedHeading}</h3>
+            {t.fixedNote && (
+              <p class="mt-1 text-muted" style="font-size: var(--fs-small)">
+                {t.fixedNote}
+              </p>
+            )}
+            <dl class="rows mt-2">
+              {fixed.map((r) => (
+                <div>
+                  <dt>{r.label}</dt>
+                  <dd class="tabular-nums">{r.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        )}
+      </div>
+    </div>
+
+    <div class="mt-12 border-t border-line pt-5" data-reveal style="--i: 2">
+      <h3 class="text-muted">{t.paymentHeading}</h3>
+      {paymentMethods.length > 0 ? (
+        <ul class="mt-4 flex flex-wrap gap-3">
+          {paymentMethods.map((m) => (
+            <li class="method">
+              <Icon name={m} />
+              {t.methods[m]}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="mt-4">[[PAYMENT_METHODS]]</p>
+      )}
+      <p class="mt-6 text-muted" style="font-size: var(--fs-small)">
+        {t.vatNote}
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .figure {
+    font-size: var(--fs-display);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    overflow-wrap: anywhere;
+  }
+
+  /* Label on one side, amount on the other, one row per price. */
+  .rows > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.75rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .rows dd {
+    font-weight: 600;
+    text-align: end;
+    white-space: nowrap;
+  }
+
+  .method {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: var(--tap-min);
+    padding-inline: 1.125rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--asphalt);
+  }
+</style>
