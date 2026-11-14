@@ -38,6 +38,8 @@ const ogLocale: Record<Locale, string> = { sv: 'sv_SE', en: 'en_GB', ar: 'ar_AR'
     <meta name="theme-color" content="#000000" />
     <meta name="author" content={designer.name} />
     <meta name="generator" content={Astro.generator} />
+    <link rel="icon" href={withBase('/favicon.ico')} sizes="32x32" />
+    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
     <link rel="icon" type="image/png" sizes="32x32" href={withBase('/favicon-32.png')} />
     <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
     <meta property="og:type" content="website" />
