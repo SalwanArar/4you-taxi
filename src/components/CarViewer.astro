@@ -49,11 +49,19 @@ const { alt, labelledBy, hint, story, id } = Astro.props;
 
 <script is:inline>
   // Switch to the film before first paint, so the opening scene does not flash the end.
+  // If the film's script never starts (blocked, failed to load, or threw), go back to the
+  // one-screen hero once the page has loaded, so the car and the call buttons still show.
   (function () {
     const el = document.currentScript && document.currentScript.previousElementSibling;
     if (el && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
       el.dataset.scrub = 'true';
       el.dataset.scene = '0';
+      addEventListener('load', function () {
+        if (el.dataset.ready !== 'true') {
+          delete el.dataset.scrub;
+          delete el.dataset.scene;
+        }
+      });
     }
   })();
 </script>
