@@ -222,7 +222,7 @@ export const content: Record<Locale, Content> = {
     },
     quickContactLabel: 'Snabbkontakt',
     serviceArea: 'Jönköpings län',
-    availability: 'Kör på beställning',
+    availability: 'Mån–fre: när som helst. Lör–sön: endast förbokning.',
     footer: { rights: 'Alla rättigheter förbehållna.', designedBy: 'Webbplats av' },
   },
   en: {
@@ -314,7 +314,7 @@ export const content: Record<Locale, Content> = {
     },
     quickContactLabel: 'Quick contact',
     serviceArea: 'Jönköping County',
-    availability: 'Available on call',
+    availability: 'Mon–Fri: any time. Sat–Sun: by booking only.',
     footer: { rights: 'All rights reserved.', designedBy: 'Website by' },
   },
   ar: {
@@ -401,7 +401,7 @@ export const content: Record<Locale, Content> = {
     },
     quickContactLabel: 'اتصال سريع',
     serviceArea: 'مقاطعة يونشوبينغ',
-    availability: 'متوفر عند الطلب',
+    availability: 'من الاثنين للجمعة: بأي وقت. السبت والأحد: بالحجز المسبق فقط.',
     footer: { rights: 'جميع الحقوق محفوظة.', designedBy: 'تصميم الموقع:' },
   },
 };

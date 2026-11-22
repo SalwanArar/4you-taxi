@@ -208,7 +208,7 @@ npm run lint       # ESLint + Prettier check
 - [x] Business/driver display name (Länstaxi Jönköping)
 - [x] Which phone number to show (company number on the car, or the driver's own) and the WhatsApp number (+46 73 725 01 75 for both)
 - [ ] Email (optional)
-- [ ] Service area and operating hours
+- [x] Service area and operating hours (Jönköpings län; Mon–Fri any time, Sat–Sun by booking only; owner, 2026-11-22)
 - [ ] Languages spoken, and site language(s): Swedish, English, or both
 - [x] Confirmed car features to list (seats, luggage, 4x4, child seat, etc.): the features in `site.ts` were confirmed by the owner on 2026-11-22
 - [ ] Driver photo (with permission) and short bio

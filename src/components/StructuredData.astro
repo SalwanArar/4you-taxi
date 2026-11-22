@@ -1,5 +1,6 @@
 ---
-// JSON-LD for search engines (CLAUDE.md §7). Real data only: no opening hours, the service is on call.
+// JSON-LD for search engines (CLAUDE.md §7). Real data only. Hours (owner, 2026-11-22): Monday to Friday
+// at any time; Saturday and Sunday by booking only, so the weekend is not listed as open.
 import { business, localeInfo, locales } from '../data/site';
 
 const data = {
@@ -16,6 +17,12 @@ const data = {
       addressRegion: business.region,
       addressCountry: business.country,
     },
+  },
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+    opens: '00:00',
+    closes: '23:59',
   },
   availableLanguage: locales.map((l) => ({
     '@type': 'Language',

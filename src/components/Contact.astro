@@ -96,7 +96,7 @@ const details: { label: string; value: string; ltr?: boolean }[] = [
               <dt class="text-muted" style="font-size: var(--fs-small)">
                 {d.label}
               </dt>
-              <dd class="mt-1 break-all" dir={d.ltr ? 'ltr' : undefined}>
+              <dd class:list={['mt-1', d.ltr && 'break-all']} dir={d.ltr ? 'ltr' : undefined}>
                 {d.value}
               </dd>
             </div>
