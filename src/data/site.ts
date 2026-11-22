@@ -86,6 +86,8 @@ interface Content {
    */
   carFeatures: { icon: FeatureIcon; text: string; figure: string; label: string }[];
   /** About the company: one large line, then the languages spoken. */
+  /** The card that asks for a Google review (beside the About text). */
+  review: { heading: string; text: string };
   about: {
     heading: string;
     languagesLabel: string;
@@ -194,6 +196,10 @@ export const content: Record<Locale, Content> = {
         label: 'fyrhjulsdrift',
       },
     ],
+    review: {
+      heading: 'Hur var resan?',
+      text: 'Ett omdöme på Google hjälper andra att hitta oss',
+    },
     about: {
       heading: 'Om oss',
       languagesLabel: 'Vi talar',
@@ -288,6 +294,10 @@ export const content: Record<Locale, Content> = {
         label: 'four-wheel drive',
       },
     ],
+    review: {
+      heading: 'How was your ride?',
+      text: 'A review on Google helps others find us',
+    },
     about: {
       heading: 'About us',
       languagesLabel: 'We speak',
@@ -377,6 +387,10 @@ export const content: Record<Locale, Content> = {
       { icon: 'luggage', text: 'مساحة كبيرة للأمتعة', figure: 'مساحة كبيرة', label: 'للأمتعة' },
       { icon: 'four-wheel-drive', text: 'دفع رباعي (4x4)', figure: '4x4', label: 'دفع رباعي' },
     ],
+    review: {
+      heading: 'كيف كانت رحلتك؟',
+      text: 'تقييمك على Google بيساعد غيرك يلاقينا',
+    },
     about: {
       heading: 'من نحن',
       languagesLabel: 'نتكلم',

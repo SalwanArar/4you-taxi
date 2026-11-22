@@ -32,8 +32,6 @@ const actions: {
     : []),
 ];
 
-const reviewHref = business.googleReview || business.googleBusiness;
-
 const details: { label: string; value: string; ltr?: boolean }[] = [
   ...(business.email ? [{ label: t.contact.emailLabel, value: business.email, ltr: true }] : []),
   { label: t.contact.areaLabel, value: t.serviceArea },
@@ -105,7 +103,7 @@ const details: { label: string; value: string; ltr?: boolean }[] = [
               </div>
             ))}
           </dl>
-          {(business.googleBusiness || reviewHref) && (
+          {business.googleBusiness && (
             <p class="mt-6 flex flex-wrap gap-x-6">
               {business.googleBusiness && (
                 <a
@@ -117,18 +115,6 @@ const details: { label: string; value: string; ltr?: boolean }[] = [
                 >
                   <Icon name="area" />
                   {t.contact.googleLink}
-                </a>
-              )}
-              {reviewHref && (
-                <a
-                  href={reviewHref}
-                  target="_blank"
-                  rel="noopener"
-                  class="inline-flex min-h-tap items-center gap-2 underline underline-offset-4 hover:text-taxi"
-                  data-google-review
-                >
-                  <Icon name="review" />
-                  {t.contact.reviewLink}
                 </a>
               )}
             </p>

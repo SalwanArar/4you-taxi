@@ -1,0 +1,48 @@
+---
+// Asks happy passengers for a Google review, like the flyer in the car. The stars are an
+// invitation to rate, not a rating. Hidden when there is no Google link in site.ts.
+import Icon from './Icon.astro';
+import { business, content, type Locale } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = content[locale];
+const href = business.googleReview || business.googleBusiness;
+---
+
+{href && (
+  <div class="review-card" data-reveal style="--i: 3">
+    <div class="flex gap-1 text-taxi" aria-hidden="true">
+      {[0, 1, 2, 3, 4].map(() => (
+        <Icon name="review" />
+      ))}
+    </div>
+    <p class="mt-4 font-display" style="font-size: var(--fs-heading); line-height: 1.15">
+      {t.review.heading}
+    </p>
+    <p class="mt-2 text-muted">{t.review.text}</p>
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener"
+      class="btn btn-ghost mt-6 px-4"
+      data-google-review
+    >
+      <Icon name="review" />
+      {t.contact.reviewLink}
+    </a>
+  </div>
+)}
+
+<style>
+  .review-card {
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-box);
+    background:
+      radial-gradient(70% 60% at 50% 0%, var(--arrival-glow), transparent 70%), var(--asphalt);
+  }
+</style>
