@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main, claude/project-thread-a8g4jk]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -24,6 +24,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm run lint
       - run: npm run build
         env:
           SITE_URL: https://lanstaxi.se

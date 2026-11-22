@@ -110,6 +110,8 @@ interface Content {
     sendWhatsapp: string;
     sendSms: string;
     note: string;
+    /** Shown on the time field when today's date is picked with a time that has already passed. */
+    pastTime: string;
     /** The message that is written for the visitor. Lines in order; each label is followed by the answer. */
     message: {
       greeting: string;
@@ -206,6 +208,7 @@ export const content: Record<Locale, Content> = {
       sendWhatsapp: 'Skicka via WhatsApp',
       sendSms: 'Skicka via SMS',
       note: 'Inget sparas på webbplatsen. Resan är bokad när vi har svarat och bekräftat.',
+      pastTime: 'Den tiden har redan passerat. Välj en senare tid.',
       message: {
         greeting: 'Hej! Jag vill boka en taxi.',
         date: 'Datum',
@@ -297,6 +300,7 @@ export const content: Record<Locale, Content> = {
       sendWhatsapp: 'Send via WhatsApp',
       sendSms: 'Send via SMS',
       note: 'Nothing is saved on this site. Your ride is booked once we reply and confirm.',
+      pastTime: 'That time has already passed. Pick a later time.',
       message: {
         greeting: 'Hi! I would like to book a taxi.',
         date: 'Date',
@@ -383,6 +387,7 @@ export const content: Record<Locale, Content> = {
       sendWhatsapp: 'إرسال عبر واتساب',
       sendSms: 'إرسال برسالة نصية',
       note: 'ما منحفظ شي على الموقع. الحجز بيتأكد لما نرد عليك.',
+      pastTime: 'هالوقت مرق. اختار وقت بعدين.',
       message: {
         greeting: 'مرحبا! بدي احجز تاكسي.',
         date: 'التاريخ',

@@ -17,6 +17,7 @@
   --taxi-hover: #ffd24d;
   --on-taxi: #000000;
   --light-glow: rgb(255 236 180 / 0.14); /* the overhead light in the hero */
+  --arrival-glow: rgb(255 194 14 / 0.1); /* --taxi, faint: the light warms when the car arrives */
   --floor-glow: rgb(255 255 255 / 0.06);
   --focus: #ffc20e;
 

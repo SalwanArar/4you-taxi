@@ -205,13 +205,13 @@ npm run lint       # ESLint + Prettier check
 
 ## 11. Content Checklist (owner must supply)
 
-- [ ] Business/driver display name
-- [ ] Which phone number to show (company number on the car, or the driver's own) and the WhatsApp number
+- [x] Business/driver display name (Länstaxi Jönköping)
+- [x] Which phone number to show (company number on the car, or the driver's own) and the WhatsApp number (+46 73 725 01 75 for both)
 - [ ] Email (optional)
 - [ ] Service area and operating hours
 - [ ] Languages spoken, and site language(s): Swedish, English, or both
-- [ ] Confirmed car features to list (seats, luggage, 4x4, child seat, etc.)
+- [x] Confirmed car features to list (seats, luggage, 4x4, child seat, etc.): the features in `site.ts` were confirmed by the owner on 2026-11-22
 - [ ] Driver photo (with permission) and short bio
-- [ ] Permission to use the SWE Taxi name/logo on the site
+- [x] Permission to use the Länstaxi name/logo on the site (confirmed by the owner on 2026-11-22)
 - [x] Side photo of the car (the drawing in `CarDrawing.astro` is traced from it)
 - [ ] Domain name (if any)

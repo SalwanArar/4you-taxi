@@ -35,6 +35,7 @@ const t = content[locale].booking;
       data-whatsapp={business.whatsapp}
       data-phone={business.phone.e164}
       data-message={JSON.stringify(t.message)}
+      data-past-time={t.pastTime}
     >
       <div class="grid grid-cols-2 gap-4">
         <label class="field">
@@ -43,7 +44,7 @@ const t = content[locale].booking;
         </label>
         <label class="field">
           <span>{t.time}</span>
-          <input type="time" name="time" required />
+          <input type="time" name="time" required data-time />
         </label>
       </div>
       <label class="field">
@@ -86,15 +87,33 @@ const t = content[locale].booking;
     form.closest<HTMLElement>('[data-booking-section]')?.removeAttribute('hidden');
 
     // No booking in the past: today (in the visitor's time zone) is the earliest date.
-    const date = form.querySelector<HTMLInputElement>('[data-date]');
-    if (date) {
+    const pad = (n: number) => String(n).padStart(2, '0');
+    const today = () => {
       const now = new Date();
-      const pad = (n: number) => String(n).padStart(2, '0');
-      date.min = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
-    }
+      return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+    };
+    const date = form.querySelector<HTMLInputElement>('[data-date]');
+    if (date) date.min = today();
+
+    // ...and no time that has already passed today. Checked when the form is sent and cleared as
+    // soon as the date or time changes, so the visitor can correct it.
+    const time = form.querySelector<HTMLInputElement>('[data-time]');
+    const timeHasPassed = () => {
+      if (!date || !time || date.value !== today() || !time.value) return false;
+      const now = new Date();
+      return time.value < `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+    };
+    const clearTimeError = () => time?.setCustomValidity('');
+    date?.addEventListener('input', clearTimeError);
+    time?.addEventListener('input', clearTimeError);
 
     form.addEventListener('submit', (event) => {
       event.preventDefault();
+      if (time && timeHasPassed()) {
+        time.setCustomValidity(form.dataset.pastTime ?? '');
+        time.reportValidity();
+        return;
+      }
       const m = JSON.parse(form.dataset.message ?? '{}') as Message;
       const data = new FormData(form);
       const value = (key: string) => String(data.get(key) ?? '').trim();
