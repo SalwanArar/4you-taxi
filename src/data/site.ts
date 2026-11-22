@@ -29,7 +29,7 @@ export const business = {
   /** Company email. Leave '' to hide the email button and row until there is one. */
   email: 'info@lanstaxi.se' as string,
   /** Link to the Google Business page (Google Maps: Share, then Copy link). Leave '' to hide it. */
-  googleBusiness: '' as string,
+  googleBusiness: 'https://share.google/2ahr2l0YPOtfMuzwD' as string,
   region: 'Jönköpings län',
   country: 'SE',
 } as const;
