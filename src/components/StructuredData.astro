@@ -9,6 +9,7 @@ const data = {
   name: business.name,
   telephone: business.phone.e164,
   ...(business.email ? { email: business.email } : {}),
+  ...(business.googleBusiness ? { sameAs: [business.googleBusiness] } : {}),
   areaServed: {
     '@type': 'AdministrativeArea',
     name: business.region,

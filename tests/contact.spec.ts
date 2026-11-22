@@ -48,6 +48,13 @@ for (const { locale, path, dir } of pages) {
       for (const href of hrefs) expect(href).toBe(`mailto:${business.email}`);
     });
 
+    test('the Google Business link goes to the business page', async ({ page }) => {
+      const link = page.locator('[data-google-business]');
+      if (business.googleBusiness)
+        await expect(link).toHaveAttribute('href', business.googleBusiness);
+      else await expect(link).toHaveCount(0);
+    });
+
     test('the number is also shown as text', async ({ page }) => {
       await expect(page.getByText(business.phone.display).first()).toBeAttached();
     });

@@ -90,18 +90,34 @@ const details: { label: string; value: string; ltr?: boolean }[] = [
       </div>
 
       <div class="mt-12 flex flex-col gap-10 border-t border-line pt-8 sm:flex-row sm:items-start sm:justify-between">
-        <dl class="details flex-1">
-          {details.map((d) => (
-            <div>
-              <dt class="text-muted" style="font-size: var(--fs-small)">
-                {d.label}
-              </dt>
-              <dd class:list={['mt-1', d.ltr && 'break-all']} dir={d.ltr ? 'ltr' : undefined}>
-                {d.value}
-              </dd>
-            </div>
-          ))}
-        </dl>
+        <div class="flex-1">
+          <dl class="details">
+            {details.map((d) => (
+              <div>
+                <dt class="text-muted" style="font-size: var(--fs-small)">
+                  {d.label}
+                </dt>
+                <dd class:list={['mt-1', d.ltr && 'break-all']} dir={d.ltr ? 'ltr' : undefined}>
+                  {d.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+          {business.googleBusiness && (
+            <p class="mt-6">
+              <a
+                href={business.googleBusiness}
+                target="_blank"
+                rel="noopener"
+                class="inline-flex min-h-tap items-center gap-2 underline underline-offset-4 hover:text-taxi"
+                data-google-business
+              >
+                <Icon name="area" />
+                {t.contact.googleLink}
+              </a>
+            </p>
+          )}
+        </div>
         {/* Hidden on phones: the visitor is already on the phone that would scan it. */}
         <div class="hidden sm:block">
           <QrCode value={`tel:${business.phone.e164}`} label={t.contact.qrLabel} />

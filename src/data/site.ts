@@ -28,6 +28,8 @@ export const business = {
   whatsapp: '46737250175',
   /** Company email. Leave '' to hide the email button and row until there is one. */
   email: 'info@lanstaxi.se' as string,
+  /** Link to the Google Business page (Google Maps: Share, then Copy link). Leave '' to hide it. */
+  googleBusiness: '' as string,
   region: 'Jönköpings län',
   country: 'SE',
 } as const;
@@ -92,6 +94,8 @@ interface Content {
     emailLabel: string;
     areaLabel: string;
     availabilityLabel: string;
+    /** Text of the link to the Google Business page. */
+    googleLink: string;
     /** Caption under the QR code, which opens a phone call when scanned. */
     qrLabel: string;
   };
@@ -195,6 +199,7 @@ export const content: Record<Locale, Content> = {
       emailLabel: 'E-post',
       areaLabel: 'Område',
       availabilityLabel: 'Tillgänglighet',
+      googleLink: 'Hitta oss på Google',
       qrLabel: 'Skanna för att ringa',
     },
     booking: {
@@ -287,6 +292,7 @@ export const content: Record<Locale, Content> = {
       emailLabel: 'Email',
       areaLabel: 'Area',
       availabilityLabel: 'Availability',
+      googleLink: 'Find us on Google',
       qrLabel: 'Scan to call',
     },
     booking: {
@@ -374,6 +380,7 @@ export const content: Record<Locale, Content> = {
       emailLabel: 'البريد الإلكتروني',
       areaLabel: 'المنطقة',
       availabilityLabel: 'التوفر',
+      googleLink: 'لاقينا على Google',
       qrLabel: 'امسح الرمز للاتصال',
     },
     booking: {
