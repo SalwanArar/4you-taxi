@@ -48,4 +48,7 @@
   /* The bar's real height: its bottom padding grows to the safe area on phones with a home bar. */
   --call-bar-space: calc(var(--call-bar-h) - 0.75rem + max(0.75rem, env(safe-area-inset-bottom)));
   --section-space: clamp(4rem, 9vw, 6.5rem);
+  /* The dashed lane line from the logo and the printed cards. */
+  --road-dash: 28px;
+  --road-gap: 16px;
 }

@@ -30,6 +30,12 @@ export const business = {
   email: 'info@lanstaxi.se' as string,
   /** Link to the Google Business page (Google Maps: Share, then Copy link). Leave '' to hide it. */
   googleBusiness: 'https://share.google/2ahr2l0YPOtfMuzwD' as string,
+  /**
+   * Link that opens "Write a review" on Google. Google Business Profile, Ask for reviews, gives a
+   * direct link; until it is added here, the business page is used (one more tap to the review box).
+   * Leave both '' to hide the review link.
+   */
+  googleReview: '' as string,
   region: 'Jönköpings län',
   country: 'SE',
 } as const;
@@ -96,6 +102,8 @@ interface Content {
     availabilityLabel: string;
     /** Text of the link to the Google Business page. */
     googleLink: string;
+    /** Text of the link that asks visitors for a Google review. */
+    reviewLink: string;
     /** Caption under the QR code, which opens a phone call when scanned. */
     qrLabel: string;
   };
@@ -145,17 +153,17 @@ export const content: Record<Locale, Content> = {
     },
     skipLink: 'Hoppa till innehållet',
     languageSwitcherLabel: 'Välj språk',
-    tagline: 'Säker. Snabb. Pålitlig.',
+    tagline: 'Säker. Snabb. Pålitlig',
     hero: {
       title: 'Taxi i Jönköpings län',
-      subtitle: 'Säker. Snabb. Pålitlig.',
+      subtitle: 'Säker. Snabb. Pålitlig',
     },
     story: {
-      night: { line: 'Sen kväll i Jönköping.', sub: 'Bussen har gått. Du behöver en bil.' },
-      call: { line: 'Du ringer.' },
-      pickup: { line: 'Vi svarar.', sub: 'Ingen växel, ingen kö. Bilen är på väg.' },
-      drive: { line: 'Gott om plats.' },
-      arrival: { line: 'Säker. Snabb. Pålitlig.', sub: 'Vi kör dig hela vägen.' },
+      night: { line: 'Sen kväll i Jönköping', sub: 'Bussen har gått. Du behöver en bil' },
+      call: { line: 'Du ringer' },
+      pickup: { line: 'Vi svarar', sub: 'Ingen växel, ingen kö. Bilen är på väg' },
+      drive: { line: 'Gott om plats' },
+      arrival: { line: 'Säker. Snabb. Pålitlig', sub: 'Vi kör dig hela vägen' },
       more: 'Mer om bilen och oss',
     },
     actions: {
@@ -190,21 +198,22 @@ export const content: Record<Locale, Content> = {
       heading: 'Om oss',
       languagesLabel: 'Vi talar',
       languagesSpoken: 'Svenska, engelska och arabiska',
-      bio: 'Du ringer, vi svarar. Ingen växel och ingen kö.',
+      bio: 'Du ringer, vi svarar. Ingen växel och ingen kö',
     },
     contact: {
-      heading: 'Din resa är ett samtal bort.',
-      intro: 'Ring eller skriv till oss direkt, på svenska, engelska eller arabiska.',
+      heading: 'Din resa är ett samtal bort',
+      intro: 'Ring eller skriv till oss direkt, på svenska, engelska eller arabiska',
       phoneLabel: 'Telefon',
       emailLabel: 'E-post',
       areaLabel: 'Område',
       availabilityLabel: 'Tillgänglighet',
       googleLink: 'Hitta oss på Google',
+      reviewLink: 'Lämna ett omdöme på Google',
       qrLabel: 'Skanna för att ringa',
     },
     booking: {
       heading: 'Boka i förväg',
-      intro: 'Ska du till flyget eller tåget? Fyll i, så skrivs ett meddelande till oss.',
+      intro: 'Ska du till flyget eller tåget? Fyll i, så skrivs ett meddelande till oss',
       date: 'Datum',
       time: 'Tid',
       pickup: 'Hämtning',
@@ -212,8 +221,8 @@ export const content: Record<Locale, Content> = {
       childSeat: 'Jag behöver barnstol',
       sendWhatsapp: 'Skicka via WhatsApp',
       sendSms: 'Skicka via SMS',
-      note: 'Inget sparas på webbplatsen. Resan är bokad när vi har svarat och bekräftat.',
-      pastTime: 'Den tiden har redan passerat. Välj en senare tid.',
+      note: 'Inget sparas på webbplatsen. Resan är bokad när vi har svarat och bekräftat',
+      pastTime: 'Den tiden har redan passerat. Välj en senare tid',
       message: {
         greeting: 'Hej! Jag vill boka en taxi.',
         date: 'Datum',
@@ -227,8 +236,8 @@ export const content: Record<Locale, Content> = {
     },
     quickContactLabel: 'Snabbkontakt',
     serviceArea: 'Jönköpings län',
-    availability: 'Mån–fre: när som helst. Lör–sön: endast förbokning.',
-    footer: { rights: 'Alla rättigheter förbehållna.', designedBy: 'Webbplats av' },
+    availability: 'Mån–fre: när som helst. Lör–sön: endast förbokning',
+    footer: { rights: 'Alla rättigheter förbehållna', designedBy: 'Webbplats av' },
   },
   en: {
     meta: {
@@ -238,17 +247,17 @@ export const content: Record<Locale, Content> = {
     },
     skipLink: 'Skip to content',
     languageSwitcherLabel: 'Choose language',
-    tagline: 'Safe. Fast. Reliable.',
+    tagline: 'Safe. Fast. Reliable',
     hero: {
       title: 'Taxi in Jönköping County',
-      subtitle: 'Safe. Fast. Reliable.',
+      subtitle: 'Safe. Fast. Reliable',
     },
     story: {
-      night: { line: 'Late evening in Jönköping.', sub: 'The bus has gone. You need a ride.' },
-      call: { line: 'You call.' },
-      pickup: { line: 'We answer.', sub: 'No call centre, no queue. The car is on its way.' },
-      drive: { line: 'Plenty of room.' },
-      arrival: { line: 'Safe. Fast. Reliable.', sub: 'We take you all the way.' },
+      night: { line: 'Late evening in Jönköping', sub: 'The bus has gone. You need a ride' },
+      call: { line: 'You call' },
+      pickup: { line: 'We answer', sub: 'No call centre, no queue. The car is on its way' },
+      drive: { line: 'Plenty of room' },
+      arrival: { line: 'Safe. Fast. Reliable', sub: 'We take you all the way' },
       more: 'More about the car and us',
     },
     actions: {
@@ -283,21 +292,22 @@ export const content: Record<Locale, Content> = {
       heading: 'About us',
       languagesLabel: 'We speak',
       languagesSpoken: 'Swedish, English and Arabic',
-      bio: 'You call, we answer. No call centre and no queue.',
+      bio: 'You call, we answer. No call centre and no queue',
     },
     contact: {
-      heading: 'Your ride is one call away.',
-      intro: 'Call or message us directly, in Swedish, English or Arabic.',
+      heading: 'Your ride is one call away',
+      intro: 'Call or message us directly, in Swedish, English or Arabic',
       phoneLabel: 'Phone',
       emailLabel: 'Email',
       areaLabel: 'Area',
       availabilityLabel: 'Availability',
       googleLink: 'Find us on Google',
+      reviewLink: 'Leave a review on Google',
       qrLabel: 'Scan to call',
     },
     booking: {
       heading: 'Book ahead',
-      intro: 'Catching a flight or a train? Fill this in and a message to us is written for you.',
+      intro: 'Catching a flight or a train? Fill this in and a message to us is written for you',
       date: 'Date',
       time: 'Time',
       pickup: 'Pickup',
@@ -305,8 +315,8 @@ export const content: Record<Locale, Content> = {
       childSeat: 'I need a child seat',
       sendWhatsapp: 'Send via WhatsApp',
       sendSms: 'Send via SMS',
-      note: 'Nothing is saved on this site. Your ride is booked once we reply and confirm.',
-      pastTime: 'That time has already passed. Pick a later time.',
+      note: 'Nothing is saved on this site. Your ride is booked once we reply and confirm',
+      pastTime: 'That time has already passed. Pick a later time',
       message: {
         greeting: 'Hi! I would like to book a taxi.',
         date: 'Date',
@@ -320,8 +330,8 @@ export const content: Record<Locale, Content> = {
     },
     quickContactLabel: 'Quick contact',
     serviceArea: 'Jönköping County',
-    availability: 'Mon–Fri: any time. Sat–Sun: by booking only.',
-    footer: { rights: 'All rights reserved.', designedBy: 'Website by' },
+    availability: 'Mon–Fri: any time. Sat–Sun: by booking only',
+    footer: { rights: 'All rights reserved', designedBy: 'Website by' },
   },
   ar: {
     meta: {
@@ -331,17 +341,17 @@ export const content: Record<Locale, Content> = {
     },
     skipLink: 'انتقل إلى المحتوى',
     languageSwitcherLabel: 'اختر اللغة',
-    tagline: 'آمن. سريع. موثوق.',
+    tagline: 'آمن. سريع. موثوق',
     hero: {
       title: 'تاكسي في مقاطعة يونشوبينغ',
-      subtitle: 'آمن. سريع. موثوق.',
+      subtitle: 'آمن. سريع. موثوق',
     },
     story: {
-      night: { line: 'آخر الليل بيونشوبينغ.', sub: 'راح آخر باص، وبدك سيارة.' },
-      call: { line: 'بتتصل.' },
-      pickup: { line: 'منرد عليك.', sub: 'بلا مركز اتصالات وبلا انتظار. السيارة جاية لعندك.' },
-      drive: { line: 'في محل للكل.' },
-      arrival: { line: 'آمن. سريع. موثوق.', sub: 'منوصلك لآخر الطريق.' },
+      night: { line: 'آخر الليل بيونشوبينغ', sub: 'راح آخر باص، وبدك سيارة' },
+      call: { line: 'بتتصل' },
+      pickup: { line: 'منرد عليك', sub: 'بلا مركز اتصالات وبلا انتظار. السيارة جاية لعندك' },
+      drive: { line: 'في محل للكل' },
+      arrival: { line: 'آمن. سريع. موثوق', sub: 'منوصلك لآخر الطريق' },
       more: 'المزيد عن السيارة وعنّا',
     },
     actions: {
@@ -371,21 +381,22 @@ export const content: Record<Locale, Content> = {
       heading: 'من نحن',
       languagesLabel: 'نتكلم',
       languagesSpoken: 'العربية والسويدية والإنجليزية',
-      bio: 'بتتصل، ومنرد عليك. بلا مركز اتصالات وبلا انتظار.',
+      bio: 'بتتصل، ومنرد عليك. بلا مركز اتصالات وبلا انتظار',
     },
     contact: {
-      heading: 'رحلتك على بُعد مكالمة.',
-      intro: 'اتصل بنا أو راسلنا مباشرة، بالعربية أو السويدية أو الإنجليزية.',
+      heading: 'رحلتك على بُعد مكالمة',
+      intro: 'اتصل بنا أو راسلنا مباشرة، بالعربية أو السويدية أو الإنجليزية',
       phoneLabel: 'الهاتف',
       emailLabel: 'البريد الإلكتروني',
       areaLabel: 'المنطقة',
       availabilityLabel: 'التوفر',
       googleLink: 'لاقينا على Google',
+      reviewLink: 'اترك تقييمك على Google',
       qrLabel: 'امسح الرمز للاتصال',
     },
     booking: {
       heading: 'احجز مسبقاً',
-      intro: 'رايح عالمطار أو عالقطار؟ عبّي المعلومات، ومنكتبلك رسالة جاهزة تبعتها إلنا.',
+      intro: 'رايح عالمطار أو عالقطار؟ عبّي المعلومات، ومنكتبلك رسالة جاهزة تبعتها إلنا',
       date: 'التاريخ',
       time: 'الوقت',
       pickup: 'مكان الانطلاق',
@@ -393,8 +404,8 @@ export const content: Record<Locale, Content> = {
       childSeat: 'بحتاج مقعد أطفال',
       sendWhatsapp: 'إرسال عبر واتساب',
       sendSms: 'إرسال برسالة نصية',
-      note: 'ما منحفظ شي على الموقع. الحجز بيتأكد لما نرد عليك.',
-      pastTime: 'هالوقت مرق. اختار وقت بعدين.',
+      note: 'ما منحفظ شي على الموقع. الحجز بيتأكد لما نرد عليك',
+      pastTime: 'هالوقت مرق. اختار وقت بعدين',
       message: {
         greeting: 'مرحبا! بدي احجز تاكسي.',
         date: 'التاريخ',
@@ -408,7 +419,7 @@ export const content: Record<Locale, Content> = {
     },
     quickContactLabel: 'اتصال سريع',
     serviceArea: 'مقاطعة يونشوبينغ',
-    availability: 'من الاثنين للجمعة: بأي وقت. السبت والأحد: بالحجز المسبق فقط.',
-    footer: { rights: 'جميع الحقوق محفوظة.', designedBy: 'تصميم الموقع:' },
+    availability: 'من الاثنين للجمعة: بأي وقت. السبت والأحد: بالحجز المسبق فقط',
+    footer: { rights: 'جميع الحقوق محفوظة', designedBy: 'تصميم الموقع:' },
   },
 };
