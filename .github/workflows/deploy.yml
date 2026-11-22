@@ -28,6 +28,9 @@ jobs:
       - run: npm run build
         env:
           SITE_URL: https://lanstaxi.se
+      # Browser tests on the built site: contact links, booking form, car scene. A failure stops the deploy.
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

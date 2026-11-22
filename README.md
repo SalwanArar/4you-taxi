@@ -16,6 +16,8 @@ npm run build      # type-check and build the site into dist/
 npm run preview    # serve the built site from dist/
 npm run lint       # ESLint + Prettier check
 npm run format     # fix formatting with Prettier
+npx playwright install chromium  # once, before the first npm test
+npm test           # browser tests on the built site (run npm run build first)
 ```
 
 ## Editing content
@@ -87,6 +89,7 @@ When it looks right:
 ```powershell
 npm run build            # must finish with 0 errors
 npm run lint             # must pass; run "npm run format" to fix spacing
+npm test                 # must pass: checks call links, booking form and car scene
 git add src/data/site.ts
 git commit -m "Update phone number"
 git push
