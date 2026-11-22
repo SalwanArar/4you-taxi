@@ -72,4 +72,6 @@ export function initCarViewer(root: HTMLElement): void {
   update();
   window.addEventListener('scroll', schedule, { passive: true });
   window.addEventListener('resize', schedule);
+  // Tells the fallback in CarViewer.astro that the film is running.
+  root.dataset.ready = 'true';
 }

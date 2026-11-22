@@ -44,5 +44,7 @@
   --tap-min: 52px;
   --header-h: 69px; /* sticky header: 52px button + 2 x 8px padding + 1px border */
   --call-bar-h: 77px; /* phones: fixed Call/WhatsApp bar: 52px buttons + 12px padding x 2 + 1px border */
+  /* The bar's real height: its bottom padding grows to the safe area on phones with a home bar. */
+  --call-bar-space: calc(var(--call-bar-h) - 0.75rem + max(0.75rem, env(safe-area-inset-bottom)));
   --section-space: clamp(4rem, 9vw, 6.5rem);
 }
