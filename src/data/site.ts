@@ -30,6 +30,12 @@ export const business = {
   email: 'info@lanstaxi.se' as string,
   /** Link to the Google Business page (Google Maps: Share, then Copy link). Leave '' to hide it. */
   googleBusiness: 'https://share.google/2ahr2l0YPOtfMuzwD' as string,
+  /**
+   * Link that opens "Write a review" on Google. Google Business Profile, Ask for reviews, gives a
+   * direct link; until it is added here, the business page is used (one more tap to the review box).
+   * Leave both '' to hide the review link.
+   */
+  googleReview: '' as string,
   region: 'Jönköpings län',
   country: 'SE',
 } as const;
@@ -96,6 +102,8 @@ interface Content {
     availabilityLabel: string;
     /** Text of the link to the Google Business page. */
     googleLink: string;
+    /** Text of the link that asks visitors for a Google review. */
+    reviewLink: string;
     /** Caption under the QR code, which opens a phone call when scanned. */
     qrLabel: string;
   };
@@ -200,6 +208,7 @@ export const content: Record<Locale, Content> = {
       areaLabel: 'Område',
       availabilityLabel: 'Tillgänglighet',
       googleLink: 'Hitta oss på Google',
+      reviewLink: 'Lämna ett omdöme på Google',
       qrLabel: 'Skanna för att ringa',
     },
     booking: {
@@ -293,6 +302,7 @@ export const content: Record<Locale, Content> = {
       areaLabel: 'Area',
       availabilityLabel: 'Availability',
       googleLink: 'Find us on Google',
+      reviewLink: 'Leave a review on Google',
       qrLabel: 'Scan to call',
     },
     booking: {
@@ -381,6 +391,7 @@ export const content: Record<Locale, Content> = {
       areaLabel: 'المنطقة',
       availabilityLabel: 'التوفر',
       googleLink: 'لاقينا على Google',
+      reviewLink: 'اترك تقييمك على Google',
       qrLabel: 'امسح الرمز للاتصال',
     },
     booking: {

@@ -55,6 +55,13 @@ for (const { locale, path, dir } of pages) {
       else await expect(link).toHaveCount(0);
     });
 
+    test('the review link opens Google', async ({ page }) => {
+      const link = page.locator('[data-google-review]');
+      const href = business.googleReview || business.googleBusiness;
+      if (href) await expect(link).toHaveAttribute('href', href);
+      else await expect(link).toHaveCount(0);
+    });
+
     test('the number is also shown as text', async ({ page }) => {
       await expect(page.getByText(business.phone.display).first()).toBeAttached();
     });

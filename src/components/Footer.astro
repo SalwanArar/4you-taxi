@@ -11,7 +11,9 @@ const t = content[locale];
 const year = new Date().getFullYear();
 ---
 
-<footer class="border-t border-line text-muted">
+<footer class="text-muted">
+  {/* The road band from the business card: taxi yellow with a dashed black lane line. */}
+  <div class="road-band" aria-hidden="true"></div>
   <div
     class="wrap flex flex-wrap items-center justify-between gap-4 py-8"
     style="font-size: var(--fs-small)"
@@ -35,3 +37,17 @@ const year = new Date().getFullYear();
     </div>
   </div>
 </footer>
+
+<style>
+  .road-band {
+    height: 1.5rem;
+    background:
+      repeating-linear-gradient(
+          90deg,
+          var(--night) 0 var(--road-dash),
+          transparent var(--road-dash) calc(var(--road-dash) + var(--road-gap))
+        )
+        center / 100% 4px no-repeat,
+      var(--taxi);
+  }
+</style>
