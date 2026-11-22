@@ -39,6 +39,15 @@ for (const { locale, path, dir } of pages) {
         expect(href).toMatch(new RegExp(`^sms:\\${business.phone.e164}(\\?|$)`));
     });
 
+    test('every email link writes to the business address', async ({ page }) => {
+      const hrefs = await page
+        .locator('a[href^="mailto:"]')
+        .evaluateAll((as) => as.map((a) => a.getAttribute('href')));
+      if (business.email) expect(hrefs.length).toBeGreaterThan(0);
+      else expect(hrefs).toEqual([]);
+      for (const href of hrefs) expect(href).toBe(`mailto:${business.email}`);
+    });
+
     test('the number is also shown as text', async ({ page }) => {
       await expect(page.getByText(business.phone.display).first()).toBeAttached();
     });

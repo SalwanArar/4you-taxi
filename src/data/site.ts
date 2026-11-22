@@ -27,7 +27,7 @@ export const business = {
   /** WhatsApp number: country code and number, digits only (used in https://wa.me/…). */
   whatsapp: '46737250175',
   /** Company email. Leave '' to hide the email button and row until there is one. */
-  email: '' as string,
+  email: 'info@lanstaxi.se' as string,
   region: 'Jönköpings län',
   country: 'SE',
 } as const;
