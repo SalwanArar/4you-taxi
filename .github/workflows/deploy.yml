@@ -44,3 +44,17 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+      # Tell Bing (and other IndexNow search engines) that the pages changed, so they recrawl soon.
+      # The key is public by design: it must match public/a891098ddb2422d4fa364c0c5aff02c1.txt on the live site.
+      # A failed ping never fails the deploy; Bing still finds changes through the sitemap.
+      - name: Ping IndexNow
+        continue-on-error: true
+        env:
+          INDEXNOW_KEY: a891098ddb2422d4fa364c0c5aff02c1
+        run: |
+          urls=$(curl -fsS https://lanstaxi.se/sitemap-0.xml | grep -o '<loc>[^<]*</loc>' | sed -e 's/<loc>//' -e 's/<\/loc>//' | jq -R . | jq -sc .)
+          echo "Submitting: $urls"
+          curl -fsS -X POST https://api.indexnow.org/indexnow \
+            -H 'Content-Type: application/json; charset=utf-8' \
+            -d "{\"host\":\"lanstaxi.se\",\"key\":\"$INDEXNOW_KEY\",\"keyLocation\":\"https://lanstaxi.se/$INDEXNOW_KEY.txt\",\"urlList\":$urls}" \
+            -w 'IndexNow answered HTTP %{http_code}\n'

@@ -115,3 +115,7 @@ git reset --hard
 It sets `SITE_URL` for canonical links and the sitemap. `public/CNAME` tells GitHub Pages to serve
 the site on that domain.
 Local `npm run dev` is unaffected and still serves from the root.
+
+After each deploy the workflow pings **IndexNow** with the pages from the sitemap, so Bing
+(and other IndexNow search engines) recrawl them soon. The key in the workflow must match the file
+`public/a891098ddb2422d4fa364c0c5aff02c1.txt`; if you change one, change both. The key is public by design, not a secret.
