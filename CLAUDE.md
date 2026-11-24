@@ -20,8 +20,10 @@ A single-page, mobile-first website for **one taxi (one car, one driver)** in **
 
 ### Known facts (use these; do not invent others)
 - Car: white **Škoda Octavia Combi (estate) 4x4** with tow bar and roof rack.
-- Livery: **SWE Taxi Jönköping**, navy blue and yellow "T" logo.
-- Phone number printed on the car: **036-39 39 39**. Treat as a placeholder until the owner confirms whether the site shows this number or the driver's own.
+- Name and branding: **Länstaxi Jönköping** (earlier names in this project: 4you Taxi, SWE Taxi). The site and the car drawing use the Länstaxi logo only; the owner confirmed permission on 2026-11-22.
+- Phone and WhatsApp: **+46 73 725 01 75** (confirmed by the owner). Email: **info@lanstaxi.se**.
+- Hours: Monday to Friday at any time; Saturday and Sunday by booking only.
+- Website: **https://lanstaxi.se** (GitHub Pages).
 - License plate is intentionally hidden in all assets. Never show or mention it.
 
 ---
@@ -78,7 +80,7 @@ Questions:       <only if blocking; max 3>
 | Smooth scroll | None by default. Lenis only if asked, and it must keep native scrolling behavior. |
 | SEO | `@astrojs/sitemap`, JSON-LD (`TaxiService`/`LocalBusiness`), Open Graph tags |
 | Images | Astro `<Image>` / Sharp for page images. |
-| Hosting | Cloudflare Pages, Netlify, or Vercel (free tier) |
+| Hosting | **GitHub Pages** at lanstaxi.se, deployed by `.github/workflows/deploy.yml` on every push to `main` (lint, build, browser tests, then publish) |
 | Quality | ESLint + Prettier, Lighthouse, axe (accessibility) |
 
 Package manager: `npm`. The owner develops on **Windows**; give commands that work in PowerShell.
@@ -199,6 +201,7 @@ npm run dev        # local dev server
 npm run build      # production build (must pass with 0 errors)
 npm run preview    # preview the production build
 npm run lint       # ESLint + Prettier check
+npm test           # Playwright browser tests on the built site (run npm run build first)
 ```
 
 ---
@@ -214,4 +217,4 @@ npm run lint       # ESLint + Prettier check
 - [ ] Driver photo (with permission) and short bio
 - [x] Permission to use the Länstaxi name/logo on the site (confirmed by the owner on 2026-11-22)
 - [x] Side photo of the car (the drawing in `CarDrawing.astro` is traced from it)
-- [ ] Domain name (if any)
+- [x] Domain name (if any): lanstaxi.se, live with HTTPS
