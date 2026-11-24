@@ -31,8 +31,18 @@ import { withBase } from '../utils/withBase';
       </radialGradient>
       <linearGradient id="road" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0" stop-color="#121211"></stop>
-        <stop offset="1" stop-color="#000"></stop>
+        <stop offset="1" stop-color="#000" stop-opacity="0"></stop>
       </linearGradient>
+      <!-- Fades the street out at both ends, so it has no hard edges against the night sky. -->
+      <linearGradient id="road-sides" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#fff" stop-opacity="0"></stop>
+        <stop offset="0.12" stop-color="#fff"></stop>
+        <stop offset="0.88" stop-color="#fff"></stop>
+        <stop offset="1" stop-color="#fff" stop-opacity="0"></stop>
+      </linearGradient>
+      <mask id="road-mask" maskContentUnits="userSpaceOnUse">
+        <rect x="0" y="260" width="800" height="140" fill="url(#road-sides)"></rect>
+      </mask>
     </defs>
 
     <g class="cam">
@@ -73,8 +83,10 @@ import { withBase } from '../utils/withBase';
       </g>
 
       <!-- The street -->
-      <rect x="0" y="270" width="800" height="130" fill="url(#road)"></rect>
-      <line class="kerb" x1="0" y1="270.5" x2="800" y2="270.5"></line>
+      <g mask="url(#road-mask)">
+        <rect x="0" y="270" width="800" height="130" fill="url(#road)"></rect>
+        <line class="kerb" x1="0" y1="270.5" x2="800" y2="270.5"></line>
+      </g>
       <g class="dashes">
         <rect x="20" y="330" width="56" height="3"></rect>
         <rect x="130" y="330" width="56" height="3"></rect>

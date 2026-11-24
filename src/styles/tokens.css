@@ -19,6 +19,9 @@
   --light-glow: rgb(255 236 180 / 0.14); /* the overhead light in the hero */
   --arrival-glow: rgb(255 194 14 / 0.1); /* --taxi, faint: the light warms when the car arrives */
   --floor-glow: rgb(255 255 255 / 0.06);
+  /* Behind the car scene only: a dark blue night sky fading to black at the road (owner preview,
+     2026-11-24). To go back to plain black, set this to: var(--night); */
+  --night-sky: linear-gradient(180deg, #0b1834 0%, #081229 40%, #040914 70%, #000000 100%);
   --focus: #ffc20e;
 
   /* Type: a Swedish display grotesk for headlines, IBM Plex for text and Arabic.
